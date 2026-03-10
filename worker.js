@@ -12,7 +12,7 @@ export default {
     const pathname = url.pathname;
 
     // --- CẤU HÌNH BẢO MẬT (ẨN KHỎI FRONTEND) ---
-    const GOOGLE_CLIENT_ID = "305607144766-rsp6v0i6b0n83u989ojpinptq5a9l21c.apps.googleusercontent.com";
+    const GOOGLE_CLIENT_ID = "";
     const WEBHOOKS = {
       chat: "",
       delete: "",
@@ -85,4 +85,5 @@ export default {
     });
   }
 };
+
 
