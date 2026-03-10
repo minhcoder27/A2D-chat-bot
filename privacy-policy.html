@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chính sách bảo mật - A2D Solutions</title>
+    
+    <link rel="icon" href="https://a2dsolutions.pl/wp-content/uploads/2022/11/cropped-Logo-1-32x32.png" sizes="32x32">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-navy: #102136;       
+            --accent-blue: #3b9cd4;        
+            --accent-blue-hover: #2a7eb5;
+            --text-gray: #a0aec0;          
+            --border-color: #2d3748;
+            --bg-light: #f8fafc;
+            --text-dark: #0f172a;
+        }
+
+        /* Base & Scrollbar - ĐÃ THÊM RESET BOX-SIZING VÀ FONT-SIZE 14PX */
+        * { box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; font-size: 14px; background-color: var(--bg-light); color: var(--text-dark); margin: 0; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; line-height: 1.6; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-gray); }
+
+        /* HEADER */
+        .app-header { position: fixed; top: 0; left: 0; right: 0; width: 100%; background-color: var(--primary-navy); padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 9999; box-shadow: 0 4px 15px rgba(16, 33, 54, 0.15); transition: all 0.3s ease; }
+        .site-logo { text-decoration: none; display: flex; align-items: center; transition: transform 0.3s ease, opacity 0.3s; flex-shrink: 0; }
+        .site-logo:hover { opacity: 0.9; transform: scale(1.02); }
+        .site-logo img { height: 45px; width: auto; display: block; }
+        
+        /* BUTTONS */
+        .header-actions { display: flex; align-items: center; gap: 15px; }
+        .btn-header { background-color: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 18px; font-size: 13px; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; border-radius: 6px; letter-spacing: 0.5px; }
+        .btn-header:hover { background-color: rgba(255,255,255,0.1); border-color: white; transform: translateY(-1px); }
+        .btn-contact { background-color: var(--accent-blue); color: white; border: 1px solid var(--accent-blue); padding: 10px 24px; font-size: 13px; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; border-radius: 6px; letter-spacing: 0.5px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(59, 156, 212, 0.3); }
+        .btn-contact:hover { background-color: var(--accent-blue-hover); border-color: var(--accent-blue-hover); transform: translateY(-1px); box-shadow: 0 6px 15px rgba(59, 156, 212, 0.4); }
+
+        /* USER MENU */
+        .user-menu-wrapper { position: relative; display: inline-block; }
+        .user-dropdown { position: absolute; top: 50px; right: 0; width: 220px; background: white; border-radius: 8px; box-shadow: 0 10px 30px rgba(16, 33, 54, 0.15); display: none; overflow: hidden; z-index: 2000; border: 1px solid #e2e8f0; transform: translateY(10px); opacity: 0; transition: all 0.3s ease; }
+        .user-dropdown.active { display: block; transform: translateY(0); opacity: 1; animation: slideDown 0.2s ease forwards; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .menu-item { padding: 14px 20px; display: flex; align-items: center; color: var(--text-dark); cursor: pointer; font-size: 14px; font-weight: 500; transition: background 0.2s ease; }
+        .menu-item i { margin-right: 12px; width: 16px; text-align: center; color: var(--accent-blue); }
+        .menu-item:hover { background: #f1f5f9; }
+
+        /* MAIN CONTENT - Document Style */
+        .app-main { flex: 1; display: flex; justify-content: center; padding: 120px 20px 50px; position: relative; }
+        .content-container { width: 100%; max-width: 800px; background: #ffffff; padding: 50px; border-radius: 12px; box-shadow: 0 10px 30px rgba(16, 33, 54, 0.08); align-self: flex-start; border: 1px solid #e2e8f0; }
+        .back-btn { display: inline-flex; align-items: center; color: var(--accent-blue); text-decoration: none; font-weight: 600; margin-bottom: 25px; font-size: 14px; transition: all 0.3s ease; padding: 8px 16px; background: #f8fafc; border-radius: 6px; border: 1px solid #e2e8f0; }
+        .back-btn:hover { color: white; background: var(--accent-blue); border-color: var(--accent-blue); transform: translateX(-5px); }
+        .back-btn i { margin-right: 8px; }
+        
+        h1 { color: var(--primary-navy); font-family: 'Poppins', sans-serif; font-size: 32px; text-transform: uppercase; margin-top: 0; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 25px; letter-spacing: 0.5px; }
+        p { line-height: 1.7; margin-bottom: 15px; color: #475569; font-size: 14px; }
+        h2 { color: var(--primary-navy); font-family: 'Poppins', sans-serif; font-size: 22px; margin-top: 35px; margin-bottom: 15px; }
+
+        /* FORM INPUTS (For Modals) */
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--primary-navy); text-transform: uppercase; letter-spacing: 0.5px; }
+        input, textarea { width: 100%; padding: 14px 16px; border: 1px solid #cbd5e1; border-radius: 8px; outline: none; transition: all 0.3s ease; font-family: 'Poppins', sans-serif; color: var(--text-dark); background-color: #f8fafc; font-size: 14px; }
+        input:focus, textarea:focus { border-color: var(--accent-blue); background-color: #ffffff; box-shadow: 0 0 0 4px rgba(59, 156, 212, 0.15); }
+        textarea { resize: vertical; min-height: 120px; }
+        .btn-submit { width: 100%; padding: 15px; background: var(--accent-blue); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 12px rgba(59, 156, 212, 0.2); }
+        .btn-submit:hover { background: var(--accent-blue-hover); box-shadow: 0 6px 16px rgba(59, 156, 212, 0.35); transform: translateY(-2px); }
+
+        /* FOOTER */
+        .site-footer { background-color: var(--primary-navy); border-top: 1px solid #1e3a5f; color: var(--text-gray); padding: 25px 50px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .site-footer a { color: var(--text-gray); text-decoration: none; margin-left: 30px; transition: color 0.3s ease; font-weight: 500; }
+        .site-footer a:hover { color: white; }
+        .footer-links { display: flex; align-items: center; }
+
+        /* MODALS */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 21, 38, 0.6); backdrop-filter: blur(8px); z-index: 10000; display: none; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; animation: fadeInModal 0.3s ease; }
+        .modal-content { background: #fff; padding: 40px; border-radius: 16px; width: 100%; max-width: 500px; position: relative; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25); text-align: center; transform: translateY(20px); animation: slideUpModal 0.3s ease forwards; border: 1px solid #e2e8f0; }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; color: #94a3b8; transition: color 0.3s ease; line-height: 1; }
+        .modal-close:hover { color: #dc2626; }
+        .modal-title { margin-top: 0; color: var(--primary-navy); font-family: 'Poppins', sans-serif; text-transform: uppercase; font-size: 24px; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; margin-bottom: 25px; letter-spacing: 0.5px; }
+        
+        @keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUpModal { from { transform: translateY(20px); } to { transform: translateY(0); } }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) { 
+            .app-header { padding: 15px 20px; flex-wrap: wrap; justify-content: center; gap: 15px; } 
+            .header-actions { display: flex; gap: 10px; width: 100%; justify-content: center; flex-wrap: wrap;}
+            .site-footer { padding: 20px; flex-direction: column; gap: 15px; text-align: center; } 
+            .site-footer a { margin: 0 10px; }
+            .content-container { padding: 30px 20px; } 
+            .app-main { padding-top: 160px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <a href="https://chatbot.a2dsolutions.pl/" class="site-logo">
+            <img src="https://a2dsolutions.pl/wp-content/uploads/2022/11/Logo_horz_white.png" alt="A2D Solutions Logo">
+        </a>
+        
+        <div class="header-actions">
+            <button class="btn-header" onclick="openModal('guideModal')">Trợ Giúp</button>
+            <button class="btn-header" onclick="openModal('contactModal')">Liên Hệ</button>
+
+            <div class="user-menu-wrapper" id="userSettings">
+                <button class="btn-contact" onclick="toggleSettings()">
+                    <i class="fas fa-user" style="margin-right: 5px;"></i> <span>Tài khoản</span>
+                </button>
+                <div class="user-dropdown" id="settingsDropdown">
+                    <div class="menu-item" onclick="window.location.href='https://chatbot.a2dsolutions.pl/'">
+                        <i class="fas fa-sign-out-alt"></i> <span>Quay lại Đăng nhập</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <div class="content-container">
+            <a href="https://chatbot.a2dsolutions.pl/" class="back-btn"><i class="fas fa-arrow-left"></i> Quay lại Trang chủ</a>
+            
+            <h1>CHÍNH SÁCH BẢO MẬT</h1>
+            
+            <p><i>(Nội dung chi tiết của Chính sách bảo mật sẽ được cập nhật tại đây)</i></p>
+            
+            <h2>1. Thu thập dữ liệu</h2>
+            <p>Chúng tôi tôn trọng quyền riêng tư của bạn và cam kết bảo vệ dữ liệu cá nhân của bạn theo tiêu chuẩn cao nhất.</p>
+
+            <h2>2. Sử dụng dữ liệu</h2>
+            <p>Dữ liệu được sử dụng duy nhất cho mục đích cung cấp dịch vụ tốt nhất tới khách hàng của A2D Solutions.</p>
+        </div>
+    </main>
+
+    <footer style="background-color: var(--primary-navy, #0e1c2f); color: white; margin-top: auto; font-family: 'Poppins', sans-serif;">
+        
+        <div style="padding: 40px 20px 30px; max-width: 1200px; margin: 0 auto;">
+            <div style="text-align: center; max-width: 900px; margin: 0 auto; color: var(--text-gray, #a0aec0); font-size: 13px; line-height: 1.6;">
+                Dự án chatbot này được phát triển với mục đích hỗ trợ cộng đồng và hoàn toàn phi lợi nhuận. Mọi thông tin cung cấp bởi chatbot chỉ mang tính tham khảo và không được xem là tư vấn pháp lý chính thức. Ban quản trị không chịu trách nhiệm đối với bất kỳ quyết định hoặc hành động nào dựa trên thông tin do hệ thống cung cấp. Người dùng nên liên hệ trực tiếp với cơ quan chức năng hoặc chuyên gia pháp lý có thẩm quyền để được tư vấn chính xác.
+            </div>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; padding: 20px 50px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 13px;">
+            
+            <div style="color: var(--text-gray, #e2e8f0);">
+                Copyright A2D SOLUTIONS &copy; 2026
+            </div>
+
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 30px;">
+                <li>
+                    <a href="privacy-policy.html" style="color: var(--text-gray, #e2e8f0); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--accent-blue, #3b9cd4)'" onmouseout="this.style.color='var(--text-gray, #e2e8f0)'">Chính sách bảo mật</a>
+                </li>
+                <li>
+                    <a href="rodo.html" style="color: var(--text-gray, #e2e8f0); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--accent-blue, #3b9cd4)'" onmouseout="this.style.color='var(--text-gray, #e2e8f0)'">Chính sách RODO</a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="guideModal">
+        <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-close" onclick="closeModal('guideModal')">&times;</div>
+            <h2 class="modal-title">Trợ giúp & Hướng dẫn</h2>
+            <div style="color: #475569; line-height: 1.6; text-align: left; font-size: 14px;">
+                <h3 style="color: var(--primary-navy); margin-bottom: 8px; font-size: 15px;"><i class="fas fa-user-plus" style="margin-right: 8px; color: var(--accent-blue);"></i>1. Tạo tài khoản mới</h3>
+                <ul style="margin-top: 0; padding-left: 20px; margin-bottom: 20px;">
+                    <li>Chọn <strong>"Khách hàng mới?"</strong>.</li>
+                    <li>Nhập đầy đủ thông tin theo yêu cầu.</li>
+                    <li>Kiểm tra email đã đăng ký và lấy mã xác nhận (code).</li>
+                    <li>Nhập mã xác nhận để hoàn tất quá trình đăng ký.</li>
+                </ul>
+
+                <h3 style="color: var(--primary-navy); margin-bottom: 8px; font-size: 15px;"><i class="fas fa-sign-in-alt" style="margin-right: 8px; color: var(--accent-blue);"></i>2. Đăng nhập / Quên mật khẩu</h3>
+                <ul style="margin-top: 0; padding-left: 20px; margin-bottom: 20px;">
+                    <li>Nhập email và mật khẩu đã đăng ký.</li>
+                    <li>Nếu quên mật khẩu, bấm <strong>"Quên mật khẩu?"</strong> và làm theo hướng dẫn để nhận mã OTP khôi phục.</li>
+                </ul>
+
+                <h3 style="color: var(--primary-navy); margin-bottom: 8px; font-size: 15px;"><i class="fas fa-comment-dots" style="margin-right: 8px; color: var(--accent-blue);"></i>3. Góp ý & Phản hồi</h3>
+                <ul style="margin-top: 0; padding-left: 20px; margin-bottom: 20px;">
+                    <li>Nếu bạn có bất kỳ góp ý phát triển ứng dụng hoặc gặp lỗi trong quá trình sử dụng, vui lòng gửi phản hồi cho chúng tôi qua 
+                        <a href="#" onclick="closeModal('guideModal'); openModal('contactModal'); return false;" style="color: var(--accent-blue); text-decoration: none; font-weight: 600;">mẫu liên hệ</a>.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-content">
+            <div class="modal-close" onclick="closeModal('contactModal')">&times;</div>
+            <h2 class="modal-title">Liên hệ hỗ trợ</h2>
+            <form id="contactForm" onsubmit="handleContactSubmit(event)">
+                <div class="input-group">
+                    <label>Email của bạn</label>
+                    <input type="email" id="contactEmail" placeholder="Nhập email của bạn..." required>
+                </div>
+                <div class="input-group">
+                    <label>Số điện thoại</label>
+                    <input type="tel" id="contactPhone" placeholder="Nhập số điện thoại của bạn..." required>
+                </div>
+                <div class="input-group">
+                    <label>Tin nhắn / Vấn đề gặp phải</label>
+                    <textarea id="contactMessage" placeholder="Mô tả tin nhắn, góp ý hoặc vấn đề của bạn..." required></textarea>
+                </div>
+                <div id="contactFormMessage"></div>
+                <button type="submit" class="btn-submit" id="contactSubmitBtn">Gửi tin nhắn</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        window.toggleSettings = function() { document.getElementById('settingsDropdown').classList.toggle('active'); }
+        window.openModal = function(id) { document.getElementById(id).classList.add('active'); }
+        window.closeModal = function(id) { document.getElementById(id).classList.remove('active'); }
+        
+        document.addEventListener('click', function(event) {
+            if (!document.getElementById('userSettings').contains(event.target)) { 
+                document.getElementById('settingsDropdown').classList.remove('active'); 
+            }
+        });
+    </script>
+</body>
+</html>

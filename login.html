@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A2D Solutions - Dịch vụ toàn diện cho người nước ngoài</title>
+    
+    <link rel="icon" href="https://a2dsolutions.pl/wp-content/uploads/2022/11/cropped-Logo-1-32x32.png" sizes="32x32">
+    <link rel="icon" href="https://a2dsolutions.pl/wp-content/uploads/2022/11/cropped-Logo-1-192x192.png" sizes="192x192">
+    <link rel="apple-touch-icon" href="https://a2dsolutions.pl/wp-content/uploads/2022/11/cropped-Logo-1-180x180.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat@1.1.1/dist/style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <script src="https://accounts.google.com/gsi/client?hl=vi" async defer></script>
+
+    <style>
+        :root {
+            --primary-navy: #102136;       
+            --accent-blue: #3b9cd4;        
+            --accent-blue-hover: #2a7eb5;
+            --text-gray: #a0aec0;          
+            --border-color: #2d3748;
+            --bg-light: #f8fafc;
+            --text-dark: #0f172a;
+
+            /* Override biến màu gốc của thư viện n8n chat */
+            --chat--color-primary: #0b85d1;
+            --chat--message--user--background: #0b85d1;
+            --chat--message--user--color: #ffffff;
+        }
+
+        /* Base & Scrollbar */
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-light); color: var(--text-dark); margin: 0; display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; line-height: 1.6; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-gray); }
+
+        /* HEADER */
+        .app-header { position: fixed; top: 0; left: 0; right: 0; width: 100%; box-sizing: border-box; background-color: var(--primary-navy); padding: 15px 50px; display: flex; justify-content: space-between; align-items: center; z-index: 9999; box-shadow: 0 4px 15px rgba(16, 33, 54, 0.15); transition: all 0.3s ease; }
+        .site-logo { text-decoration: none; display: flex; align-items: center; transition: transform 0.3s ease, opacity 0.3s; flex-shrink: 0; }
+        .site-logo:hover { opacity: 0.9; transform: scale(1.02); }
+        .site-logo img { height: 45px; width: auto; display: block; }
+        
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: white; font-size: 24px; cursor: pointer; padding: 5px; }
+
+        /* BUTTONS */
+        .header-actions { display: flex; align-items: center; gap: 15px; }
+        .btn-header { background-color: transparent; color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 18px; font-size: 13px; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; border-radius: 6px; letter-spacing: 0.5px; font-family: 'Poppins', sans-serif; }
+        .btn-header:hover { background-color: rgba(255,255,255,0.1); border-color: white; transform: translateY(-1px); }
+        .btn-contact { background-color: var(--accent-blue); color: white; border: 1px solid var(--accent-blue); padding: 10px 24px; font-size: 13px; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; border-radius: 6px; letter-spacing: 0.5px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(59, 156, 212, 0.3); font-family: 'Poppins', sans-serif;}
+        .btn-contact:hover { background-color: var(--accent-blue-hover); border-color: var(--accent-blue-hover); transform: translateY(-1px); box-shadow: 0 6px 15px rgba(59, 156, 212, 0.4); }
+
+        /* USER MENU */
+        .user-menu-wrapper { position: relative; display: inline-block; }
+        .user-dropdown { position: absolute; top: 50px; right: 0; width: 220px; background: white; border-radius: 8px; box-shadow: 0 10px 30px rgba(16, 33, 54, 0.15); display: none; overflow: hidden; z-index: 2000; border: 1px solid #e2e8f0; transform: translateY(10px); opacity: 0; transition: all 0.3s ease; }
+        .user-dropdown.active { display: block; transform: translateY(0); opacity: 1; animation: slideDown 0.2s ease forwards; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .menu-item { padding: 14px 20px; display: flex; align-items: center; color: var(--text-dark); cursor: pointer; font-size: 14px; font-weight: 500; transition: background 0.2s ease; font-family: 'Poppins', sans-serif;}
+        .menu-item i { margin-right: 12px; width: 16px; text-align: center; color: var(--accent-blue); }
+        .menu-item:hover { background: #f1f5f9; }
+        .menu-item.danger { color: #ef4444; border-top: 1px solid #e2e8f0; }
+        .menu-item.danger i { color: #ef4444; }
+
+        /* MAIN CONTENT */
+        .app-main { flex: 1; display: flex; justify-content: center; align-items: center; padding: 120px 20px 50px; position: relative; }
+        
+        /* AUTH CARD */
+        .auth-card { background: #ffffff; padding: 45px 40px; border-radius: 12px; box-shadow: 0 20px 40px rgba(16, 33, 54, 0.1); width: 100%; max-width: 440px; border-top: 5px solid var(--accent-blue); border: 1px solid #e2e8f0; }
+        .hidden { display: none !important; }
+        .auth-header-form { text-align: center; margin-bottom: 35px; }
+        .auth-header-form h2 { margin: 0; color: var(--primary-navy); font-family: 'Poppins', sans-serif; font-size: 30px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;}
+        .auth-header-form p { color: #64748b; font-size: 14px; margin-top: 10px; font-weight: 500; }
+        
+        /* DASHBOARD */
+        #dashboard-container { width: 100%; max-width: 1300px; height: 75vh; min-height: 600px; display: none; gap: 25px; }
+        
+        /* Chat Container */
+        #chat-container { flex: 2; height: 100%; background: #ffffff; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(16, 33, 54, 0.2); overflow: hidden; position: relative; border: 1px solid #e2e8f0; }
+        
+        /* Options Wrapper & Panel */
+        #options-wrapper { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            height: 100%; 
+        }
+
+        #options-panel { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px; 
+            width: 100%; 
+            height: 100%; /* Sửa lỗi ở đây: Trả lại chiều cao 100% để lấp đầy khung */
+            flex: 1; /* Đảm bảo nó giãn ra chiếm hết khoảng trống */
+        }
+        
+        /* HIỆU ỨNG FADE-IN CHO CÁC NÚT TÙY CHỌN */
+        @keyframes fadeUpIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .option-tile { 
+            flex: 1; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 10px 30px -10px rgba(16, 33, 54, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s ease; position: relative; text-align: center; overflow: hidden; cursor: pointer; 
+            opacity: 0;
+            animation: fadeUpIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        /* Tạo độ trễ (delay) cho từng nút hiện lên lần lượt */
+        #options-panel .option-tile:nth-child(1) { animation-delay: 0.1s; }
+        #options-panel .option-tile:nth-child(2) { animation-delay: 0.2s; }
+        #options-panel .option-tile:nth-child(3) { animation-delay: 0.3s; }
+        #options-panel .option-tile:nth-child(4) { animation-delay: 0.4s; }
+
+        .option-tile i { font-size: 38px; color: var(--text-gray); margin-bottom: 12px; transition: transform 0.3s ease; }
+        .option-tile span { font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 16px; color: var(--primary-navy); letter-spacing: 0.5px; text-transform: uppercase; }
+        
+        .option-tile:hover:not(.active) { border-color: #cbd5e1; transform: translateY(-3px); box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.1); }
+        .option-tile:hover:not(.active) i { color: var(--accent-blue); }
+
+        .option-tile.active { border-color: var(--accent-blue); background-color: #f0f7ff; box-shadow: 0 0 0 2px rgba(59, 156, 212, 0.2); cursor: default; }
+        .option-tile.active i { color: var(--accent-blue); transform: scale(1.1); }
+        
+        /* ========================================= */
+        /* GIAO DIỆN CHỌN CHỦ ĐỀ BAN ĐẦU (GIỮA MÀN HÌNH) */
+        /* ========================================= */
+
+        #dashboard-container.initial-selection { justify-content: center; align-items: center; position: relative; overflow: hidden; }
+        #dashboard-container.initial-selection #chat-container {
+            display: block;
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Styling cho khối Wrapper và Panel nằm giữa */
+        #dashboard-container.initial-selection #options-wrapper {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: none;
+            height: 100%;
+            padding: 24px;
+            box-sizing: border-box;
+            background: rgba(248, 250, 252, 0.45);
+            backdrop-filter: blur(2px);
+        }
+        #dashboard-container.initial-selection #options-panel {
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            height: auto;
+            flex: unset;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        /* Các nút to ra ở giữa màn hình */
+        #dashboard-container.initial-selection .option-tile {
+            flex: 0 0 calc(50% - 25px);
+            height: 180px;
+            background: rgba(255, 255, 255, 0.82);
+            border-color: rgba(203, 213, 225, 0.9);
+        }
+
+        /* Tiêu đề "Bạn cần hỗ trợ..." */
+        .options-title {
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--primary-navy);
+            margin-top: 0;
+            margin-bottom: 25px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            opacity: 0;
+            animation: fadeUpIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            width: 100%;
+        }
+
+        /* Ẩn tiêu đề khi chuyển sang giao diện Sidebar (khung chat) để không tốn diện tích */
+        #dashboard-container:not(.initial-selection) .options-title {
+            display: none;
+        }
+
+        /* ANIMATION CHUYỂN ĐỔI LAYOUT */
+        @keyframes fadeOutCenter {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.9); }
+        }
+        .fade-out-anim { animation: fadeOutCenter 0.4s ease forwards !important; }
+
+        @keyframes fadeInSidebar {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .fade-in-layout { animation: fadeInSidebar 0.6s ease forwards; }
+
+        /* FORM INPUTS */
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--primary-navy); text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .input-group input, .input-group textarea { width: 100%; padding: 14px 16px; border: 1px solid #cbd5e1; border-radius: 8px; box-sizing: border-box; outline: none; transition: all 0.3s ease; font-family: 'Poppins', sans-serif; color: var(--text-dark); background-color: #f8fafc; font-size: 14px; }
+        .input-group input:focus, .input-group textarea:focus { border-color: var(--accent-blue); background-color: #ffffff; box-shadow: 0 0 0 4px rgba(59, 156, 212, 0.15); }
+        .input-group textarea { resize: vertical; min-height: 120px; }
+        
+        .btn-submit { width: 100%; padding: 15px; background: var(--accent-blue); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 4px 12px rgba(59, 156, 212, 0.2); font-family: 'Poppins', sans-serif;}
+        .btn-submit:hover { background: var(--accent-blue-hover); box-shadow: 0 6px 16px rgba(59, 156, 212, 0.35); transform: translateY(-2px); }
+        .btn-submit:disabled { background: #94a3b8; cursor: not-allowed; transform: none; box-shadow: none; }
+        
+        /* SOCIAL AUTH & GUEST BUTTONS */
+        .social-auth-group { margin-top: 20px; text-align: center; }
+        .auth-divider { display: flex; align-items: center; text-align: center; margin: 20px 0; color: #94a3b8; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+        .auth-divider::before, .auth-divider::after { content: ''; flex: 1; border-bottom: 1px solid #e2e8f0; }
+        .auth-divider span { padding: 0 15px; }
+        
+        .btn-social { width: 100%; padding: 14px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px; font-family: 'Poppins', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .btn-guest { 
+            background: #ffffff !important; 
+            color: #3c4043 !important; 
+            border: 1px solid #dadce0 !important; 
+            width: 100% !important;
+            max-width: 360px !important; 
+            height: 40px !important;     
+            margin: 0 auto 12px auto !important; 
+            padding: 0 14px !important; 
+            border-radius: 4px !important; 
+            font-weight: 500 !important; 
+            text-transform: none !important; 
+            letter-spacing: 0.25px !important;
+            box-shadow: none !important;
+        }
+        .btn-guest:hover { 
+            background: #f8faff !important; 
+            border-color: #d2e3fc !important; 
+            transform: none !important; 
+            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15) !important; 
+        }
+        .btn-guest i { color: #5f6368 !important; font-size: 18px !important; }
+
+        .switch-mode { text-align: center; margin-top: 25px; font-size: 14px; cursor: pointer; color: #64748b; transition: color 0.3s; }
+        .switch-mode span { color: var(--accent-blue); font-weight: 600; transition: color 0.3s; }
+        .switch-mode:hover span { color: var(--primary-navy); text-decoration: underline; }
+        
+        .forgot-link { text-align: right; margin-top: -10px; margin-bottom: 20px; }
+        .forgot-link a { font-size: 13px; color: var(--accent-blue); text-decoration: none; font-weight: 600; transition: color 0.3s; }
+        .forgot-link a:hover { color: var(--primary-navy); text-decoration: underline; }
+
+        .error { color: #dc2626; text-align: center; margin-top: 15px; font-size: 13px; background: #fef2f2; padding: 12px; border-radius: 6px; border: 1px solid #fecaca; font-weight: 500;}
+        .success { color: #059669; text-align: center; margin-top: 15px; font-size: 13px; background: #ecfdf5; padding: 12px; border-radius: 6px; border: 1px solid #a7f3d0; font-weight: 500;}
+        
+        .gdpr-checkbox { font-size: 13px; margin-bottom: 20px; display: flex; align-items: flex-start; color: #475569; }
+        .gdpr-checkbox input { width: auto; margin-right: 12px; margin-top: 3px; cursor: pointer; transform: scale(1.1); }
+        .gdpr-checkbox label { cursor: pointer; line-height: 1.5; }
+
+        /* FOOTER */
+        .site-footer { background-color: var(--primary-navy); border-top: 1px solid #1e3a5f; color: var(--text-gray); padding: 25px 50px; font-size: 14px; display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .site-footer a { color: var(--text-gray); text-decoration: none; margin-left: 30px; transition: color 0.3s ease; font-weight: 500; }
+        .site-footer a:hover { color: white; }
+        .footer-links { display: flex; align-items: center; }
+
+        /* MODALS */
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(10, 21, 38, 0.6); backdrop-filter: blur(8px); z-index: 10000; display: none; justify-content: center; align-items: center; }
+        .modal-overlay.active { display: flex; animation: fadeInModal 0.3s ease; }
+        .modal-content { background: #fff; padding: 40px; border-radius: 16px; width: 100%; max-width: 500px; position: relative; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25); text-align: center; transform: translateY(20px); animation: slideUpModal 0.3s ease forwards; border: 1px solid #e2e8f0; }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; color: #94a3b8; transition: color 0.3s ease; line-height: 1; }
+        .modal-close:hover { color: #dc2626; }
+        .modal-title { margin-top: 0; color: var(--primary-navy); font-family: 'Poppins', sans-serif; text-transform: uppercase; font-size: 26px; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; margin-bottom: 25px; letter-spacing: 0.5px; font-weight: 700;}
+        
+        @keyframes fadeInModal { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUpModal { from { transform: translateY(20px); } to { transform: translateY(0); } }
+
+        /* RESPONSIVE MENU MOBILE */
+        @media (max-width: 768px) { 
+            .app-header { padding: 12px 15px; flex-wrap: nowrap; justify-content: space-between; } 
+            .site-logo { max-width: 75%; overflow: hidden; }
+            .site-logo img { height: auto; max-height: 32px; max-width: 100%; object-fit: contain; }
+            .mobile-menu-btn { display: block; margin-left: 10px; }
+            .header-actions { display: none; position: absolute; top: 100%; left: 0; width: 100%; background-color: var(--primary-navy); flex-direction: column; padding: 15px 20px; box-sizing: border-box; box-shadow: 0 10px 20px rgba(0,0,0,0.2); border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000;}
+            .header-actions.show { display: flex; gap: 15px; }
+            .btn-header, .btn-contact { width: 100%; justify-content: center; }
+            .user-menu-wrapper { width: 100%; }
+            .user-dropdown { position: static; width: 100%; transform: none; margin-top: 10px; box-sizing: border-box; }
+            .site-footer { padding: 20px; flex-direction: column; gap: 15px; text-align: center; } 
+            .site-footer a { margin: 0 10px; }
+            .auth-card { padding: 30px 20px; margin: auto; }
+            
+            .app-main { padding-top: 90px; padding-bottom: 20px; display: flex; flex-direction: column; height: auto; min-height: calc(100vh - 120px); }
+            #dashboard-container { flex-direction: column; height: 100%; min-height: 78vh; flex: 1; gap: 10px;}
+            
+            /* Tùy chỉnh Layout cho Mobile khi người dùng đã chọn chủ đề (dạng thanh trượt) */
+            #options-wrapper { flex: 0 0 auto; order: -1; margin-bottom: 5px; justify-content: flex-start; height: auto;}
+            #options-panel { flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; padding-bottom: 5px; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; height: auto; }
+            #options-panel::-webkit-scrollbar { display: none; }
+            .option-tile { flex: 0 0 140px; height: 100px; padding: 15px 10px; scroll-snap-align: start; margin-right: 15px; justify-content: center; }
+            .option-tile:last-child { margin-right: 0; }
+            .option-tile i { font-size: 26px; margin-bottom: 6px; }
+            .option-tile span { font-size: 13px; }
+            
+            /* Tùy chỉnh Layout cho Mobile lúc ban đầu (chưa chọn - xếp dọc) */
+            #dashboard-container.initial-selection #chat-container {
+                inset: 0;
+                height: 100% !important;
+                min-height: 100% !important;
+                border-radius: 12px;
+            }
+            #dashboard-container.initial-selection #options-wrapper {
+                justify-content: flex-start;
+                padding: 14px 12px 16px;
+                border-radius: 12px;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                background: rgba(248, 250, 252, 0.58);
+                backdrop-filter: blur(4px);
+            }
+            #dashboard-container.initial-selection .options-title {
+                font-size: 15px;
+                margin: 2px 0 12px;
+                text-align: center;
+                padding-left: 0;
+                letter-spacing: 0.3px;
+            }
+            #dashboard-container.initial-selection #options-panel {
+                flex-direction: column;
+                overflow: visible;
+                padding: 0;
+                gap: 12px;
+                width: 100%;
+                max-width: 460px;
+            }
+            #dashboard-container.initial-selection .option-tile {
+                flex: 0 0 auto;
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 0;
+                min-height: 96px;
+                height: 96px;
+                padding: 12px 10px;
+                border-radius: 14px;
+                background: rgba(255, 255, 255, 0.9);
+            }
+            #dashboard-container.initial-selection .option-tile i { font-size: 24px; margin-bottom: 6px; }
+            #dashboard-container.initial-selection .option-tile span { font-size: 15px; }
+
+            .options-title { font-size: 16px; margin-bottom: 15px; text-align: left; padding-left: 5px; }
+
+            #chat-container { flex: 1 1 auto; min-height: 60vh; height: auto; }
+        }
+
+        .chat-message.chat-message-from-user,
+        .chat-message.chat-message-from-user .chat-message-markdown { border-radius: 32px 6px 32px 32px !important; }
+        .chat-message.chat-message-from-bot,
+        .chat-message.chat-message-from-bot .chat-message-markdown { border-radius: 6px 32px 32px 32px !important; }
+        .chat-message.chat-message-from-user::before, .chat-message.chat-message-from-user::after,
+        .chat-message.chat-message-from-bot::before, .chat-message.chat-message-from-bot::after { display: none !important; }
+        .chat-message.chat-message-from-user, .chat-message.chat-message-from-bot { overflow: hidden !important; padding: 10px 16px !important; }
+
+        /* ========================================= */
+        /* CSS TÙY CHỈNH N8N CHAT WIDGET (ĐÃ FIX LỖI)*/
+        /* ========================================= */
+
+        #chat-container div[class*="header"] {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            text-align: center !important;
+        }
+
+        #chat-container div[class*="header"] h1, 
+        #chat-container div[class*="header"] p,
+        #chat-container [class*="title"], 
+        #chat-container [class*="subtitle"] {
+            text-align: center !important;
+            width: 100% !important;
+            display: block !important;
+        }
+
+        @media (max-width: 768px) {
+            #chat-container {
+                height: 82vh !important;
+                min-height: unset !important;
+                border-radius: 8px;
+                display: flex;
+                flex-direction: column;
+            }
+
+            #chat-container div[class*="header"] h1, 
+            #chat-container [class*="title"] {
+                font-size: 18px !important; 
+                margin-bottom: 6px !important;
+            }
+
+            #chat-container div[class*="header"] p, 
+            #chat-container [class*="subtitle"] {
+                font-size: 13px !important;
+                line-height: 1.4 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="app-header" id="mainHeader">
+        <a href="https://chatbot.a2dsolutions.pl/" class="site-logo">
+            <img src="https://a2dsolutions.pl/wp-content/uploads/2022/11/Logo_horz_white.png" alt="A2D Solutions Logo">
+        </a>
+        
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="header-actions" id="headerActions">
+            <button class="btn-header" onclick="openModal('guideModal')">Trợ Giúp</button>
+            <button class="btn-header" onclick="openModal('contactModal')">Liên Hệ</button>
+
+            <div class="user-menu-wrapper" id="userSettings" style="display: none;">
+                <button class="btn-contact" onclick="toggleSettings()">
+                    <i class="fas fa-user" style="margin-right: 5px;"></i> <span>Tài khoản của tôi</span>
+                </button>
+                <div class="user-dropdown" id="settingsDropdown">
+                    <div class="menu-item" style="cursor: default; font-weight: bold; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
+                        <span id="userEmailDisplay" style="word-break: break-all; color: var(--primary-navy);">Người dùng</span>
+                    </div>
+                    <div class="menu-item" onclick="handleLogout()">
+                        <i class="fas fa-sign-out-alt"></i> <span>Đăng xuất</span>
+                    </div>
+                    <div class="menu-item danger" onclick="requestDeleteAccount()">
+                        <i class="fas fa-trash-alt"></i> <span>Xóa tài khoản</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <div id="dashboard-container" class="initial-selection" style="display: none;">
+            <div id="chat-container"></div>
+            
+            <div id="options-wrapper">
+                <h3 class="options-title">Bạn cần hỗ trợ về vấn đề gì?</h3>
+                <div id="options-panel">
+                    <div class="option-tile" onclick="selectOption(this, 'Cư trú')">
+                        <i class="fas fa-id-card"></i>
+                        <span>CƯ TRÚ</span>
+                    </div>
+                    <div class="option-tile" onclick="selectOption(this, 'Lao động')">
+                        <i class="fas fa-briefcase"></i>
+                        <span>LAO ĐỘNG</span>
+                    </div>
+                    <div class="option-tile" onclick="selectOption(this, 'Thuế')">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span>THUẾ</span>
+                    </div>
+                    <div class="option-tile" onclick="selectOption(this, 'Bảo hiểm')">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>BẢO HIỂM (ZUS)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="auth-card" id="authCard">
+            <div class="auth-header-form">
+                <h2 id="formTitle">ĐĂNG NHẬP TRỢ LÝ AI</h2>
+                <p id="formDesc">Chào mừng đến với dự án cộng đồng của A2D Solutions</p>
+            </div>
+            <form id="authForm" onsubmit="handleSubmit(event)">
+                
+                <div class="input-group" id="groupEmail">
+                    <label>Địa chỉ Email</label>
+                    <input type="email" id="email" placeholder="vidu@gmail.com" required>
+                </div>
+
+                <div class="input-group" id="groupPassword">
+                    <label id="labelPassword">Mật khẩu</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+
+                <div class="forgot-link" id="groupForgotLink">
+                    <a href="#" onclick="changeAuthMode('forgot_request'); return false;">Quên mật khẩu?</a>
+                </div>
+
+                <div class="input-group hidden" id="groupConfirmPassword">
+                    <label id="labelConfirmPassword">Xác nhận mật khẩu</label>
+                    <input type="password" id="confirmPassword" placeholder="••••••••">
+                </div>
+                
+                <div id="gdprGroup" class="gdpr-checkbox hidden">
+                    <input type="checkbox" id="gdprConsent">
+                    <label for="gdprConsent">Tôi đồng ý với <a href="privacy-policy.html" style="color: var(--accent-blue); text-decoration: none; font-weight: 500;">Điều khoản & Điều kiện</a></label>
+                </div>
+
+                <div id="otpGroup" class="hidden">
+                    <div class="input-group">
+                        <label>Mã OTP 6 số (Đã gửi tới email)</label>
+                        <input type="text" id="otpInput" maxlength="6" style="text-align:center; letter-spacing: 12px; font-size: 24px; font-weight: bold;">
+                    </div>
+                </div>
+
+                <div id="message"></div>
+                <button type="submit" class="btn-submit" id="submitBtn" style="margin-top: 10px;">Đăng nhập</button>
+            </form>
+            
+            <div id="socialAuthGroup" class="social-auth-group">
+                <div class="auth-divider">
+                    <span>Hoặc</span>
+                </div>
+                
+                <div id="googleButtonContainer" style="display: flex; justify-content: center; width: 100%; margin-bottom: 12px;"></div>
+                
+                <button type="button" class="btn-social btn-guest" onclick="handleGuestLogin()">
+                    <i class="fas fa-user-secret"></i>
+                    Tham gia dưới dạng Khách
+                </button>
+            </div>
+            
+            <div class="switch-mode" id="switchModeGroup">
+            </div>
+        </div>
+    </main>
+
+    <footer style="background-color: var(--primary-navy, #0e1c2f); color: white; margin-top: auto; font-family: 'Inter', sans-serif;">
+        <div style="padding: 40px 20px 30px; max-width: 1200px; margin: 0 auto;">
+            <div style="text-align: center; max-width: 900px; margin: 0 auto; color: var(--text-gray, #a0aec0); font-size: 0.85rem; line-height: 1.6;">
+                Dự án chatbot này được phát triển với mục đích hỗ trợ cộng đồng và hoàn toàn phi lợi nhuận. Mọi thông tin cung cấp bởi chatbot chỉ mang tính tham khảo và không được xem là tư vấn pháp lý chính thức. Ban quản trị không chịu trách nhiệm đối với bất kỳ quyết định hoặc hành động nào dựa trên thông tin do hệ thống cung cấp. Người dùng nên liên hệ trực tiếp với cơ quan chức năng hoặc chuyên gia pháp lý có thẩm quyền để được tư vấn chính xác.
+            </div>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; padding: 20px 50px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem;">
+            <div style="color: var(--text-gray, #e2e8f0);">
+                Copyright A2D SOLUTIONS &copy; 2026
+            </div>
+
+            <ul style="list-style: none; padding: 0; margin: 0; display: flex; gap: 30px;">
+                <li>
+                    <a href="privacy-policy.html" style="color: var(--text-gray, #e2e8f0); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--accent-blue, #3b9cd4)'" onmouseout="this.style.color='var(--text-gray, #e2e8f0)'">Chính sách bảo mật</a>
+                </li>
+                <li>
+                    <a href="rodo.html" style="color: var(--text-gray, #e2e8f0); text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='var(--accent-blue, #3b9cd4)'" onmouseout="this.style.color='var(--text-gray, #e2e8f0)'">Chính sách RODO</a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="guideModal">
+        <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
+            <div class="modal-close" onclick="closeModal('guideModal')">&times;</div>
+            <h2 class="modal-title">Trợ giúp & Hướng dẫn</h2>
+            <div style="color: #475569; line-height: 1.6; text-align: left; font-size: 15px;">
+                <h3 style="color: var(--primary-navy); margin-bottom: 8px; font-size: 16px;"><i class="fas fa-user-plus" style="margin-right: 8px; color: var(--accent-blue);"></i>1. Tạo tài khoản mới</h3>
+                <ul style="margin-top: 0; padding-left: 20px; margin-bottom: 20px;">
+                    <li>Chọn <strong>"Khách hàng mới?"</strong>.</li>
+                    <li>Nhập đầy đủ thông tin theo yêu cầu.</li>
+                    <li>Kiểm tra email đã đăng ký và lấy mã xác nhận (code).</li>
+                    <li>Nhập mã xác nhận để hoàn tất quá trình đăng ký.</li>
+                </ul>
+
+                <h3 style="color: var(--primary-navy); margin-bottom: 8px; font-size: 16px;"><i class="fas fa-sign-in-alt" style="margin-right: 8px; color: var(--accent-blue);"></i>2. Đăng nhập / Quên mật khẩu</h3>
+                <ul style="margin-top: 0; padding-left: 20px; margin-bottom: 20px;">
+                    <li>Nhập email và mật khẩu đã đăng ký.</li>
+                    <li>Nếu quên mật khẩu, bấm <strong>"Quên mật khẩu?"</strong> và làm theo hướng dẫn để nhận mã OTP khôi phục.</li>
+                </ul>
+
+                <h3 style="color: var(--primary-navy); margin-bottom: 8px; font-size: 16px;"><i class="fas fa-comment-dots" style="margin-right: 8px; color: var(--accent-blue);"></i>3. Góp ý & Phản hồi</h3>
+                <ul style="margin-top: 0; padding-left: 20px; margin-bottom: 20px;">
+                    <li>Nếu bạn có bất kỳ góp ý phát triển ứng dụng hoặc gặp lỗi trong quá trình sử dụng, vui lòng gửi phản hồi cho chúng tôi qua 
+                        <a href="#" onclick="closeModal('guideModal'); openModal('contactModal'); return false;" style="color: var(--accent-blue); text-decoration: none; font-weight: 600;">mẫu liên hệ</a>.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="contactModal">
+        <div class="modal-content">
+            <div class="modal-close" onclick="closeModal('contactModal')">&times;</div>
+            <h2 class="modal-title">Liên hệ hỗ trợ</h2>
+            <form id="contactForm" onsubmit="handleContactSubmit(event)">
+                <div class="input-group">
+                    <label>Email của bạn</label>
+                    <input type="email" id="contactEmail" placeholder="Nhập email của bạn..." required>
+                </div>
+                <div class="input-group">
+                    <label>Số điện thoại</label>
+                    <input type="tel" id="contactPhone" placeholder="Nhập số điện thoại của bạn..." required>
+                </div>
+                <div class="input-group">
+                    <label>Tin nhắn / Vấn đề gặp phải</label>
+                    <textarea id="contactMessage" placeholder="Mô tả tin nhắn, góp ý hoặc vấn đề của bạn..." required></textarea>
+                </div>
+                <div id="contactFormMessage"></div>
+                <button type="submit" class="btn-submit" id="contactSubmitBtn">Gửi tin nhắn</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat@1.1.1/dist/chat.bundle.es.js';
+
+        const PROXY_URL = "https://a2d-chat-proxy.minh-truong-472.workers.dev/";
+
+        const URL_CHAT = PROXY_URL + "/chat";
+        const URL_DELETE = PROXY_URL + "/delete";
+        const URL_CONTACT_WEBHOOK = PROXY_URL + "/contact";
+        const URL_GOOGLE_LOGIN = PROXY_URL + "/google-login";
+        const URL_LOGIN = PROXY_URL + "/login";
+        const URL_SIGNUP = PROXY_URL + "/signup";
+        const URL_VERIFY = PROXY_URL + "/verify";
+        const URL_FORGOT_PASSWORD_REQUEST = PROXY_URL + "/forgot-password-request";
+        const URL_FORGOT_PASSWORD_RESET = PROXY_URL + "/forgot-password-reset";
+        const URL_PROBLEM_STATUS_RESIDENCY = PROXY_URL + "/problem-status-residency";
+        const URL_PROBLEM_STATUS_LABOR = PROXY_URL + "/problem-status-labor";
+        const URL_PROBLEM_STATUS_TAX = PROXY_URL + "/problem-status-tax";
+        const URL_PROBLEM_STATUS_INSURANCE = PROXY_URL + "/problem-status-insurance";
+
+        window.authMode = 'login'; 
+        window.currentAppLanguage = 'vn';
+        window.userProblem_Status = null;
+
+        const MAX_GUEST_MESSAGES = 5; 
+        
+        const originalFetch = window.fetch;
+        window.fetch = async function(...args) {
+            const [resource, config] = args;
+            const url = typeof resource === 'string' ? resource : resource.url;
+
+            if (url && url.includes(URL_CHAT) && config && config.method === 'POST') {
+                if (window.userEmail && window.userEmail.includes('@a2d-guest.local')) {
+                    let currentCount = parseInt(localStorage.getItem('a2d_guest_msg_count') || '0');
+                    
+                    if (currentCount >= MAX_GUEST_MESSAGES) {
+                        alert(`Bạn đã đạt giới hạn dùng thử miễn phí (${MAX_GUEST_MESSAGES} tin nhắn).\n\nVui lòng đăng nhập hoặc tạo tài khoản để tiếp tục sử dụng dịch vụ!`);
+                        localStorage.setItem('a2d_guest_blocked', 'true');
+                        window.handleLogout(); 
+                        return Promise.reject(new Error("Guest limit reached")); 
+                    }
+                    
+                    localStorage.setItem('a2d_guest_msg_count', currentCount + 1);
+                }
+            }
+            return originalFetch.apply(this, args);
+        };
+
+        window.checkGuestBlockStatus = function() {
+            const isBlocked = localStorage.getItem('a2d_guest_blocked') === 'true';
+            const guestBtn = document.querySelector('.btn-guest');
+            
+            if (isBlocked && guestBtn) {
+                guestBtn.disabled = true;
+                guestBtn.style.opacity = '0.5';
+                guestBtn.style.cursor = 'not-allowed';
+                guestBtn.style.pointerEvents = 'none'; 
+                guestBtn.innerHTML = '<i class="fas fa-lock"></i> Đã hết lượt dùng Khách';
+            }
+        };
+
+        window.destroyChatWidget = function() {
+            const chatContainer = document.getElementById('chat-container');
+            if (chatContainer) {
+                chatContainer.innerHTML = ''; 
+            }
+            
+            const keysToRemove = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && (key.includes('n8n-chat') || key.includes('chat-session'))) {
+                    keysToRemove.push(key);
+                }
+            }
+            keysToRemove.forEach(k => localStorage.removeItem(k));
+        };
+
+        window.handleLogout = function() {
+            window.destroyChatWidget(); 
+            location.reload();          
+        };
+
+        window.toggleSettings = function() { document.getElementById('settingsDropdown').classList.toggle('active'); }
+        window.toggleMobileMenu = function() { document.getElementById('headerActions').classList.toggle('show'); }
+        document.addEventListener('click', function(event) { if (!document.getElementById('userSettings').contains(event.target)) { document.getElementById('settingsDropdown').classList.remove('active'); } });
+        
+        window.openModal = function(id) { 
+            document.getElementById(id).classList.add('active'); 
+            
+            if (id === 'contactModal') {
+                const msgBox = document.getElementById('contactFormMessage');
+                if (msgBox) {
+                    msgBox.innerText = '';
+                    msgBox.className = '';
+                }
+                document.getElementById('contactForm').reset(); 
+            }
+        }
+        
+        window.closeModal = function(id) { document.getElementById(id).classList.remove('active'); }
+
+        const OPTION_PROBLEM_STATUS_CONFIG = {
+            'Thuế': { defaultStatus: 1, webhookUrl: URL_PROBLEM_STATUS_TAX },
+            'Cư trú': { defaultStatus: 2, webhookUrl: URL_PROBLEM_STATUS_RESIDENCY },
+            'Bảo hiểm': { defaultStatus: 3, webhookUrl: URL_PROBLEM_STATUS_INSURANCE },
+            'Lao động': { defaultStatus: 4, webhookUrl: URL_PROBLEM_STATUS_LABOR }
+        };
+
+        window.syncProblemStatus = async function(optionName) {
+            const config = OPTION_PROBLEM_STATUS_CONFIG[optionName];
+            if (!config) return;
+
+            const fallbackStatus = config.defaultStatus;
+            const payload = {
+                email: window.userEmail || "",
+                Thread_ID: window.userThread_ID || "",
+                Created_at: window.userCreated_at || "",
+                Problem_Status: fallbackStatus,
+                optionName
+            };
+
+            try {
+                const res = await fetch(config.webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) throw new Error(`Status ${res.status}`);
+
+                let data = {};
+                try { data = await res.json(); } catch (e) { data = {}; }
+
+                const parsedStatus = Number(data.Problem_Status ?? data.problemStatus);
+                window.userProblem_Status = (parsedStatus >= 1 && parsedStatus <= 4) ? parsedStatus : fallbackStatus;
+            } catch (error) {
+                window.userProblem_Status = fallbackStatus;
+                console.error('Không thể cập nhật Problem_Status qua webhook:', error);
+            }
+        }
+
+        // ==========================================
+        // HÀM CLICK CHỌN CHỦ ĐỀ MỚI (CHỨA ANIMATION)
+        // ==========================================
+        window.selectOption = function(element, optionName) {
+            if (element.classList.contains('active')) return; 
+
+            if (element.classList.contains('disabled')) {
+                alert('Tính năng ' + optionName + ' đang được phát triển. Vui lòng quay lại sau!');
+                return;
+            }
+
+            const dashboard = document.getElementById('dashboard-container');
+            const optionsWrapper = document.getElementById('options-wrapper'); 
+
+            // 1. Xóa in đậm tất cả các nút, và in đậm nút vừa được click
+            const allTiles = document.querySelectorAll('.option-tile');
+            allTiles.forEach(tile => tile.classList.remove('active'));
+            element.classList.add('active');
+            
+            console.log("Đã chuyển sang mục tư vấn:", optionName);
+            window.syncProblemStatus(optionName);
+
+            // 2. KIỂM TRA: Nếu đang ở màn hình chọn ban đầu giữa màn hình
+            if (dashboard.classList.contains('initial-selection')) {
+                
+                // Kích hoạt hiệu ứng Fade-out cho CẢ BỘ nút và dòng tiêu đề
+                optionsWrapper.classList.add('fade-out-anim');
+                
+                // Đợi 0.4 giây (bằng thời gian chạy animation Fade-out ở CSS)
+                setTimeout(() => {
+                    // Xóa class trạng thái ban đầu (Hệ thống sẽ tự hiện Chat và đẩy nút về Sidebar)
+                    dashboard.classList.remove('initial-selection');
+                    optionsWrapper.classList.remove('fade-out-anim');
+                    
+                    // Kích hoạt hiệu ứng Fade-in cho toàn bộ giao diện mới
+                    dashboard.classList.add('fade-in-layout');
+                    
+                }, 400); 
+            }
+        }
+
+        window.changeAuthMode = function(mode) {
+            window.destroyChatWidget();
+            window.authMode = mode;
+            
+            const formTitle = document.getElementById('formTitle');
+            const formDesc = document.getElementById('formDesc');
+            const groupEmail = document.getElementById('groupEmail');
+            const groupPassword = document.getElementById('groupPassword');
+            const groupConfirmPassword = document.getElementById('groupConfirmPassword');
+            const labelPassword = document.getElementById('labelPassword');
+            const labelConfirmPassword = document.getElementById('labelConfirmPassword');
+            const groupForgotLink = document.getElementById('groupForgotLink');
+            const gdprGroup = document.getElementById('gdprGroup');
+            const otpGroup = document.getElementById('otpGroup');
+            const submitBtn = document.getElementById('submitBtn');
+            const switchModeGroup = document.getElementById('switchModeGroup');
+            const socialAuthGroup = document.getElementById('socialAuthGroup');
+            const msg = document.getElementById('message');
+            
+            msg.innerText = '';
+            msg.className = '';
+            document.getElementById('email').required = false;
+            document.getElementById('password').required = false;
+            document.getElementById('confirmPassword').required = false;
+            document.getElementById('gdprConsent').required = false;
+            document.getElementById('otpInput').required = false;
+
+            if (mode === 'login') {
+                formTitle.innerText = "ĐĂNG NHẬP TRỢ LÝ AI";
+                formDesc.innerText = "Chào mừng đến với dự án cộng đồng của A2D Solutions";
+                groupEmail.classList.remove('hidden'); groupPassword.classList.remove('hidden'); groupForgotLink.classList.remove('hidden');
+                groupConfirmPassword.classList.add('hidden'); gdprGroup.classList.add('hidden'); otpGroup.classList.add('hidden');
+                
+                document.getElementById('email').required = true; document.getElementById('password').required = true;
+                labelPassword.innerText = "Mật khẩu"; submitBtn.innerText = "Đăng nhập";
+                switchModeGroup.innerHTML = '<span onclick="changeAuthMode(\'signup\')">Khách hàng mới? <span>Bấm vào đây để đăng ký</span></span>';
+                if(socialAuthGroup) socialAuthGroup.classList.remove('hidden');
+            } 
+            else if (mode === 'signup') {
+                formTitle.innerText = "TẠO TÀI KHOẢN";
+                formDesc.innerText = "Tham gia dự án cộng đồng của A2D Solutions";
+                groupEmail.classList.remove('hidden'); groupPassword.classList.remove('hidden'); groupConfirmPassword.classList.remove('hidden'); gdprGroup.classList.remove('hidden');
+                groupForgotLink.classList.add('hidden'); otpGroup.classList.add('hidden');
+                
+                document.getElementById('email').required = true; document.getElementById('password').required = true; document.getElementById('confirmPassword').required = true; document.getElementById('gdprConsent').required = true;
+                labelPassword.innerText = "Mật khẩu"; labelConfirmPassword.innerText = "Xác nhận mật khẩu";
+                submitBtn.innerText = "Đăng ký ngay";
+                switchModeGroup.innerHTML = '<span onclick="changeAuthMode(\'login\')">Đã có tài khoản? <span>Đăng nhập tại đây</span></span>';
+                if(socialAuthGroup) socialAuthGroup.classList.remove('hidden');
+            }
+            else if (mode === 'verify_signup') {
+                formTitle.innerText = "XÁC THỰC EMAIL";
+                formDesc.innerText = "Nhập mã OTP 6 số đã được gửi tới email của bạn";
+                otpGroup.classList.remove('hidden');
+                groupEmail.classList.add('hidden'); groupPassword.classList.add('hidden'); groupConfirmPassword.classList.add('hidden'); groupForgotLink.classList.add('hidden'); gdprGroup.classList.add('hidden');
+                
+                document.getElementById('otpInput').required = true; submitBtn.innerText = "Xác thực OTP";
+                switchModeGroup.innerHTML = '<span onclick="changeAuthMode(\'login\')">Quay lại <span>Đăng nhập</span></span>';
+                if(socialAuthGroup) socialAuthGroup.classList.add('hidden');
+            }
+            else if (mode === 'forgot_request') {
+                formTitle.innerText = "QUÊN MẬT KHẨU";
+                formDesc.innerText = "Nhập email của bạn để nhận mã khôi phục";
+                groupEmail.classList.remove('hidden');
+                groupPassword.classList.add('hidden'); groupConfirmPassword.classList.add('hidden'); groupForgotLink.classList.add('hidden'); gdprGroup.classList.add('hidden'); otpGroup.classList.add('hidden');
+                
+                document.getElementById('email').required = true; submitBtn.innerText = "Gửi mã khôi phục";
+                switchModeGroup.innerHTML = '<span onclick="changeAuthMode(\'login\')">Quay lại <span>Đăng nhập</span></span>';
+                if(socialAuthGroup) socialAuthGroup.classList.add('hidden');
+            }
+            else if (mode === 'forgot_reset') {
+                formTitle.innerText = "ĐẶT LẠI MẬT KHẨU";
+                formDesc.innerText = "Nhập mã OTP từ email và mật khẩu mới của bạn";
+                otpGroup.classList.remove('hidden'); groupPassword.classList.remove('hidden'); groupConfirmPassword.classList.remove('hidden');
+                groupEmail.classList.add('hidden'); groupForgotLink.classList.add('hidden'); gdprGroup.classList.add('hidden');
+                
+                document.getElementById('otpInput').required = true; document.getElementById('password').required = true; document.getElementById('confirmPassword').required = true;
+                labelPassword.innerText = "Mật khẩu mới"; labelConfirmPassword.innerText = "Xác nhận mật khẩu mới";
+                submitBtn.innerText = "Đổi mật khẩu";
+                switchModeGroup.innerHTML = '<span onclick="changeAuthMode(\'login\')">Hủy và quay lại <span>Đăng nhập</span></span>';
+                if(socialAuthGroup) socialAuthGroup.classList.add('hidden');
+            }
+            
+            window.checkGuestBlockStatus();
+        }
+
+        window.changeAuthMode('login');
+
+        window.handleSubmit = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const otp = document.getElementById('otpInput').value.trim();
+            const msg = document.getElementById('message');
+            const btn = document.getElementById('submitBtn');
+
+            msg.innerText = ''; btn.innerText = "Đang xử lý..."; btn.disabled = true;
+
+            try {
+                if (window.authMode === 'login') {
+                    const res = await fetch(URL_LOGIN, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, password}) });
+                    const data = await res.json();
+                    if (data.status === 'success') { loginSuccess(email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt, data.Problem_Status || data.problemStatus); } else throw new Error(data.message || "Tài khoản hoặc mật khẩu không đúng.");
+                } 
+                else if (window.authMode === 'signup') {
+                    if (password !== confirmPassword) throw new Error("Mật khẩu không khớp!");
+                    const res = await fetch(URL_SIGNUP, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, password}) });
+                    const data = await res.json();
+                    if (data.status === 'success') { loginSuccess(email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt, data.Problem_Status || data.problemStatus); } else if (data.status === 'pending_verification') { window.changeAuthMode('verify_signup'); document.getElementById('message').className = "success"; document.getElementById('message').innerText = "Đã gửi mã OTP đăng ký đến email của bạn!"; } else throw new Error(data.message || "Đăng ký thất bại.");
+                }
+                else if (window.authMode === 'verify_signup') {
+                    const res = await fetch(URL_VERIFY, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, otp}) });
+                    const data = await res.json();
+                    if (data.status === 'success') { loginSuccess(email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt, data.Problem_Status || data.problemStatus); } else throw new Error(data.message || "Mã OTP không hợp lệ!");
+                }
+                else if (window.authMode === 'forgot_request') {
+                    const res = await fetch(URL_FORGOT_PASSWORD_REQUEST, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email}) });
+                    const data = await res.json();
+                    if (data.status === 'success') { window.changeAuthMode('forgot_reset'); document.getElementById('message').className = "success"; document.getElementById('message').innerText = "Mã khôi phục đã được gửi tới email của bạn!"; } else throw new Error(data.message || "Email không tồn tại hoặc có lỗi xảy ra.");
+                }
+                else if (window.authMode === 'forgot_reset') {
+                    if (password !== confirmPassword) throw new Error("Mật khẩu mới không khớp!");
+                    const res = await fetch(URL_FORGOT_PASSWORD_RESET, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, otp, newPassword: password}) });
+                    const data = await res.json();
+                    if (data.status === 'success') { alert("Đổi mật khẩu thành công! Vui lòng đăng nhập lại."); window.changeAuthMode('login'); } else throw new Error(data.message || "Mã OTP sai hoặc đã hết hạn.");
+                }
+            } catch (err) { msg.className = "error"; msg.innerText = err.message; } finally {
+                btn.disabled = false;
+                if (window.authMode === 'login') btn.innerText = "Đăng nhập"; else if (window.authMode === 'signup') btn.innerText = "Đăng ký ngay"; else if (window.authMode === 'verify_signup') btn.innerText = "Xác thực OTP"; else if (window.authMode === 'forgot_request') btn.innerText = "Gửi mã khôi phục"; else if (window.authMode === 'forgot_reset') btn.innerText = "Đổi mật khẩu";
+            }
+        }
+
+        window.handleContactSubmit = async function(e) { 
+            e.preventDefault();
+            const email = document.getElementById('contactEmail').value.trim();
+            const phone = document.getElementById('contactPhone').value.trim(); 
+            const message = document.getElementById('contactMessage').value.trim();
+            const msgBox = document.getElementById('contactFormMessage');
+            const btn = document.getElementById('contactSubmitBtn');
+
+            msgBox.innerText = ''; btn.innerText = "Đang gửi..."; btn.disabled = true;
+            try {
+                const res = await fetch(URL_CONTACT_WEBHOOK, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/json' }, 
+                    body: JSON.stringify({ email: email, phone: phone, message: message }) 
+                });
+                
+                if (res.ok) { 
+                    msgBox.className = "success"; 
+                    msgBox.innerText = "Gửi tin nhắn thành công!"; 
+                } 
+                else { throw new Error("Gửi tin nhắn thất bại."); }
+            } catch (error) { msgBox.className = "error"; msgBox.innerText = "Đã xảy ra lỗi. Vui lòng thử lại."; } 
+            finally { btn.innerText = "Gửi tin nhắn"; btn.disabled = false; }
+        }
+
+        window.handleGuestLogin = function() {
+            if (localStorage.getItem('a2d_guest_blocked') === 'true') {
+                alert("Thiết bị này đã sử dụng hết lượt Khách.");
+                return;
+            }
+
+            const btn = document.querySelector('.btn-guest');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang tải...';
+            btn.disabled = true;
+
+            setTimeout(() => {
+                const guestId = 'guest_' + Math.floor(Math.random() * 100000);
+                
+                localStorage.setItem('a2d_guest_msg_count', '0'); 
+                
+                loginSuccess(`${guestId}@a2d-guest.local`, null, new Date().toISOString(), null);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 800);
+        }
+
+        window.onload = function () {
+            if (window.google && google.accounts && google.accounts.id) {
+                google.accounts.id.initialize({
+                    client_id: "305607144766-rsp6v0i6b0n83u989ojpinptq5a9l21c.apps.googleusercontent.com",
+                    callback: handleGoogleCallback,
+                    auto_select: false 
+                });
+
+                const googleBtnContainer = document.getElementById("googleButtonContainer");
+                if (googleBtnContainer) {
+                    google.accounts.id.renderButton(
+                        googleBtnContainer,
+                        { 
+                            theme: "outline", 
+                            size: "large", 
+                            width: 360, 
+                            text: "signin_with", 
+                            logo_alignment: "center"
+                        }
+                    );
+                }
+            }
+            
+            window.checkGuestBlockStatus();
+        };
+
+        window.handleGoogleCallback = async function(response) {
+            const googleToken = response.credential;
+            const msg = document.getElementById('message');
+            msg.innerText = "Đang xác thực tài khoản Google với hệ thống...";
+            msg.className = "success";
+
+            try {
+                const res = await fetch(URL_GOOGLE_LOGIN, { 
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'}, 
+                    body: JSON.stringify({ token: googleToken }) 
+                });
+                
+                const data = await res.json();
+                
+                if (data.status === 'success') { 
+                    loginSuccess(data.email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt, data.Problem_Status || data.problemStatus); 
+                } else {
+                    throw new Error(data.message || "Xác thực Google thất bại trên hệ thống.");
+                }
+            } catch (err) { 
+                msg.className = "error"; 
+                msg.innerText = err.message; 
+            }
+        }
+
+        function loginSuccess(email, Thread_ID, Created_at, Problem_Status = null) {
+            window.userEmail = email;
+            window.userThread_ID = Thread_ID;
+            window.userCreated_at = Created_at;
+            const parsedProblemStatus = Number(Problem_Status);
+            window.userProblem_Status = (parsedProblemStatus >= 1 && parsedProblemStatus <= 4) ? parsedProblemStatus : null;
+            
+            if (!email.includes('@a2d-guest.local')) {
+                localStorage.removeItem('a2d_guest_msg_count');
+            }
+
+            document.getElementById('authCard').classList.add('hidden');
+            const dashboardContainer = document.getElementById('dashboard-container');
+            dashboardContainer.style.display = 'flex'; 
+            document.getElementById('userSettings').style.display = 'inline-block';
+            document.getElementById('userEmailDisplay').innerText = email;
+            initChatbot(email, Thread_ID, Created_at, window.userProblem_Status);
+        }
+
+        window.requestDeleteAccount = async function() {
+            if(!confirm("Bạn có chắc chắn muốn xóa tài khoản không?")) return;
+            try {
+                const res = await fetch(URL_DELETE, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: window.userEmail }) });
+                if(res.ok) { 
+                    window.destroyChatWidget(); 
+                    location.reload(); 
+                } else { alert("Đã xảy ra lỗi."); }
+            } catch(e) { alert("Đã xảy ra lỗi."); }
+        }
+
+        function initChatbot(email, Thread_ID, Created_at, Problem_Status) {
+            document.getElementById('chat-container').innerHTML = '';
+            const safeThreadID = Thread_ID ? Thread_ID : ""; const safeCreatedAt = Created_at ? Created_at : "";
+            const safeProblemStatus = (Problem_Status !== null && Problem_Status !== undefined) ? Problem_Status : "";
+            let chatUrl = `${URL_CHAT}?userEmail=${encodeURIComponent(email)}&lang=${window.currentAppLanguage}&Thread_ID=${encodeURIComponent(safeThreadID)}&Created_at=${encodeURIComponent(safeCreatedAt)}&Problem_Status=${encodeURIComponent(safeProblemStatus)}`;
+
+            createChat({
+                webhookUrl: chatUrl, target: '#chat-container', mode: 'fullscreen', showWelcomeScreen: false, initialMessages: [], 
+                style: { width: '100%', height: '100%', position: 'relative' },
+                i18n: { en: { title: 'Kết nối – Chia sẻ – Hỗ trợ Cộng đồng', subtitle: 'Nền tảng chatbot phi lợi nhuận giúp tư vấn thông tin về cư trú, pháp lý và giấy tờ tại Ba Lan, vì sự ổn định và quyền lợi của người Việt.', getStarted: 'Bắt đầu', inputPlaceholder: 'Nhập câu hỏi của bạn...', } }
+            });
+        }
+    </script>
+</body>
+</html>
