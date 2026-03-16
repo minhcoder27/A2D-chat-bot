@@ -141,6 +141,9 @@
                 border-radius: 12px;
                 overflow: hidden;
                 order: 1;
+                margin-top: 8px;
+                padding-top: 12px;
+                padding-bottom: 12px;
             }
 
             .header-actions {
@@ -229,14 +232,15 @@
             .app-main { padding-top: 100px; }
         }
     </style>
+    <link rel="stylesheet" href="shared-layout.css">
 </head>
-<body>
+<body class="compact-footer-layout">
 
     <div id="shared-header-root"></div>
 
     <main class="app-main">
         <div class="content-container">
-            <a href="https://chatbot.a2dsolutions.pl/" class="back-btn"><i class="fas fa-arrow-left"></i> Quay lại Trang chủ</a>
+            <a href="login.html" class="back-btn"><i class="fas fa-arrow-left"></i> Quay lại</a>
             
             <h1>CHÍNH SÁCH BẢO MẬT</h1>
 
@@ -281,6 +285,7 @@
     </main>
 
     <div id="shared-footer-root"></div>
+    <div id="shared-expert-modal-root"></div>
 
     <div class="modal-overlay" id="guideModal">
         <div class="modal-content" style="max-height: 90vh; overflow-y: auto;">
@@ -356,12 +361,17 @@
             if (modal) modal.classList.remove('active');
         };
         
-        document.addEventListener('click', function(event) {
+        document.addEventListener('pointerdown', function(event) {
+            const headerActions = document.getElementById('headerActions');
+            const mobileMenuButton = event.target.closest('.mobile-menu-btn');
             const userSettings = document.getElementById('userSettings');
             const dropdown = document.getElementById('settingsDropdown');
+            if (headerActions && window.innerWidth <= 768 && headerActions.classList.contains('show') && !headerActions.contains(event.target) && !mobileMenuButton) {
+                headerActions.classList.remove('show');
+            }
             if (!userSettings || !dropdown) return;
             if (!userSettings.contains(event.target)) dropdown.classList.remove('active');
-        });
+        }, true);
     </script>
 </body>
 </html>
