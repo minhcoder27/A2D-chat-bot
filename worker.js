@@ -12,7 +12,7 @@ export default {
     const pathname = url.pathname;
 
     // --- CẤU HÌNH BẢO MẬT (ẨN KHỎI FRONTEND) ---
-    const GOOGLE_CLIENT_ID = "";
+    const GOOGLE_CLIENT_ID = "305607144766-rsp6v0i6b0n83u989ojpinptq5a9l21c.apps.googleusercontent.com";
     const WEBHOOKS = {
       chat: "",
       delete: "",
@@ -22,11 +22,7 @@ export default {
       signup: "",
       verify: "",
       forgot_req: "",
-      forgot_res: "",
-      problem_status_residency: "",
-      problem_status_labor: "",
-      problem_status_tax: "",
-      problem_status_insurance: ""
+      forgot_res: ""
     };
 
     // Endpoint lấy ID Google
@@ -47,10 +43,6 @@ export default {
     else if (pathname.includes("/verify")) targetUrl = WEBHOOKS.verify + url.search;
     else if (pathname.includes("/forgot-password-request")) targetUrl = WEBHOOKS.forgot_req + url.search;
     else if (pathname.includes("/forgot-password-reset")) targetUrl = WEBHOOKS.forgot_res + url.search;
-    else if (pathname.includes("/problem-status-residency")) targetUrl = WEBHOOKS.problem_status_residency + url.search;
-    else if (pathname.includes("/problem-status-labor")) targetUrl = WEBHOOKS.problem_status_labor + url.search;
-    else if (pathname.includes("/problem-status-tax")) targetUrl = WEBHOOKS.problem_status_tax + url.search;
-    else if (pathname.includes("/problem-status-insurance")) targetUrl = WEBHOOKS.problem_status_insurance + url.search;
 
     if (!targetUrl) return new Response("Not Found", { status: 404, headers: corsHeaders });
 
@@ -85,4 +77,3 @@ export default {
     });
   }
 };
-
