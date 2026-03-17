@@ -1171,19 +1171,56 @@
         const MAX_GUEST_MESSAGES = 5; 
         const AUTH_SESSION_KEY = 'a2d_auth_session';
         const MOBILE_EXPERT_FAB_POSITION_KEY = 'a2d_mobile_expert_fab_position';
+        const LEGACY_PROBLEM_STATUS_MAP = {
+            '1': 'US',
+            '2': 'wojewodzki urzad',
+            '3': 'ZUS',
+            '4': 'UP'
+        };
         const PROBLEM_STATUS_TO_TOPIC_LABEL = {
-            1: 'THUẾ',
-            2: 'CƯ TRÚ',
-            3: 'BẢO HIỂM (ZUS)',
-            4: 'LAO ĐỘNG'
+            'US': 'THUẾ',
+            'wojewodzki urzad': 'CƯ TRÚ',
+            'ZUS': 'BẢO HIỂM (ZUS)',
+            'UP': 'LAO ĐỘNG'
         };
         const PROBLEM_STATUS_TO_NOTICE_LABEL = {
-            1: 'Thuế',
-            2: 'Cư trú',
-            3: 'Bảo hiểm (ZUS)',
-            4: 'Lao động'
+            'US': 'Thuế',
+            'wojewodzki urzad': 'Cư trú',
+            'ZUS': 'Bảo hiểm (ZUS)',
+            'UP': 'Lao động'
         };
         let problemStatusToastTimeout = null;
+
+        function normalizeProblemStatus(problemStatus) {
+            if (problemStatus === null || problemStatus === undefined) {
+                return null;
+            }
+
+            const rawProblemStatus = String(problemStatus).trim();
+            if (!rawProblemStatus) {
+                return null;
+            }
+
+            if (LEGACY_PROBLEM_STATUS_MAP[rawProblemStatus]) {
+                return LEGACY_PROBLEM_STATUS_MAP[rawProblemStatus];
+            }
+
+            const lowerProblemStatus = rawProblemStatus.toLowerCase();
+            if (lowerProblemStatus === 'wojewodzki urzad') {
+                return 'wojewodzki urzad';
+            }
+            if (lowerProblemStatus === 'up') {
+                return 'UP';
+            }
+            if (lowerProblemStatus === 'us') {
+                return 'US';
+            }
+            if (lowerProblemStatus === 'zus') {
+                return 'ZUS';
+            }
+
+            return null;
+        }
 
         function getMobileExpertFabBounds(fab) {
             const rect = fab.getBoundingClientRect();
@@ -1404,6 +1441,20 @@
             fab.classList.toggle('hidden', !isVisible);
         };
 
+        window.syncActiveProblemTiles = function(problemStatus = window.userProblem_Status) {
+            const normalizedProblemStatus = normalizeProblemStatus(problemStatus);
+            const activeTopicLabel = PROBLEM_STATUS_TO_TOPIC_LABEL[normalizedProblemStatus];
+            const allTiles = document.querySelectorAll('.option-tile');
+
+            allTiles.forEach((tile) => {
+                const labelElement = tile.querySelector('span');
+                if (!labelElement) return;
+
+                const normalizedLabel = labelElement.textContent.trim().toUpperCase();
+                tile.classList.toggle('active', !!activeTopicLabel && normalizedLabel === activeTopicLabel);
+            });
+        };
+
         window.activateChatLayout = function(problemStatus = window.userProblem_Status) {
             const dashboard = document.getElementById('dashboard-container');
             const optionsWrapper = document.getElementById('options-wrapper');
@@ -1423,14 +1474,7 @@
                 mainHeader.classList.add('sidebar-topics-visible');
             }
 
-            const activeTopicLabel = PROBLEM_STATUS_TO_TOPIC_LABEL[Number(problemStatus)];
-            const allTiles = document.querySelectorAll('.option-tile');
-            allTiles.forEach((tile) => {
-                const labelElement = tile.querySelector('span');
-                if (!labelElement) return;
-                const normalizedLabel = labelElement.textContent.trim().toUpperCase();
-                tile.classList.toggle('active', !!activeTopicLabel && normalizedLabel === activeTopicLabel);
-            });
+            window.syncActiveProblemTiles(problemStatus);
         };
 
         window.persistAuthSession = function() {
@@ -1441,7 +1485,7 @@
                     email: window.userEmail,
                     threadId: window.userThread_ID || null,
                     createdAt: window.userCreated_at || null,
-                    problemStatus: window.userProblem_Status ?? null,
+                    problemStatus: normalizeProblemStatus(window.userProblem_Status),
                     isChatLayout: !!dashboard && !dashboard.classList.contains('initial-selection'),
                     updatedAt: Date.now()
                 };
@@ -1503,14 +1547,14 @@
                 : (resource && resource.method ? String(resource.method).toUpperCase() : 'GET');
 
             if (url && url.includes(URL_CHAT) && method === 'POST') {
-                const parsedProblemStatus = Number(window.userProblem_Status);
-                if (parsedProblemStatus >= 1 && parsedProblemStatus <= 4) {
+                const normalizedProblemStatus = normalizeProblemStatus(window.userProblem_Status);
+                if (normalizedProblemStatus) {
                     const nextConfig = { ...config };
 
                     if (typeof nextConfig.body === 'string' && nextConfig.body.trim().length > 0) {
                         try {
                             const payload = JSON.parse(nextConfig.body);
-                            payload.Problem_Status = parsedProblemStatus;
+                            payload.Problem_Status = normalizedProblemStatus;
                             nextConfig.body = JSON.stringify(payload);
                         } catch (error) {
                             console.warn('Không thể chèn Problem_Status vào body chat:', error);
@@ -1519,7 +1563,7 @@
 
                     try {
                         const chatUrl = new URL(url);
-                        chatUrl.searchParams.set('Problem_Status', String(parsedProblemStatus));
+                        chatUrl.searchParams.set('Problem_Status', normalizedProblemStatus);
 
                         if (typeof resource === 'string') {
                             resource = chatUrl.toString();
@@ -1636,17 +1680,18 @@
         window.closeModal = function(id) { document.getElementById(id).classList.remove('active'); }
 
         const OPTION_PROBLEM_STATUS_MAP = {
-            'Thuế': 1,
-            'Cư trú': 2,
-            'Bảo hiểm': 3,
-            'Lao động': 4
+            'Thuế': 'US',
+            'Cư trú': 'wojewodzki urzad',
+            'Bảo hiểm': 'ZUS',
+            'Lao động': 'UP'
         };
 
         window.syncProblemStatus = function(optionName) {
             const nextStatus = OPTION_PROBLEM_STATUS_MAP[optionName];
-            if (!(nextStatus >= 1 && nextStatus <= 4)) return;
+            const normalizedProblemStatus = normalizeProblemStatus(nextStatus);
+            if (!normalizedProblemStatus) return;
 
-            window.userProblem_Status = nextStatus;
+            window.userProblem_Status = normalizedProblemStatus;
             window.persistAuthSession();
         }
 
@@ -1654,7 +1699,8 @@
             const toast = document.getElementById('problemStatusToast');
             if (!toast) return;
 
-            const nextLabel = PROBLEM_STATUS_TO_NOTICE_LABEL[Number(problemStatus)] || 'chủ đề bạn vừa chọn';
+            const normalizedProblemStatus = normalizeProblemStatus(problemStatus);
+            const nextLabel = PROBLEM_STATUS_TO_NOTICE_LABEL[normalizedProblemStatus] || 'chủ đề bạn vừa chọn';
             toast.innerHTML = `Đã chuyển sang <strong>${nextLabel}</strong>. Box chat đã được làm mới.`;
             toast.classList.add('show');
 
@@ -1698,13 +1744,10 @@
             const dashboard = document.getElementById('dashboard-container');
             const optionsWrapper = document.getElementById('options-wrapper'); 
 
-            // 1. Xóa in đậm tất cả các nút, và in đậm nút vừa được click
-            const allTiles = document.querySelectorAll('.option-tile');
-            allTiles.forEach(tile => tile.classList.remove('active'));
-            element.classList.add('active');
-            
+            // 1. Đồng bộ chủ đề đang chọn ở cả overlay ban đầu lẫn sidebar
             console.log("Đã chuyển sang mục tư vấn:", optionName);
             window.syncProblemStatus(optionName);
+            window.syncActiveProblemTiles();
 
             const sidebarTopicWrapper = document.getElementById('sidebarTopicWrapper');
             const mainHeader = document.getElementById('mainHeader');
@@ -1999,8 +2042,7 @@
             window.userEmail = email;
             window.userThread_ID = Thread_ID;
             window.userCreated_at = Created_at;
-            const parsedProblemStatus = Number(Problem_Status);
-            window.userProblem_Status = (parsedProblemStatus >= 1 && parsedProblemStatus <= 4) ? parsedProblemStatus : null;
+            window.userProblem_Status = normalizeProblemStatus(Problem_Status);
             
             if (!email.includes('@a2d-guest.local')) {
                 localStorage.removeItem('a2d_guest_msg_count');
