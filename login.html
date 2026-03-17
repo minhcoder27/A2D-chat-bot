@@ -137,6 +137,16 @@
             opacity: 0;
             animation: fadeUpIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+        .option-tile::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: linear-gradient(180deg, rgba(86, 189, 244, 0.16) 0%, rgba(86, 189, 244, 0.04) 100%);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+            pointer-events: none;
+        }
 
         /* Tạo độ trễ (delay) cho từng nút hiện lên lần lượt */
         #options-panel .option-tile:nth-child(1) { animation-delay: 0.1s; }
@@ -144,8 +154,8 @@
         #options-panel .option-tile:nth-child(3) { animation-delay: 0.3s; }
         #options-panel .option-tile:nth-child(4) { animation-delay: 0.4s; }
 
-        .option-tile i { font-size: 38px; color: var(--text-gray); margin-bottom: 12px; transition: transform 0.3s ease; }
-        .option-tile span { font-family: 'Roboto Condensed', sans-serif; font-weight: 600; font-size: 16px; color: var(--primary-navy); letter-spacing: 0.5px; text-transform: uppercase; }
+        .option-tile i { font-size: 38px; color: var(--text-gray); margin-bottom: 12px; transition: transform 0.3s ease, color 0.3s ease, filter 0.3s ease; position: relative; z-index: 1; }
+        .option-tile span { font-family: 'Roboto Condensed', sans-serif; font-weight: 600; font-size: 16px; color: var(--primary-navy); letter-spacing: 0.5px; text-transform: uppercase; transition: color 0.3s ease; position: relative; z-index: 1; }
         
         .option-tile:hover:not(.active) { border-color: #cbd5e1; transform: translateY(-3px); box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.1); }
         .option-tile:hover:not(.active) i { color: var(--accent-blue); }
@@ -201,6 +211,25 @@
             height: 180px;
             background: rgba(255, 255, 255, 0.82);
             border-color: rgba(203, 213, 225, 0.9);
+            box-shadow: 0 18px 40px -24px rgba(15, 23, 42, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(8px);
+        }
+        #dashboard-container.initial-selection .option-tile:hover:not(.active) {
+            border-color: rgba(69, 184, 243, 0.95);
+            background: linear-gradient(180deg, rgba(243, 249, 255, 0.97) 0%, rgba(232, 244, 255, 0.93) 100%);
+            transform: translateY(-4px);
+            box-shadow: 0 0 0 2px rgba(69, 184, 243, 0.28), 0 22px 38px -20px rgba(69, 184, 243, 0.5), 0 18px 30px -22px rgba(16, 33, 54, 0.35);
+        }
+        #dashboard-container.initial-selection .option-tile:hover:not(.active)::before {
+            opacity: 1;
+        }
+        #dashboard-container.initial-selection .option-tile:hover:not(.active) i {
+            color: #3b9cd4;
+            transform: translateY(-1px) scale(1.04);
+            filter: drop-shadow(0 6px 14px rgba(69, 184, 243, 0.22));
+        }
+        #dashboard-container.initial-selection .option-tile:hover:not(.active) span {
+            color: #102136;
         }
 
         #dashboard-container.initial-selection .options-title {
@@ -1538,6 +1567,75 @@
             }
         };
         
+        function parseChatRequestPayload(body) {
+            if (!body) return null;
+
+            if (typeof body === 'string') {
+                const trimmedBody = body.trim();
+                if (!trimmedBody) return null;
+
+                try {
+                    return JSON.parse(trimmedBody);
+                } catch (error) {
+                    return null;
+                }
+            }
+
+            if (body instanceof URLSearchParams) {
+                return Object.fromEntries(body.entries());
+            }
+
+            if (typeof FormData !== 'undefined' && body instanceof FormData) {
+                return Object.fromEntries(body.entries());
+            }
+
+            if (typeof body === 'object') {
+                return body;
+            }
+
+            return null;
+        }
+
+        function getChatMessageText(payload) {
+            if (!payload || typeof payload !== 'object') return '';
+
+            const directCandidates = [
+                payload.chatInput,
+                payload.message,
+                payload.text,
+                payload.input,
+                payload.prompt
+            ];
+
+            for (const candidate of directCandidates) {
+                if (typeof candidate === 'string' && candidate.trim()) {
+                    return candidate.trim();
+                }
+            }
+
+            if (payload.data && typeof payload.data === 'object') {
+                return getChatMessageText(payload.data);
+            }
+
+            return '';
+        }
+
+        function isUserChatMessageRequest(payload) {
+            const messageText = getChatMessageText(payload);
+            if (!messageText) return false;
+
+            const action = typeof payload.action === 'string' ? payload.action.toLowerCase() : '';
+            const eventName = typeof payload.eventName === 'string' ? payload.eventName.toLowerCase() : '';
+            const type = typeof payload.type === 'string' ? payload.type.toLowerCase() : '';
+
+            const nonMessageActions = ['loadprevioussession', 'getsession', 'init', 'initialize', 'handshake'];
+            if (nonMessageActions.includes(action) || nonMessageActions.includes(eventName) || nonMessageActions.includes(type)) {
+                return false;
+            }
+
+            return true;
+        }
+
         const originalFetch = window.fetch;
         window.fetch = async function(...args) {
             let [resource, config] = args;
@@ -1548,17 +1646,14 @@
 
             if (url && url.includes(URL_CHAT) && method === 'POST') {
                 const normalizedProblemStatus = normalizeProblemStatus(window.userProblem_Status);
+                let parsedChatPayload = parseChatRequestPayload(config && config.body);
+
                 if (normalizedProblemStatus) {
                     const nextConfig = { ...config };
 
-                    if (typeof nextConfig.body === 'string' && nextConfig.body.trim().length > 0) {
-                        try {
-                            const payload = JSON.parse(nextConfig.body);
-                            payload.Problem_Status = normalizedProblemStatus;
-                            nextConfig.body = JSON.stringify(payload);
-                        } catch (error) {
-                            console.warn('Không thể chèn Problem_Status vào body chat:', error);
-                        }
+                    if (parsedChatPayload && typeof parsedChatPayload === 'object') {
+                        parsedChatPayload.Problem_Status = normalizedProblemStatus;
+                        nextConfig.body = JSON.stringify(parsedChatPayload);
                     }
 
                     try {
@@ -1577,7 +1672,7 @@
                     config = nextConfig;
                 }
 
-                if (window.userEmail && window.userEmail.includes('@a2d-guest.local')) {
+                if (window.userEmail && window.userEmail.includes('@a2d-guest.local') && isUserChatMessageRequest(parsedChatPayload)) {
                     let currentCount = parseInt(localStorage.getItem('a2d_guest_msg_count') || '0', 10);
                     
                     if (currentCount >= MAX_GUEST_MESSAGES) {
