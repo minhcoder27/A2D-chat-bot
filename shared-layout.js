@@ -1,5 +1,5 @@
 (function () {
-  const SOURCE_PAGE = 'login.html';
+  const SOURCE_PAGE_CANDIDATES = ['login.html', './'];
   const SHARED_STYLESHEET = 'shared-layout.css';
   const AUTH_SESSION_KEY = 'a2d_auth_session';
   const MOBILE_EXPERT_FAB_POSITION_KEY = 'a2d_mobile_expert_fab_position';
@@ -24,6 +24,64 @@
     link.rel = 'stylesheet';
     link.href = SHARED_STYLESHEET;
     document.head.appendChild(link);
+  }
+
+  function getResolvedPageCandidates(paths) {
+    const currentUrl = new URL(window.location.href);
+    const seen = new Set();
+
+    return paths.reduce(function (candidates, path) {
+      const resolvedUrl = new URL(path, currentUrl).href;
+      if (seen.has(resolvedUrl)) {
+        return candidates;
+      }
+
+      seen.add(resolvedUrl);
+      candidates.push(resolvedUrl);
+      return candidates;
+    }, []);
+  }
+
+  function getAppHomeUrl() {
+    return new URL('./', window.location.href).href;
+  }
+
+  function installBackButtonFallback() {
+    const backButtons = document.querySelectorAll('a.back-btn');
+    if (!backButtons.length) {
+      return;
+    }
+
+    const fallbackUrl = getAppHomeUrl();
+
+    backButtons.forEach(function (backButton) {
+      backButton.href = fallbackUrl;
+
+      if (backButton.dataset.backReady === 'true') {
+        return;
+      }
+
+      backButton.dataset.backReady = 'true';
+      backButton.addEventListener('click', function (event) {
+        if (!document.referrer) {
+          return;
+        }
+
+        let referrerUrl;
+        try {
+          referrerUrl = new URL(document.referrer);
+        } catch (error) {
+          return;
+        }
+
+        if (window.history.length <= 1 || referrerUrl.origin !== window.location.origin || referrerUrl.href === window.location.href) {
+          return;
+        }
+
+        event.preventDefault();
+        window.history.back();
+      });
+    });
   }
 
   function getStoredAuthSession() {
@@ -369,15 +427,32 @@
     };
   }
 
-  async function loadSharedLayout() {
-    ensureSharedStylesheet();
+  async function fetchSharedLayoutMarkup() {
+    const sourceCandidates = getResolvedPageCandidates(SOURCE_PAGE_CANDIDATES);
+    let lastError = null;
 
-    const response = await fetch(SOURCE_PAGE, { cache: 'no-store' });
-    if (!response.ok) {
-      throw new Error('Cannot load shared layout from login.html');
+    for (const sourceCandidate of sourceCandidates) {
+      try {
+        const response = await fetch(sourceCandidate, { cache: 'no-store' });
+        if (!response.ok) {
+          lastError = new Error(`Status ${response.status} for ${sourceCandidate}`);
+          continue;
+        }
+
+        return await response.text();
+      } catch (error) {
+        lastError = error;
+      }
     }
 
-    const html = await response.text();
+    throw lastError || new Error(`Cannot load shared layout from ${sourceCandidates.join(', ')}`);
+  }
+
+  async function loadSharedLayout() {
+    ensureSharedStylesheet();
+    installBackButtonFallback();
+
+    const html = await fetchSharedLayoutMarkup();
     const sourceDoc = new DOMParser().parseFromString(html, 'text/html');
     const sourceHeader = sourceDoc.querySelector('header.app-header');
     const sourceFooter = sourceDoc.querySelector('footer');
