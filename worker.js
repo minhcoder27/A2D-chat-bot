@@ -14,15 +14,21 @@ export default {
     // --- CẤU HÌNH BẢO MẬT (ẨN KHỎI FRONTEND) ---
     const GOOGLE_CLIENT_ID = "305607144766-rsp6v0i6b0n83u989ojpinptq5a9l21c.apps.googleusercontent.com";
     const WEBHOOKS = {
-      chat: "",
-      delete: "",
-      contact: "",
-      google: "",
-      login: "",
-      signup: "",
-      verify: "",
-      forgot_req: "",
-      forgot_res: ""
+      chat: "https://n8n.a2dzespol.pl/webhook/d8451693-0079-4da7-b3a3-ec1561bd2da3",
+      delete: "https://n8n.a2dzespol.pl/webhook/7e75278a-2bc2-4832-b601-39085570f7aa",
+      contact: "https://n8n.a2dzespol.pl/webhook/366a0816-3157-4425-9bb5-5aa258c94161",
+      google: "https://n8n.a2dzespol.pl/webhook/1bb050cf-1320-400d-823b-1dd76ac4daae",
+      login: "https://n8n.a2dzespol.pl/webhook/3349af0f-ead6-4ba5-a535-f9c993b8fe19",
+      signup: "https://n8n.a2dzespol.pl/webhook/f8f58561-ed9e-4a49-b273-7776ba9073a3",
+      verify: "https://n8n.a2dzespol.pl/webhook/e05cd05b-f854-48ca-bc15-ca75ca32edf9",
+      forgot_req: "https://n8n.a2dzespol.pl/webhook/6695aa05-2a9c-4abb-8c9b-28188af236ee",
+      forgot_res: "https://n8n.a2dzespol.pl/webhook/431e1515-154b-4545-b60b-edebc54b47a8",
+      // Dán các webhook n8n cho recent ở đây.
+      recent_list: "https://n8n.a2dzespol.pl/webhook/871d0b5d-1edd-4361-b6c0-2709dc52d6b4",
+      recent_upsert: "https://n8n.a2dzespol.pl/webhook/e61df4be-e57f-4934-8346-5dbbc737766a",
+      recent_clear: "https://n8n.a2dzespol.pl/webhook/1c40f424-884e-4db2-bec2-b8ab94274321",
+      recent_restore: "https://n8n.a2dzespol.pl/webhook/c87a9e28-a329-4a60-8abb-fa9abf6c9903",
+      recent_new_chat: ""
     };
 
     // Endpoint lấy ID Google
@@ -43,6 +49,26 @@ export default {
     else if (pathname.includes("/verify")) targetUrl = WEBHOOKS.verify + url.search;
     else if (pathname.includes("/forgot-password-request")) targetUrl = WEBHOOKS.forgot_req + url.search;
     else if (pathname.includes("/forgot-password-reset")) targetUrl = WEBHOOKS.forgot_res + url.search;
+    else if (pathname.includes("/recent-list")) targetUrl = WEBHOOKS.recent_list ? WEBHOOKS.recent_list + url.search : null;
+    else if (pathname.includes("/recent-upsert")) targetUrl = WEBHOOKS.recent_upsert ? WEBHOOKS.recent_upsert + url.search : null;
+    else if (pathname.includes("/recent-clear")) targetUrl = WEBHOOKS.recent_clear ? WEBHOOKS.recent_clear + url.search : null;
+    else if (pathname.includes("/recent-restore")) targetUrl = WEBHOOKS.recent_restore ? WEBHOOKS.recent_restore + url.search : null;
+    else if (pathname.includes("/recent-new-chat")) targetUrl = WEBHOOKS.recent_new_chat ? WEBHOOKS.recent_new_chat + url.search : null;
+
+    if (
+      (pathname.includes("/recent-list") && !WEBHOOKS.recent_list)
+      || (pathname.includes("/recent-upsert") && !WEBHOOKS.recent_upsert)
+      || (pathname.includes("/recent-clear") && !WEBHOOKS.recent_clear)
+      || (pathname.includes("/recent-restore") && !WEBHOOKS.recent_restore)
+      || (pathname.includes("/recent-new-chat") && !WEBHOOKS.recent_new_chat)
+    ) {
+      return new Response(JSON.stringify({
+        message: "Webhook recent chưa được cấu hình đầy đủ trong worker.js"
+      }), {
+        status: 501,
+        headers: { "Content-Type": "application/json", ...corsHeaders }
+      });
+    }
 
     if (!targetUrl) return new Response("Not Found", { status: 404, headers: corsHeaders });
 
