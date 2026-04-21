@@ -74,6 +74,285 @@
         .mobile-expert-cta i { color: #9fd3f2 !important; }
         .mobile-expert-cta:hover, .mobile-expert-cta:focus-visible { background: rgba(255,255,255,0.08) !important; color: #ffffff !important; box-shadow: none; }
         .mobile-expert-cta:hover i, .mobile-expert-cta:focus-visible i { color: #c6e5f7 !important; }
+        .recent-communications-panel {
+            display: none;
+            width: 92%;
+            max-width: 248px;
+            align-self: center;
+            order: 2;
+            margin-top: 2px;
+            padding: 6px 0 0;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .recent-communications-panel:not([hidden]) {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-height: 0;
+        }
+        .recent-communications-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .recent-new-chat-button {
+            width: 100%;
+            min-height: 0;
+            border: none;
+            background: transparent;
+            color: rgba(255,255,255,0.94);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 8px;
+            padding: 0 2px;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 0;
+            text-transform: none;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .recent-new-chat-button i {
+            font-size: 12px;
+            color: #9fd3f2;
+            transition: color 0.2s ease;
+        }
+        .recent-new-chat-button:hover,
+        .recent-new-chat-button:focus-visible {
+            color: #ffffff;
+            outline: none;
+        }
+        .recent-new-chat-button:hover i,
+        .recent-new-chat-button:focus-visible i {
+            color: #c6e5f7;
+        }
+        .recent-new-chat-button.is-loading,
+        .recent-new-chat-button:disabled {
+            opacity: 0.72;
+            cursor: progress;
+            pointer-events: none;
+        }
+        .recent-communications-toggle {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 0 2px;
+            border: none;
+            background: transparent;
+            color: rgba(255,255,255,0.92);
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 15px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .recent-communications-toggle:hover,
+        .recent-communications-toggle:focus-visible {
+            color: #ffffff;
+            outline: none;
+        }
+        .recent-communications-toggle i {
+            color: #9fd3f2;
+            font-size: 12px;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+        .recent-communications-toggle:hover i,
+        .recent-communications-toggle:focus-visible i {
+            color: #c6e5f7;
+        }
+        .recent-communications-panel.collapsed .recent-communications-toggle i {
+            transform: rotate(-90deg);
+        }
+        .recent-communications-list {
+            --recent-visible-items: 5;
+            --recent-item-height: 38px;
+            --recent-item-gap: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: var(--recent-item-gap);
+            height: calc((var(--recent-visible-items) * var(--recent-item-height)) + ((var(--recent-visible-items) - 1) * var(--recent-item-gap)));
+            max-height: calc((var(--recent-visible-items) * var(--recent-item-height)) + ((var(--recent-visible-items) - 1) * var(--recent-item-gap)));
+            min-height: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            overscroll-behavior: contain;
+            padding: 2px 6px 2px 2px;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .recent-communications-list::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+        .recent-communications-panel.collapsed .recent-communications-list {
+            display: none;
+        }
+        .recent-communication-item {
+            width: calc(100% - 8px);
+            margin: 0 4px;
+            border: none;
+            border-radius: 999px;
+            background: transparent;
+            color: rgba(255,255,255,0.88);
+            text-align: left;
+            min-height: var(--recent-item-height);
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            line-height: 1.2;
+            cursor: pointer;
+            transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .recent-communication-item:hover,
+        .recent-communication-item:focus-visible {
+            background: rgba(255,255,255,0.08);
+            color: #ffffff;
+            outline: none;
+            transform: translateY(-1px);
+        }
+        .recent-communication-empty {
+            padding: 8px 2px 4px;
+            color: rgba(255,255,255,0.58);
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        .recent-communication-item.is-loading {
+            opacity: 0.72;
+            cursor: progress;
+            pointer-events: none;
+        }
+        .recent-chat-message-host {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: flex-end !important;
+            min-height: 100%;
+        }
+        .recent-chat-restore-inline {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+            margin: 0 0 14px;
+        }
+        .recent-chat-restore-banner {
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: rgba(11, 133, 209, 0.08);
+            border: 1px solid rgba(11, 133, 209, 0.14);
+            color: #0f3b5f;
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.4;
+            transition: opacity 0.28s ease, transform 0.28s ease, max-height 0.28s ease, margin 0.28s ease, padding 0.28s ease;
+            max-height: 120px;
+            overflow: hidden;
+        }
+        .recent-chat-restore-banner-shell {
+            background: #eef2f8;
+            padding: 16px 18px 0;
+        }
+        .recent-chat-restore-banner-top {
+            margin: 0;
+        }
+        .recent-chat-restore-banner.is-hiding {
+            opacity: 0;
+            transform: translateY(-8px);
+            max-height: 0;
+            margin: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            border-width: 0;
+        }
+        .recent-chat-restore-messages {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .recent-chat-restore-row {
+            display: flex;
+            width: 100%;
+        }
+        .recent-chat-restore-row.user {
+            justify-content: flex-end;
+        }
+        .recent-chat-restore-row.bot {
+            justify-content: flex-start;
+        }
+        .recent-chat-restore-bubble {
+            max-width: min(78%, 720px);
+            padding: 12px 16px;
+            border-radius: 22px;
+            box-shadow: 0 12px 28px rgba(16, 33, 54, 0.08);
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .recent-chat-restore-row.user .recent-chat-restore-bubble {
+            background: #0b85d1;
+            color: #ffffff;
+            border-radius: 28px 8px 28px 28px;
+        }
+        .recent-chat-restore-row.bot .recent-chat-restore-bubble {
+            background: #ffffff;
+            color: #102136;
+            border-radius: 8px 28px 28px 28px;
+            border: 1px solid #dce7f1;
+        }
+        .recent-chat-restore-markdown h1,
+        .recent-chat-restore-markdown h2,
+        .recent-chat-restore-markdown h3,
+        .recent-chat-restore-markdown h4,
+        .recent-chat-restore-markdown h5,
+        .recent-chat-restore-markdown h6,
+        .recent-chat-restore-markdown p,
+        .recent-chat-restore-markdown ol,
+        .recent-chat-restore-markdown ul {
+            margin: 0 0 12px;
+        }
+        .recent-chat-restore-markdown h1,
+        .recent-chat-restore-markdown h2,
+        .recent-chat-restore-markdown h3,
+        .recent-chat-restore-markdown h4,
+        .recent-chat-restore-markdown h5,
+        .recent-chat-restore-markdown h6 {
+            color: #1a2145;
+            line-height: 1.25;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-weight: 700;
+        }
+        .recent-chat-restore-markdown h1 { font-size: 28px; }
+        .recent-chat-restore-markdown h2 { font-size: 24px; }
+        .recent-chat-restore-markdown h3 { font-size: 20px; }
+        .recent-chat-restore-markdown h4 { font-size: 18px; }
+        .recent-chat-restore-markdown h5 { font-size: 16px; }
+        .recent-chat-restore-markdown h6 { font-size: 15px; }
+        .recent-chat-restore-markdown p:last-child,
+        .recent-chat-restore-markdown ol:last-child,
+        .recent-chat-restore-markdown ul:last-child {
+            margin-bottom: 0;
+        }
+        .recent-chat-restore-markdown ol,
+        .recent-chat-restore-markdown ul {
+            padding-left: 22px;
+        }
+        .recent-chat-restore-markdown li + li {
+            margin-top: 8px;
+        }
+        .recent-chat-restore-markdown code {
+            padding: 1px 6px;
+            border-radius: 999px;
+            background: rgba(16, 33, 54, 0.08);
+            font-size: 0.95em;
+        }
         .btn-contact { background-color: var(--accent-blue); color: white; border: 1px solid var(--accent-blue); padding: 10px 24px; font-size: 13px; font-weight: 600; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; border-radius: 6px; letter-spacing: 0.5px; display: flex; align-items: center; box-shadow: 0 4px 10px rgba(59, 156, 212, 0.3); font-family: 'Roboto Condensed', sans-serif;}
         .btn-contact:hover { background-color: var(--accent-blue-hover); border-color: var(--accent-blue-hover); transform: translateY(-1px); box-shadow: 0 6px 15px rgba(59, 156, 212, 0.4); }
 
@@ -103,199 +382,10 @@
         .auth-header-form p { color: #64748b; font-size: 14px; margin-top: 10px; font-weight: 500; }
         
         /* DASHBOARD */
-        #dashboard-container { width: 100%; max-width: 1300px; height: 75vh; min-height: 600px; display: none; gap: 25px; }
+        #dashboard-container { width: 100%; max-width: 1300px; height: 75vh; min-height: 600px; display: none; position: relative; }
         
         /* Chat Container */
-        #chat-container { flex: 2; height: 100%; background: #ffffff; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(16, 33, 54, 0.2); overflow: hidden; position: relative; border: 1px solid #e2e8f0; }
-        
-        /* Options Wrapper & Panel */
-        #options-wrapper { 
-            flex: 1; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            height: 100%; 
-        }
-
-        #options-panel { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 15px; 
-            width: 100%; 
-            height: 100%; /* Sửa lỗi ở đây: Trả lại chiều cao 100% để lấp đầy khung */
-            flex: 1; /* Đảm bảo nó giãn ra chiếm hết khoảng trống */
-        }
-        
-        /* HIỆU ỨNG FADE-IN CHO CÁC NÚT TÙY CHỌN */
-        @keyframes fadeUpIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .option-tile { 
-            flex: 1; background: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 10px 30px -10px rgba(16, 33, 54, 0.1); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: all 0.3s ease; position: relative; text-align: center; overflow: hidden; cursor: pointer; 
-            opacity: 0;
-            animation: fadeUpIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        .option-tile::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            background: linear-gradient(180deg, rgba(86, 189, 244, 0.16) 0%, rgba(86, 189, 244, 0.04) 100%);
-            opacity: 0;
-            transition: opacity 0.25s ease;
-            pointer-events: none;
-        }
-
-        /* Tạo độ trễ (delay) cho từng nút hiện lên lần lượt */
-        #options-panel .option-tile:nth-child(1) { animation-delay: 0.1s; }
-        #options-panel .option-tile:nth-child(2) { animation-delay: 0.2s; }
-        #options-panel .option-tile:nth-child(3) { animation-delay: 0.3s; }
-        #options-panel .option-tile:nth-child(4) { animation-delay: 0.4s; }
-
-        .option-tile i { font-size: 38px; color: var(--text-gray); margin-bottom: 12px; transition: transform 0.3s ease, color 0.3s ease, filter 0.3s ease; position: relative; z-index: 1; }
-        .option-tile span { font-family: 'Roboto Condensed', sans-serif; font-weight: 600; font-size: 16px; color: var(--primary-navy); letter-spacing: 0.5px; text-transform: uppercase; transition: color 0.3s ease; position: relative; z-index: 1; }
-        
-        .option-tile:hover:not(.active) { border-color: #cbd5e1; transform: translateY(-3px); box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.1); }
-        .option-tile:hover:not(.active) i { color: var(--accent-blue); }
-
-        .option-tile.active { border-color: var(--accent-blue); background-color: #f0f7ff; box-shadow: 0 0 0 2px rgba(59, 156, 212, 0.2); cursor: default; }
-        .option-tile.active i { color: var(--accent-blue); transform: scale(1.1); }
-        
-        /* ========================================= */
-        /* GIAO DIỆN CHỌN CHỦ ĐỀ BAN ĐẦU (GIỮA MÀN HÌNH) */
-        /* ========================================= */
-
-        #dashboard-container.initial-selection { justify-content: center; align-items: center; position: relative; overflow: hidden; }
-        #dashboard-container.initial-selection #chat-container {
-            display: block;
-            position: absolute;
-            inset: 0;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* Styling cho khối Wrapper và Panel nằm giữa */
-        #dashboard-container.initial-selection #options-wrapper {
-            position: absolute;
-            inset: 0;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            max-width: none;
-            height: 100%;
-            padding: 24px;
-            box-sizing: border-box;
-            background: rgba(15, 23, 42, 0.52);
-            backdrop-filter: blur(2px);
-        }
-        #dashboard-container.initial-selection #options-panel {
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 25px;
-            height: auto;
-            flex: unset;
-            width: 100%;
-            max-width: 800px;
-        }
-
-        /* Các nút to ra ở giữa màn hình */
-        #dashboard-container.initial-selection .option-tile {
-            flex: 0 0 calc(50% - 25px);
-            height: 180px;
-            background: rgba(255, 255, 255, 0.82);
-            border-color: rgba(203, 213, 225, 0.9);
-            box-shadow: 0 18px 40px -24px rgba(15, 23, 42, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(8px);
-        }
-        #dashboard-container.initial-selection .option-tile:hover:not(.active) {
-            border-color: rgba(69, 184, 243, 0.95);
-            background: linear-gradient(180deg, rgba(243, 249, 255, 0.97) 0%, rgba(232, 244, 255, 0.93) 100%);
-            transform: translateY(-4px);
-            box-shadow: 0 0 0 2px rgba(69, 184, 243, 0.28), 0 22px 38px -20px rgba(69, 184, 243, 0.5), 0 18px 30px -22px rgba(16, 33, 54, 0.35);
-        }
-        #dashboard-container.initial-selection .option-tile:hover:not(.active)::before {
-            opacity: 1;
-        }
-        #dashboard-container.initial-selection .option-tile:hover:not(.active) i {
-            color: #3b9cd4;
-            transform: translateY(-1px) scale(1.04);
-            filter: drop-shadow(0 6px 14px rgba(69, 184, 243, 0.22));
-        }
-        #dashboard-container.initial-selection .option-tile:hover:not(.active) span {
-            color: #102136;
-        }
-
-        #dashboard-container.initial-selection .options-title {
-            color: #e2e8f0;
-        }
-
-        /* Tiêu đề "Bạn cần hỗ trợ..." */
-        .options-title {
-            text-align: center;
-            font-family: 'Roboto Condensed', sans-serif;
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--primary-navy);
-            margin-top: 0;
-            margin-bottom: 25px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            opacity: 0;
-            animation: fadeUpIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-            width: 100%;
-        }
-
-        /* Ẩn tiêu đề khi chuyển sang giao diện Sidebar (khung chat) để không tốn diện tích */
-        #dashboard-container:not(.initial-selection) .options-title {
-            display: none;
-        }
-
-        /* ANIMATION CHUYỂN ĐỔI LAYOUT */
-        @keyframes fadeOutCenter {
-            from { opacity: 1; transform: scale(1); }
-            to { opacity: 0; transform: scale(0.9); }
-        }
-        .fade-out-anim { animation: fadeOutCenter 0.4s ease forwards !important; }
-
-        @keyframes fadeInSidebar {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .fade-in-layout { animation: fadeInSidebar 0.6s ease forwards; }
-        #dashboard-container { position: relative; }
-        .problem-status-toast {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            z-index: 30;
-            max-width: min(420px, calc(100% - 32px));
-            padding: 12px 16px;
-            border-radius: 999px;
-            background: rgba(16, 33, 54, 0.96);
-            color: #ffffff;
-            font-size: 14px;
-            font-weight: 600;
-            line-height: 1.45;
-            box-shadow: 0 14px 32px rgba(16, 33, 54, 0.24);
-            opacity: 0;
-            transform: translateY(-8px);
-            pointer-events: none;
-            transition: opacity 0.25s ease, transform 0.25s ease;
-        }
-        .problem-status-toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .problem-status-toast strong {
-            color: #9fd3f2;
-        }
+        #chat-container { flex: 1 1 auto; height: 100%; background: #ffffff; --chat--body--background: #eef2f8; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(16, 33, 54, 0.2); overflow: hidden; position: relative; border: 1px solid #e2e8f0; }
 
         /* FORM INPUTS */
         .input-group { margin-bottom: 20px; text-align: left; }
@@ -389,6 +479,7 @@
             .site-logo img { height: auto; max-height: 32px; max-width: 100%; object-fit: contain; }
             .mobile-menu-btn { display: block; margin-left: 10px; }
             .expert-cta { display: none; }
+            .recent-communications-panel { display: none !important; }
             .header-actions { display: none; position: absolute; top: 100%; left: 0; width: 100%; background-color: var(--primary-navy); flex-direction: column; padding: 15px 20px; box-sizing: border-box; box-shadow: 0 10px 20px rgba(0,0,0,0.2); border-top: 1px solid rgba(255,255,255,0.1); z-index: 1000;}
             .header-actions.show { display: flex; gap: 15px; }
             .mobile-expert-cta { display: flex; }
@@ -400,76 +491,8 @@
             .auth-card { padding: 30px 20px; margin: auto; }
             
             .app-main { padding-top: 90px; padding-bottom: 20px; display: flex; flex-direction: column; height: auto; min-height: calc(100vh - 120px); }
-            #dashboard-container { flex-direction: column; height: 100%; min-height: 78vh; flex: 1; gap: 10px;}
-            
-            /* Tùy chỉnh Layout cho Mobile khi người dùng đã chọn chủ đề (dạng thanh trượt) */
-            #options-wrapper { flex: 0 0 auto; order: -1; margin-bottom: 5px; justify-content: flex-start; height: auto;}
-            #options-panel { flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; padding-bottom: 5px; -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory; height: auto; }
-            #options-panel::-webkit-scrollbar { display: none; }
-            .option-tile { flex: 0 0 140px; height: 100px; padding: 15px 10px; scroll-snap-align: start; margin-right: 15px; justify-content: center; }
-            .option-tile:last-child { margin-right: 0; }
-            .option-tile i { font-size: 26px; margin-bottom: 6px; }
-            .option-tile span { font-size: 13px; }
-            
-            /* Tùy chỉnh Layout cho Mobile lúc ban đầu (chưa chọn - xếp dọc) */
-            #dashboard-container.initial-selection #chat-container {
-                inset: 0;
-                height: 100% !important;
-                min-height: 100% !important;
-                border-radius: 12px;
-            }
-            #dashboard-container.initial-selection #options-wrapper {
-                justify-content: center;
-                padding: 14px 12px 16px;
-                border-radius: 12px;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
-                background: rgba(15, 23, 42, 0.62);
-                backdrop-filter: blur(4px);
-            }
-            #dashboard-container.initial-selection .options-title {
-                font-size: 15px;
-                margin: 2px 0 12px;
-                text-align: center;
-                padding-left: 0;
-                letter-spacing: 0.3px;
-            }
-            #dashboard-container.initial-selection #options-panel {
-                flex-direction: column;
-                overflow: visible;
-                padding: 0;
-                gap: 12px;
-                width: 100%;
-                max-width: 420px;
-                margin: 0 auto;
-            }
-            #dashboard-container.initial-selection .option-tile {
-                flex: 0 0 auto;
-                width: 100%;
-                margin-right: 0;
-                margin-bottom: 0;
-                min-height: 96px;
-                height: 96px;
-                padding: 12px 10px;
-                border-radius: 14px;
-                background: rgba(255, 255, 255, 0.9);
-            }
-            #dashboard-container.initial-selection .option-tile i { font-size: 24px; margin-bottom: 6px; }
-            #dashboard-container.initial-selection .option-tile span { font-size: 15px; }
-
-            .options-title { font-size: 16px; margin-bottom: 15px; text-align: left; padding-left: 5px; }
-
+            #dashboard-container { height: 100%; min-height: 78vh; flex: 1; }
             #chat-container { flex: 1 1 auto; min-height: 60vh; height: auto; }
-            .problem-status-toast {
-                position: fixed;
-                top: calc(env(safe-area-inset-top, 0px) + 78px);
-                right: 12px;
-                left: 12px;
-                max-width: none;
-                font-size: 13px;
-                padding: 11px 14px;
-                text-align: center;
-            }
         }
 
         .chat-message.chat-message-from-user,
@@ -520,6 +543,16 @@
             display: none !important;
         }
 
+        #chat-container [class*="body"],
+        #chat-container [class*="messages-list"],
+        #chat-container [class*="messagesList"] {
+            background: #eef2f8 !important;
+        }
+
+        #chat-container .chat-message-typing .chat-message-typing-body {
+            background: transparent !important;
+        }
+
         @media (max-width: 768px) {
             #chat-container {
                 height: 100% !important;
@@ -542,44 +575,6 @@
             }
         }
 
-        .sidebar-topic-wrapper {
-            display: none;
-        }
-
-        .sidebar-topic-title {
-            margin: 0 0 10px;
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            text-align: center;
-        }
-
-        .sidebar-topic-wrapper .sidebar-option {
-            opacity: 1;
-            animation: none;
-            min-height: 64px;
-            height: auto;
-            border-radius: 12px;
-            padding: 10px 12px;
-            flex: 0 0 auto;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .sidebar-topic-wrapper .sidebar-option i {
-            font-size: 18px;
-            margin-bottom: 4px;
-        }
-
-        .sidebar-topic-wrapper .sidebar-option span {
-            font-size: 13px;
-            text-align: center;
-            letter-spacing: 0.4px;
-            width: 100%;
-        }
-
         @media (min-width: 769px) {
             .app-header {
                 top: 0;
@@ -593,19 +588,7 @@
                 align-items: stretch;
                 justify-content: flex-start;
                 gap: 14px;
-                overflow-y: auto;
-            }
-
-            /* Ẩn thanh cuộn sidebar desktop nhưng vẫn cuộn bằng chuột */
-            .app-header {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
-
-            .app-header::-webkit-scrollbar {
-                width: 0;
-                height: 0;
-                display: none;
+                overflow: hidden;
             }
 
             .site-logo {
@@ -645,10 +628,6 @@
                 gap: 6px;
                 align-self: center;
                 order: 3;
-            }
-
-            .app-header.sidebar-topics-visible .header-actions {
-                margin-top: 0;
             }
 
             .btn-header,
@@ -709,85 +688,6 @@
                 width: 100%;
             }
 
-            .sidebar-topic-wrapper {
-                display: flex;
-                width: 92%;
-                max-width: 248px;
-                flex-direction: column;
-                margin-top: 0;
-                margin-bottom: 0;
-                padding-top: 0;
-                border-top: 0;
-                gap: 8px;
-                align-items: center;
-                align-self: center;
-                order: 2;
-            }
-
-            .app-header.sidebar-topics-visible .sidebar-topic-wrapper {
-                margin-top: auto;
-                margin-bottom: 20px;
-            }
-
-            .sidebar-topic-wrapper .sidebar-option {
-                width: 100%;
-                min-height: 40px;
-                padding: 9px 12px;
-                border-radius: 999px;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: flex-start;
-                gap: 9px;
-                background: transparent;
-                border: none;
-                box-shadow: none;
-                color: rgba(255,255,255,0.95);
-            }
-
-            .sidebar-topic-wrapper .sidebar-option i {
-                font-size: 14px;
-                margin-bottom: 0;
-                width: 16px;
-                text-align: center;
-                color: #9fd3f2;
-                transition: transform 0.2s ease, color 0.2s ease;
-            }
-
-            .sidebar-topic-wrapper .sidebar-option span {
-                flex: 1;
-                font-size: 13px;
-                font-weight: 700;
-                letter-spacing: 0.5px;
-                text-align: left;
-                line-height: 1.25;
-                width: auto;
-                color: rgba(255,255,255,0.95);
-            }
-
-            .sidebar-topic-wrapper .sidebar-option:hover:not(.active) {
-                transform: none;
-                background-color: rgba(255,255,255,0.08);
-                box-shadow: none;
-                border-color: transparent;
-            }
-
-            .sidebar-topic-wrapper .sidebar-option:hover:not(.active) i {
-                color: #c6e5f7;
-                transform: translateY(-1px);
-            }
-
-            .sidebar-topic-wrapper .sidebar-option.active {
-                background-color: rgba(255,255,255,0.12);
-                border: none;
-                box-shadow: none;
-            }
-
-            .sidebar-topic-wrapper .sidebar-option.active i,
-            .sidebar-topic-wrapper .sidebar-option.active span {
-                color: #ffffff;
-            }
-
             .app-main {
                 padding: 20px 18px 20px 310px;
                 min-height: 100vh;
@@ -804,34 +704,11 @@
                 max-width: none;
                 height: calc(100vh - 40px);
                 min-height: 0;
-                gap: 0;
             }
 
             #chat-container {
-                flex: 1;
+                flex: 1 1 auto;
                 height: 100%;
-            }
-
-            #options-wrapper {
-                display: flex;
-            }
-
-            #dashboard-container:not(.initial-selection) #options-wrapper {
-                display: none !important;
-            }
-
-            #dashboard-container.initial-selection {
-                justify-content: center;
-                align-items: center;
-                overflow: hidden;
-            }
-
-            #dashboard-container.initial-selection #chat-container {
-                display: block;
-                position: absolute;
-                inset: 0;
-                z-index: 1;
-                pointer-events: none;
             }
 
             .auth-card {
@@ -867,11 +744,10 @@
                 min-width: 0;
                 height: calc(100vh - 94px);
                 min-height: 0;
-                gap: 8px;
             }
 
-            #dashboard-container:not(.initial-selection) #chat-container {
-                height: calc(100vh - 186px) !important;
+            #chat-container {
+                height: 100% !important;
                 min-height: 0 !important;
             }
 
@@ -890,38 +766,374 @@
                 letter-spacing: 0.3px;
                 word-break: break-word;
             }
-
-            #options-panel {
-                padding-bottom: 4px;
-            }
-
-            .option-tile {
-                padding: 12px 8px;
-            }
-
-            #dashboard-container.initial-selection #options-wrapper {
-                padding: 10px 0 12px;
-                align-items: center;
-                justify-content: center;
-            }
-
-            #dashboard-container.initial-selection #options-panel {
-                width: calc(100% - 20px);
-                max-width: 420px;
-                margin: 0 auto;
-                box-sizing: border-box;
-            }
-
-            #dashboard-container.initial-selection .option-tile {
-                padding: 10px 8px;
-                width: 100%;
-                margin-left: 0;
-                margin-right: 0;
-                box-sizing: border-box;
-            }
         }
     </style>
     <link rel="stylesheet" href="shared-layout.css">
+    <style>
+        .mobile-sidebar-overlay,
+        .mobile-sidebar {
+            display: none;
+        }
+
+        .mobile-sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(8, 19, 34, 0.42);
+            backdrop-filter: blur(3px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.28s ease;
+            z-index: 6000;
+        }
+
+        .mobile-sidebar {
+            --mobile-sidebar-width: min(280px, calc(100vw - 28px));
+            position: fixed;
+            top: calc(env(safe-area-inset-top, 0px) + 84px);
+            right: 0;
+            bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+            width: var(--mobile-sidebar-width);
+            max-width: calc(100vw - 18px);
+            z-index: 6001;
+            transform: translateX(100%);
+            transition: transform 0.32s ease;
+            pointer-events: none;
+        }
+
+        .mobile-sidebar.is-open {
+            transform: translateX(0);
+        }
+
+        .mobile-sidebar-toggle {
+            position: absolute;
+            top: 50%;
+            left: -24px;
+            width: 24px;
+            height: 58px;
+            border: none;
+            border-radius: 14px 0 0 14px;
+            background: linear-gradient(180deg, #18314e 0%, #102136 100%);
+            color: #d4ecfb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 24px rgba(8, 19, 34, 0.24);
+            cursor: pointer;
+            pointer-events: auto;
+            transform: translateY(-50%);
+            transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .mobile-sidebar-toggle:hover,
+        .mobile-sidebar-toggle:focus-visible {
+            background: linear-gradient(180deg, #214261 0%, #17304a 100%);
+            color: #ffffff;
+            box-shadow: 0 14px 28px rgba(8, 19, 34, 0.28);
+            outline: none;
+        }
+
+        .mobile-sidebar-toggle i {
+            font-size: 11px;
+            transition: transform 0.25s ease;
+        }
+
+        .mobile-sidebar.is-open .mobile-sidebar-toggle i {
+            transform: rotate(180deg);
+        }
+
+        .mobile-sidebar-panel {
+            width: 100%;
+            height: 100%;
+            border-radius: 22px 0 0 22px;
+            background: linear-gradient(180deg, #14283f 0%, #102136 100%);
+            border-left: 1px solid rgba(255,255,255,0.08);
+            box-shadow: 0 24px 50px rgba(8, 19, 34, 0.34);
+            overflow: hidden;
+            pointer-events: auto;
+        }
+
+        .mobile-sidebar-inner {
+            height: 100%;
+            padding: 16px 12px 16px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            overflow-y: auto;
+        }
+
+        .mobile-sidebar-inner::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+
+        .mobile-sidebar-item,
+        .mobile-sidebar-subaction {
+            width: 100%;
+            border: none;
+            background: transparent;
+            color: rgba(255,255,255,0.94);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 12px 14px;
+            border-radius: 14px;
+            font-family: 'Roboto Condensed', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.25px;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.22s ease, color 0.22s ease, transform 0.22s ease;
+        }
+
+        .mobile-sidebar-item:hover,
+        .mobile-sidebar-item:focus-visible,
+        .mobile-sidebar-subaction:hover,
+        .mobile-sidebar-subaction:focus-visible {
+            background: rgba(255,255,255,0.08);
+            color: #ffffff;
+            outline: none;
+            transform: translateX(-2px);
+        }
+
+        .mobile-sidebar-item-main {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .mobile-sidebar-item-main i,
+        .mobile-sidebar-subaction i,
+        .mobile-sidebar-caret {
+            color: #9fd3f2;
+            font-size: 14px;
+            flex: 0 0 auto;
+        }
+
+        .mobile-sidebar-section-trigger {
+            background: transparent;
+        }
+
+        .mobile-sidebar-account-section {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .mobile-sidebar-account-section .mobile-sidebar-caret,
+        .mobile-sidebar-recent .mobile-sidebar-caret {
+            transition: transform 0.22s ease, color 0.22s ease;
+        }
+
+        .mobile-sidebar .recent-communications-toggle .mobile-sidebar-item-main i,
+        .mobile-sidebar-account-section .mobile-sidebar-item-main i {
+            transform: none !important;
+        }
+
+        .mobile-sidebar .recent-communications-panel.collapsed .mobile-sidebar-caret {
+            transform: rotate(-90deg) !important;
+        }
+
+        .mobile-sidebar-account-section.expanded .mobile-sidebar-caret {
+            transform: rotate(180deg) !important;
+        }
+
+        .mobile-sidebar .recent-communications-panel:not(.collapsed) .mobile-sidebar-caret,
+        .mobile-sidebar-account-section:not(.expanded) .mobile-sidebar-caret {
+            transform: none !important;
+        }
+
+        .mobile-sidebar-account-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: 0 2px;
+            background: #f8fbff;
+            border-radius: 14px;
+            border: 1px solid rgba(214, 225, 239, 0.95);
+            overflow: hidden;
+            box-shadow: 0 10px 24px rgba(7, 18, 33, 0.14);
+        }
+
+        .mobile-sidebar-account-details[hidden] {
+            display: none !important;
+        }
+
+        .mobile-sidebar-account-email {
+            margin: 0;
+            padding: 14px 16px;
+            color: #132843;
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1.4;
+            word-break: break-word;
+            background: #ffffff;
+        }
+
+        .mobile-sidebar-subaction {
+            justify-content: flex-start;
+            gap: 12px;
+            padding: 14px 16px;
+            border-top: 1px solid rgba(214, 225, 239, 0.95);
+            border-radius: 0;
+            background: #ffffff;
+            color: #18314e;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: none;
+            letter-spacing: 0;
+            transform: none !important;
+        }
+
+        .mobile-sidebar-subaction.danger {
+            color: #ff4b4b;
+        }
+
+        .mobile-sidebar-subaction.danger i {
+            color: #ff4b4b;
+        }
+
+        .mobile-sidebar-subaction:hover,
+        .mobile-sidebar-subaction:focus-visible {
+            background: #f2f7fc;
+            color: #132843;
+            transform: none;
+        }
+
+        .mobile-sidebar-subaction.danger:hover,
+        .mobile-sidebar-subaction.danger:focus-visible {
+            color: #ff3a3a;
+            background: #fff5f5;
+        }
+
+        .mobile-sidebar .recent-communications-panel {
+            width: 100%;
+            max-width: none;
+            align-self: stretch;
+            order: initial;
+            margin-top: 0;
+            padding: 0;
+            border-top: none;
+            gap: 10px;
+        }
+
+        .mobile-sidebar .recent-communications-panel:not([hidden]) {
+            display: flex;
+        }
+
+        .mobile-sidebar .recent-communications-list {
+            height: auto;
+            max-height: min(34vh, 260px);
+            padding: 2px 2px 2px 0;
+        }
+
+        .mobile-sidebar .recent-communication-item {
+            width: 100%;
+            margin: 0;
+            min-height: 40px;
+            padding: 10px 12px;
+            border-radius: 14px;
+            white-space: normal;
+            line-height: 1.35;
+            font-size: 12px;
+        }
+
+        .mobile-sidebar .recent-communication-empty {
+            padding: 8px 8px 4px;
+            font-size: 11px;
+        }
+
+        @media (max-width: 768px) {
+            :root {
+                --mobile-shell-inline-padding: 12px;
+            }
+
+            body.mobile-sidebar-open {
+                overflow: hidden;
+            }
+
+            .app-header {
+                padding-left: var(--mobile-shell-inline-padding) !important;
+                padding-right: var(--mobile-shell-inline-padding) !important;
+            }
+
+            .mobile-menu-btn,
+            #headerActions {
+                display: none !important;
+            }
+
+            .mobile-sidebar-overlay,
+            .mobile-sidebar {
+                display: block;
+            }
+
+            body.mobile-sidebar-open .mobile-sidebar-overlay {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            body.fixed-footer-layout .app-main {
+                padding-left: var(--mobile-shell-inline-padding) !important;
+                padding-right: var(--mobile-shell-inline-padding) !important;
+            }
+
+            #dashboard-container {
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            #dashboard-container > #chat-container,
+            body.fixed-footer-layout #dashboard-container:not(.initial-selection) #chat-container,
+            body.fixed-footer-layout.dashboard-active #dashboard-container:not(.initial-selection) #chat-container {
+                flex: 1 1 auto !important;
+                align-self: stretch;
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+            }
+
+            #chat-container,
+            #chat-container > *,
+            #chat-container .n8n-chat,
+            #chat-container .chat-wrapper,
+            #chat-container .chat-layout,
+            #chat-container .chat-header,
+            #chat-container .chat-body,
+            #chat-container .chat-footer {
+                width: 100% !important;
+                max-width: 100% !important;
+                min-width: 0 !important;
+                box-sizing: border-box;
+            }
+
+            body.fixed-footer-layout > footer {
+                margin-left: 0 !important;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            body.fixed-footer-layout > footer > div:first-child,
+            body.fixed-footer-layout > footer > .mobile-footer-meta {
+                padding-left: var(--mobile-shell-inline-padding) !important;
+                padding-right: var(--mobile-shell-inline-padding) !important;
+            }
+
+            .mobile-sidebar .recent-communications-panel,
+            .mobile-sidebar .recent-communications-panel:not([hidden]) {
+                display: flex !important;
+            }
+
+            .mobile-sidebar .recent-communications-panel[hidden] {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
 <body class="fixed-footer-layout">
 
@@ -934,6 +1146,16 @@
             <i class="fas fa-user-tie"></i>
             <span>Liên Hệ Chuyên Gia</span>
         </a>
+
+        <section class="recent-communications-panel" id="recentCommunicationPanel" data-recent-panel hidden aria-label="Recent communications">
+            <button type="button" class="recent-communications-toggle" id="recentCommunicationToggle" data-recent-toggle aria-expanded="true" onclick="toggleRecentCommunications();">
+                <span>Recents</span>
+                <i class="fas fa-chevron-down" aria-hidden="true"></i>
+            </button>
+            <div class="recent-communications-list" id="recentCommunicationList" data-recent-list>
+                <div class="recent-communication-empty">Chưa có trao đổi gần đây.</div>
+            </div>
+        </section>
         
         <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
             <i class="fas fa-bars"></i>
@@ -952,7 +1174,7 @@
                 </a>
                 <div class="user-dropdown" id="settingsDropdown">
                     <div class="menu-item" style="cursor: default; font-weight: bold; border-bottom: 1px solid #e2e8f0; background: #f8fafc;">
-                        <span id="userEmailDisplay" style="word-break: break-all; color: var(--primary-navy);">Người dùng</span>
+                        <span id="userEmailDisplay" data-user-email-display style="word-break: break-all; color: var(--primary-navy);">Người dùng</span>
                     </div>
                     <div class="menu-item" onclick="handleLogout()">
                         <i class="fas fa-sign-out-alt"></i> <span>Đăng xuất</span>
@@ -989,52 +1211,68 @@
             </div>
         </div>
 
-        <div class="sidebar-topic-wrapper hidden" id="sidebarTopicWrapper">
-            <div class="option-tile sidebar-option" onclick="selectOption(this, 'Cư trú')">
-                <i class="fas fa-id-card"></i>
-                <span>CƯ TRÚ</span>
-            </div>
-            <div class="option-tile sidebar-option" onclick="selectOption(this, 'Lao động')">
-                <i class="fas fa-briefcase"></i>
-                <span>LAO ĐỘNG</span>
-            </div>
-            <div class="option-tile sidebar-option" onclick="selectOption(this, 'Thuế')">
-                <i class="fas fa-file-invoice-dollar"></i>
-                <span>THUẾ</span>
-            </div>
-            <div class="option-tile sidebar-option" onclick="selectOption(this, 'Bảo hiểm')">
-                <i class="fas fa-shield-alt"></i>
-                <span>BẢO HIỂM (ZUS)</span>
-            </div>
-        </div>
     </header>
 
-    <main class="app-main">
-        <div id="dashboard-container" class="initial-selection" style="display: none;">
-            <div id="chat-container"></div>
-            <div id="problemStatusToast" class="problem-status-toast" role="status" aria-live="polite"></div>
-            
-            <div id="options-wrapper">
-                <h3 class="options-title">Bạn cần hỗ trợ về vấn đề gì?</h3>
-                <div id="options-panel">
-                    <div class="option-tile" onclick="selectOption(this, 'Cư trú')">
-                        <i class="fas fa-id-card"></i>
-                        <span>CƯ TRÚ</span>
-                    </div>
-                    <div class="option-tile" onclick="selectOption(this, 'Lao động')">
-                        <i class="fas fa-briefcase"></i>
-                        <span>LAO ĐỘNG</span>
-                    </div>
-                    <div class="option-tile" onclick="selectOption(this, 'Thuế')">
-                        <i class="fas fa-file-invoice-dollar"></i>
-                        <span>THUẾ</span>
-                    </div>
-                    <div class="option-tile" onclick="selectOption(this, 'Bảo hiểm')">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>BẢO HIỂM (ZUS)</span>
+    <div class="mobile-sidebar-overlay" id="mobileSidebarOverlay" onclick="closeMobileSidebar()"></div>
+    <aside class="mobile-sidebar" id="mobileSidebar" aria-hidden="true">
+        <button type="button" class="mobile-sidebar-toggle" id="mobileSidebarToggle" aria-controls="mobileSidebar" aria-expanded="false" aria-label="Mở menu" onclick="toggleMobileSidebar()">
+            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+        </button>
+        <div class="mobile-sidebar-panel">
+            <div class="mobile-sidebar-inner">
+                <div class="mobile-sidebar-account-section hidden" id="mobileSidebarAccountSection">
+                    <button type="button" class="mobile-sidebar-item mobile-sidebar-section-trigger" id="mobileSidebarAccountToggle" aria-expanded="false" onclick="toggleMobileSidebarAccount()">
+                        <span class="mobile-sidebar-item-main">
+                            <i class="fas fa-user"></i>
+                            <span>Tài khoản của tôi</span>
+                        </span>
+                    </button>
+                    <div class="mobile-sidebar-account-details" id="mobileSidebarAccountDetails" hidden>
+                        <div class="mobile-sidebar-account-email" id="mobileUserEmailDisplay" data-user-email-display>Người dùng</div>
+                        <button type="button" class="mobile-sidebar-subaction" onclick="closeMobileSidebar(); handleLogout();">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Đăng xuất</span>
+                        </button>
+                        <button type="button" class="mobile-sidebar-subaction danger" onclick="closeMobileSidebar(); requestDeleteAccount();">
+                            <i class="fas fa-trash-alt"></i>
+                            <span>Xóa tài khoản</span>
+                        </button>
                     </div>
                 </div>
+
+                <section class="recent-communications-panel mobile-sidebar-recent collapsed" id="mobileRecentCommunicationPanel" data-recent-panel hidden aria-label="Recent communications">
+                    <button type="button" class="recent-communications-toggle mobile-sidebar-item mobile-sidebar-section-trigger" id="mobileRecentCommunicationToggle" data-recent-toggle aria-expanded="false" onclick="toggleRecentCommunications('mobileRecentCommunicationPanel', 'mobileRecentCommunicationToggle');">
+                        <span class="mobile-sidebar-item-main">
+                            <i class="fas fa-clock-rotate-left"></i>
+                            <span>Recent</span>
+                        </span>
+                        <i class="fas fa-chevron-down mobile-sidebar-caret" aria-hidden="true"></i>
+                    </button>
+                    <div class="recent-communications-list" id="mobileRecentCommunicationList" data-recent-list>
+                        <div class="recent-communication-empty">Chưa có trao đổi gần đây.</div>
+                    </div>
+                </section>
+
+                <button type="button" class="mobile-sidebar-item" onclick="closeMobileSidebar(); openModal('contactModal');">
+                    <span class="mobile-sidebar-item-main">
+                        <i class="fas fa-headset"></i>
+                        <span>Hỗ trợ</span>
+                    </span>
+                </button>
+
+                <button type="button" class="mobile-sidebar-item" onclick="closeMobileSidebar(); openModal('guideModal');">
+                    <span class="mobile-sidebar-item-main">
+                        <i class="fas fa-circle-question"></i>
+                        <span>Hướng dẫn</span>
+                    </span>
+                </button>
             </div>
+        </div>
+    </aside>
+
+    <main class="app-main">
+        <div id="dashboard-container" style="display: none;">
+            <div id="chat-container"></div>
         </div>
         
         <div class="auth-card" id="authCard">
@@ -1192,64 +1430,1492 @@
         const URL_VERIFY = PROXY_URL + "/verify";
         const URL_FORGOT_PASSWORD_REQUEST = PROXY_URL + "/forgot-password-request";
         const URL_FORGOT_PASSWORD_RESET = PROXY_URL + "/forgot-password-reset";
+        const URL_RECENT_LIST = PROXY_URL + "/recent-list";
+        const URL_RECENT_UPSERT = PROXY_URL + "/recent-upsert";
+        const URL_RECENT_CLEAR = PROXY_URL + "/recent-clear";
+        const URL_RECENT_RESTORE = PROXY_URL + "/recent-restore";
+        const URL_RECENT_NEW_CHAT = PROXY_URL + "/recent-new-chat";
 
         window.authMode = 'login'; 
         window.currentAppLanguage = 'vn';
-        window.userProblem_Status = null;
+        window.activeChatRestoreContext = null;
+        window.activeRecentCommunicationRestoreId = null;
+        window.recentCommunicationCache = [];
+        window.recentCommunicationListHydrated = false;
+        window.recentCommunicationListLoading = false;
+        window.recentCommunicationListRequest = null;
+        window.recentNewChatRequest = null;
 
         const MAX_GUEST_MESSAGES = 5; 
         const AUTH_SESSION_KEY = 'a2d_auth_session';
         const MOBILE_EXPERT_FAB_POSITION_KEY = 'a2d_mobile_expert_fab_position';
-        const LEGACY_PROBLEM_STATUS_MAP = {
-            '1': 'US',
-            '2': 'wojewodzki urzad',
-            '3': 'ZUS',
-            '4': 'UP'
-        };
-        const PROBLEM_STATUS_TO_TOPIC_LABEL = {
-            'US': 'THUẾ',
-            'wojewodzki urzad': 'CƯ TRÚ',
-            'ZUS': 'BẢO HIỂM (ZUS)',
-            'UP': 'LAO ĐỘNG'
-        };
-        const PROBLEM_STATUS_TO_NOTICE_LABEL = {
-            'US': 'Thuế',
-            'wojewodzki urzad': 'Cư trú',
-            'ZUS': 'Bảo hiểm (ZUS)',
-            'UP': 'Lao động'
-        };
-        let problemStatusToastTimeout = null;
+        const MAX_RECENT_COMMUNICATIONS = 10;
+        const DEFAULT_CHAT_SESSION_KEY = 'sessionId';
+        const RECENT_RESTORE_REQUEST_TIMEOUT_MS = 20000;
 
-        function normalizeProblemStatus(problemStatus) {
-            if (problemStatus === null || problemStatus === undefined) {
+        function updateDisplayedUserEmail(email) {
+            const nextEmail = typeof email === 'string' && email.trim()
+                ? email.trim()
+                : 'Người dùng';
+
+            document.querySelectorAll('[data-user-email-display]').forEach((node) => {
+                node.innerText = nextEmail;
+            });
+        }
+
+        function setMobileSidebarAccountVisibility(isVisible) {
+            const section = document.getElementById('mobileSidebarAccountSection');
+            const details = document.getElementById('mobileSidebarAccountDetails');
+            const toggle = document.getElementById('mobileSidebarAccountToggle');
+
+            if (!section) {
+                return;
+            }
+
+            section.classList.toggle('hidden', !isVisible);
+
+            section.classList.remove('expanded');
+            if (details) {
+                details.hidden = true;
+            }
+            if (toggle) {
+                toggle.setAttribute('aria-expanded', 'false');
+            }
+        }
+
+        function syncMobileSidebarViewportState() {
+            if (window.innerWidth <= 768) {
+                return;
+            }
+
+            const sidebar = document.getElementById('mobileSidebar');
+            const toggle = document.getElementById('mobileSidebarToggle');
+            const overlay = document.getElementById('mobileSidebarOverlay');
+
+            document.body.classList.remove('mobile-sidebar-open');
+
+            if (sidebar) {
+                sidebar.classList.remove('is-open');
+                sidebar.setAttribute('aria-hidden', 'true');
+            }
+
+            if (toggle) {
+                toggle.setAttribute('aria-expanded', 'false');
+                toggle.setAttribute('aria-label', 'Mở menu');
+            }
+
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
+        }
+
+        window.toggleMobileSidebar = function(forceOpen) {
+            const sidebar = document.getElementById('mobileSidebar');
+            const toggle = document.getElementById('mobileSidebarToggle');
+            const overlay = document.getElementById('mobileSidebarOverlay');
+
+            if (!sidebar || window.innerWidth > 768) {
+                return;
+            }
+
+            const nextOpen = typeof forceOpen === 'boolean'
+                ? forceOpen
+                : !sidebar.classList.contains('is-open');
+
+            sidebar.classList.toggle('is-open', nextOpen);
+            sidebar.setAttribute('aria-hidden', String(!nextOpen));
+            document.body.classList.toggle('mobile-sidebar-open', nextOpen);
+
+            if (toggle) {
+                toggle.setAttribute('aria-expanded', String(nextOpen));
+                toggle.setAttribute('aria-label', nextOpen ? 'Ẩn menu' : 'Mở menu');
+            }
+
+            if (overlay) {
+                overlay.classList.toggle('active', nextOpen);
+            }
+        };
+
+        window.closeMobileSidebar = function() {
+            window.toggleMobileSidebar(false);
+        };
+
+        window.toggleMobileSidebarAccount = function() {
+            const section = document.getElementById('mobileSidebarAccountSection');
+            const details = document.getElementById('mobileSidebarAccountDetails');
+            const toggle = document.getElementById('mobileSidebarAccountToggle');
+
+            if (!section || section.classList.contains('hidden') || !details) {
+                return;
+            }
+
+            const nextExpanded = details.hidden;
+            details.hidden = !nextExpanded;
+            section.classList.toggle('expanded', nextExpanded);
+
+            if (toggle) {
+                toggle.setAttribute('aria-expanded', String(nextExpanded));
+            }
+        };
+
+        function syncMobileDashboardLayout() {
+            const body = document.body;
+            if (!body || !body.classList.contains('fixed-footer-layout')) {
+                return;
+            }
+
+            if (window.innerWidth > 768) {
+                body.style.removeProperty('--mobile-chat-height-offset');
+                return;
+            }
+
+            const appMain = document.querySelector('.app-main');
+            const header = document.getElementById('mainHeader');
+            const footer = document.querySelector('body > footer');
+            const viewportHeight = window.visualViewport && Number.isFinite(window.visualViewport.height)
+                ? window.visualViewport.height
+                : window.innerHeight;
+            const appMainStyles = appMain ? window.getComputedStyle(appMain) : null;
+            const paddingTop = appMainStyles ? parseFloat(appMainStyles.paddingTop) || 0 : 0;
+            const paddingBottom = appMainStyles ? parseFloat(appMainStyles.paddingBottom) || 0 : 0;
+            const headerHeight = header ? Math.ceil(header.getBoundingClientRect().height) : 0;
+            const footerHeight = footer ? Math.ceil(footer.getBoundingClientRect().height) : 0;
+            const topOffset = Math.max(paddingTop, headerHeight + 16);
+            const calculatedOffset = Math.round(topOffset + paddingBottom + footerHeight + 12);
+            const maxOffset = Math.max(160, Math.round(viewportHeight - 320));
+            const nextOffset = Math.max(150, Math.min(calculatedOffset, maxOffset));
+
+            body.style.setProperty('--mobile-chat-height-offset', `${nextOffset}px`);
+        }
+
+        function getRecentCommunicationUserKey(email = window.userEmail) {
+            if (typeof email !== 'string' || !email.trim()) {
+                return '';
+            }
+
+            const normalizedEmail = email.trim().toLowerCase();
+            if (normalizedEmail.includes('@a2d-guest.local')) {
+                return 'guest_device';
+            }
+
+            return normalizedEmail;
+        }
+
+        function normalizeRecentCommunicationText(text) {
+            if (typeof text !== 'string') {
+                return '';
+            }
+
+            return text
+                .replace(/\r\n?/g, '\n')
+                .replace(/\\n/g, '\n')
+                .trim();
+        }
+
+        function normalizeRecentCommunicationLabelText(text) {
+            return normalizeRecentCommunicationText(text).replace(/\s+/g, ' ').trim();
+        }
+
+        function escapeRecentCommunicationHtml(text) {
+            return String(text)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function formatRecentCommunicationInlineHtml(text) {
+            return escapeRecentCommunicationHtml(text)
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/__(.+?)__/g, '<strong>$1</strong>')
+                .replace(/`([^`]+)`/g, '<code>$1</code>');
+        }
+
+        function formatRecentCommunicationHtml(text) {
+            const normalizedText = normalizeRecentCommunicationText(text);
+            if (!normalizedText) {
+                return '';
+            }
+
+            const htmlParts = [];
+            const paragraphLines = [];
+            const listItems = [];
+            let listType = '';
+
+            const flushParagraph = () => {
+                if (!paragraphLines.length) {
+                    return;
+                }
+
+                htmlParts.push(`<p>${paragraphLines.map((line) => formatRecentCommunicationInlineHtml(line)).join('<br>')}</p>`);
+                paragraphLines.length = 0;
+            };
+
+            const flushList = () => {
+                if (!listItems.length || !listType) {
+                    return;
+                }
+
+                const itemsHtml = listItems.map((item) => `<li>${formatRecentCommunicationInlineHtml(item)}</li>`).join('');
+                htmlParts.push(`<${listType}>${itemsHtml}</${listType}>`);
+                listItems.length = 0;
+                listType = '';
+            };
+
+            normalizedText.split('\n').forEach((line) => {
+                const trimmedLine = line.trim();
+
+                if (!trimmedLine) {
+                    flushParagraph();
+                    flushList();
+                    return;
+                }
+
+                const headingMatch = trimmedLine.match(/^(#{1,6})\s+(.*)$/);
+                if (headingMatch) {
+                    flushParagraph();
+                    flushList();
+                    const headingLevel = Math.min(headingMatch[1].length, 6);
+                    htmlParts.push(`<h${headingLevel}>${formatRecentCommunicationInlineHtml(headingMatch[2])}</h${headingLevel}>`);
+                    return;
+                }
+
+                const orderedMatch = trimmedLine.match(/^\d+\.\s+(.*)$/);
+                if (orderedMatch) {
+                    flushParagraph();
+                    if (listType && listType !== 'ol') {
+                        flushList();
+                    }
+                    listType = 'ol';
+                    listItems.push(orderedMatch[1]);
+                    return;
+                }
+
+                const unorderedMatch = trimmedLine.match(/^[-*]\s+(.*)$/);
+                if (unorderedMatch) {
+                    flushParagraph();
+                    if (listType && listType !== 'ul') {
+                        flushList();
+                    }
+                    listType = 'ul';
+                    listItems.push(unorderedMatch[1]);
+                    return;
+                }
+
+                flushList();
+                paragraphLines.push(trimmedLine);
+            });
+
+            flushParagraph();
+            flushList();
+
+            return htmlParts.join('');
+        }
+
+        function trimRecentCommunicationLabel(text, maxLength = 42) {
+            if (text.length <= maxLength) {
+                return text;
+            }
+
+            return `${text.slice(0, maxLength - 3).trimEnd()}...`;
+        }
+
+        function normalizeRecentCommunicationScalar(value) {
+            if (typeof value === 'string') {
+                const trimmedValue = value.trim();
+                return trimmedValue || '';
+            }
+
+            if (typeof value === 'number' && Number.isFinite(value)) {
+                return String(value);
+            }
+
+            return '';
+        }
+ 
+        function pickRecentCommunicationValue(source, keys) {
+            if (!source || typeof source !== 'object') {
+                return '';
+            }
+
+            for (const key of keys) {
+                const normalizedValue = normalizeRecentCommunicationScalar(source[key]);
+                if (normalizedValue) {
+                    return normalizedValue;
+                }
+            }
+
+            return '';
+        }
+
+        function pickFirstNonEmptyString(values) {
+            for (const value of values) {
+                const normalizedValue = normalizeRecentCommunicationScalar(value);
+                if (normalizedValue) {
+                    return normalizedValue;
+                }
+            }
+
+            return '';
+        }
+
+        function sanitizeRecentCommunicationMetadata(metadata) {
+            if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)) {
+                return {};
+            }
+
+            const safeMetadata = {};
+
+            Object.keys(metadata).forEach((key) => {
+                const safeKey = normalizeRecentCommunicationScalar(key);
+                if (!safeKey) {
+                    return;
+                }
+
+                const value = metadata[key];
+
+                if (typeof value === 'string') {
+                    const normalizedValue = value.trim();
+                    if (normalizedValue) {
+                        safeMetadata[safeKey] = normalizedValue;
+                    }
+                    return;
+                }
+
+                if (typeof value === 'number' && Number.isFinite(value)) {
+                    safeMetadata[safeKey] = value;
+                    return;
+                }
+
+                if (typeof value === 'boolean') {
+                    safeMetadata[safeKey] = value;
+                }
+            });
+
+            return safeMetadata;
+        }
+
+        function createRecentCommunicationId(text, updatedAt = Date.now()) {
+            const safeSeed = (normalizeRecentCommunicationLabelText(text).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'message').slice(0, 24);
+            return `recent_${updatedAt}_${safeSeed}`;
+        }
+
+        function normalizeRecentCommunicationItem(item, fallbackEmail = window.userEmail) {
+            const rawItem = typeof item === 'string' ? { text: item } : item;
+            if (!rawItem || typeof rawItem !== 'object') {
                 return null;
             }
 
-            const rawProblemStatus = String(problemStatus).trim();
-            if (!rawProblemStatus) {
+            const normalizedText = normalizeRecentCommunicationText(
+                rawItem.text
+                || rawItem.message
+                || rawItem.label
+                || rawItem.prompt
+            );
+
+            if (!normalizedText) {
                 return null;
             }
 
-            if (LEGACY_PROBLEM_STATUS_MAP[rawProblemStatus]) {
-                return LEGACY_PROBLEM_STATUS_MAP[rawProblemStatus];
+            const rawUpdatedAt = pickRecentCommunicationValue(rawItem, ['updatedAt', 'updated_at', 'timestamp', 'createdAtUnix']);
+            const normalizedUpdatedAt = typeof rawUpdatedAt === 'string'
+                ? (/^\d+$/.test(rawUpdatedAt.trim()) ? Number(rawUpdatedAt) : Date.parse(rawUpdatedAt))
+                : Number(rawUpdatedAt);
+            const updatedAt = Number.isFinite(normalizedUpdatedAt) && normalizedUpdatedAt > 0
+                ? normalizedUpdatedAt
+                : Date.now();
+
+            return {
+                id: normalizeRecentCommunicationScalar(rawItem.id) || createRecentCommunicationId(normalizedText, updatedAt),
+                text: normalizedText,
+                answerText: normalizeRecentCommunicationText(
+                    rawItem.answerText
+                    || rawItem.answer_text
+                    || rawItem.botReply
+                    || rawItem.assistantReply
+                    || rawItem.assistantMessage
+                    || rawItem.answer
+                    || rawItem.output
+                    || rawItem.reply
+                    || rawItem.responseText
+                ),
+                currentIssue: pickRecentCommunicationValue(rawItem, ['currentIssue', 'current_issue']),
+                updatedAt,
+                threadId: pickRecentCommunicationValue(rawItem, ['threadId', 'Thread_ID', 'threadID', 'thread_id']),
+                createdAt: pickRecentCommunicationValue(rawItem, ['createdAt', 'Created_at', 'created_at']),
+                sessionId: pickRecentCommunicationValue(rawItem, ['sessionId', 'chatSessionId', 'session_id']),
+                historyKey: pickRecentCommunicationValue(rawItem, ['historyKey', 'historyId', 'history_id', 'history_key', 'restoreKey']),
+                chatSessionKey: pickRecentCommunicationValue(rawItem, ['chatSessionKey', 'chat_session_key']),
+                email: normalizeRecentCommunicationScalar(rawItem.email) || normalizeRecentCommunicationScalar(fallbackEmail),
+                metadata: sanitizeRecentCommunicationMetadata(rawItem.metadata)
+            };
+        }
+
+        function normalizeStoredChatRestoreContext(context) {
+            if (!context || typeof context !== 'object' || Array.isArray(context)) {
+                return null;
             }
 
-            const lowerProblemStatus = rawProblemStatus.toLowerCase();
-            if (lowerProblemStatus === 'wojewodzki urzad') {
-                return 'wojewodzki urzad';
+            const metadata = sanitizeRecentCommunicationMetadata(context.metadata);
+            const chatSessionKey = pickRecentCommunicationValue(context, ['chatSessionKey', 'chat_session_key']) || DEFAULT_CHAT_SESSION_KEY;
+            const sessionId = pickFirstNonEmptyString([
+                pickRecentCommunicationValue(context, ['sessionId', 'chatSessionId', 'session_id']),
+                metadata[chatSessionKey],
+                metadata.sessionId
+            ]);
+            const threadId = pickRecentCommunicationValue(context, ['threadId', 'Thread_ID', 'threadID']);
+            const createdAt = pickRecentCommunicationValue(context, ['createdAt', 'Created_at', 'created_at']);
+            const currentIssue = pickFirstNonEmptyString([
+                pickRecentCommunicationValue(context, ['currentIssue', 'current_issue']),
+                metadata.current_issue,
+                metadata.currentIssue
+            ]);
+
+            if (!sessionId && !threadId && !createdAt) {
+                return null;
             }
-            if (lowerProblemStatus === 'up') {
-                return 'UP';
+
+            const normalizedContext = {
+                email: pickRecentCommunicationValue(context, ['email', 'userEmail']),
+                threadId,
+                createdAt,
+                sessionId,
+                currentIssue,
+                chatSessionKey,
+                metadata,
+                loadPreviousSession: context.loadPreviousSession !== false
+            };
+
+            if (sessionId && !normalizedContext.metadata[chatSessionKey]) {
+                normalizedContext.metadata[chatSessionKey] = sessionId;
             }
-            if (lowerProblemStatus === 'us') {
-                return 'US';
+
+            if (sessionId && chatSessionKey !== 'sessionId' && !normalizedContext.metadata.sessionId) {
+                normalizedContext.metadata.sessionId = sessionId;
             }
-            if (lowerProblemStatus === 'zus') {
-                return 'ZUS';
+
+            if (currentIssue && !normalizedContext.metadata.current_issue) {
+                normalizedContext.metadata.current_issue = currentIssue;
+            }
+
+            return normalizedContext;
+        }
+
+        function serializeRecentCommunicationItem(item, email = window.userEmail) {
+            const normalizedItem = normalizeRecentCommunicationItem(item, email);
+            if (!normalizedItem) {
+                return null;
+            }
+
+            return {
+                id: normalizedItem.id,
+                text: normalizedItem.text,
+                answerText: normalizedItem.answerText,
+                currentIssue: normalizedItem.currentIssue,
+                updatedAt: normalizedItem.updatedAt,
+                threadId: normalizedItem.threadId,
+                createdAt: normalizedItem.createdAt,
+                sessionId: normalizedItem.sessionId,
+                historyKey: normalizedItem.historyKey,
+                chatSessionKey: normalizedItem.chatSessionKey,
+                email: normalizedItem.email,
+                metadata: normalizedItem.metadata
+            };
+        }
+
+        function mergeRecentCommunicationItems(items, email = window.userEmail) {
+            const mergedItems = new Map();
+
+            items.forEach((item) => {
+                const normalizedItem = normalizeRecentCommunicationItem(item, email);
+                if (!normalizedItem) {
+                    return;
+                }
+
+                const itemKey = normalizedItem.id || `${normalizedItem.text}_${normalizedItem.updatedAt}`;
+                mergedItems.set(itemKey, normalizedItem);
+            });
+
+            return Array.from(mergedItems.values())
+                .sort((a, b) => b.updatedAt - a.updatedAt)
+                .slice(0, MAX_RECENT_COMMUNICATIONS);
+        }
+
+        function setRecentCommunicationCache(items, email = window.userEmail) {
+            window.recentCommunicationCache = mergeRecentCommunicationItems(items, email);
+            window.recentCommunicationListHydrated = true;
+            return window.recentCommunicationCache;
+        }
+
+        function extractRecentCommunicationList(payload) {
+            if (Array.isArray(payload)) {
+                return payload;
+            }
+
+            const arrayCandidates = [
+                payload && payload.items,
+                payload && payload.data,
+                payload && payload.recents,
+                payload && payload.recentCommunications,
+                payload && payload.list,
+                payload && payload.data && payload.data.items,
+                payload && payload.data && payload.data.recents
+            ];
+
+            for (const candidate of arrayCandidates) {
+                if (Array.isArray(candidate)) {
+                    return candidate;
+                }
+            }
+
+            return [];
+        }
+
+        function loadRecentCommunications() {
+            return Array.isArray(window.recentCommunicationCache)
+                ? window.recentCommunicationCache.slice(0, MAX_RECENT_COMMUNICATIONS)
+                : [];
+        }
+
+        async function fetchRecentCommunications(email = window.userEmail, options = {}) {
+            const { force = false } = options;
+
+            if (!email) {
+                setRecentCommunicationCache([]);
+                renderRecentCommunicationList();
+                return [];
+            }
+
+            if (window.recentCommunicationListRequest && !force) {
+                return window.recentCommunicationListRequest;
+            }
+
+            window.recentCommunicationListLoading = true;
+            renderRecentCommunicationList();
+
+            const requestPromise = fetch(URL_RECENT_LIST, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email,
+                    limit: MAX_RECENT_COMMUNICATIONS
+                })
+            }).then(async (response) => {
+                const payload = await parseJsonResponse(response);
+                if (!response.ok) {
+                    throw new Error(
+                        normalizeRecentCommunicationScalar(payload.message)
+                        || normalizeRecentCommunicationScalar(payload.error)
+                        || 'Không thể tải danh sách recent từ backend.'
+                    );
+                }
+
+                const items = extractRecentCommunicationList(payload);
+                setRecentCommunicationCache(items, email);
+                return loadRecentCommunications();
+            }).catch((error) => {
+                console.warn('Không thể tải recent communications từ backend:', error);
+                if (!window.recentCommunicationListHydrated) {
+                    setRecentCommunicationCache([]);
+                }
+                return loadRecentCommunications();
+            }).finally(() => {
+                window.recentCommunicationListLoading = false;
+                window.recentCommunicationListRequest = null;
+                renderRecentCommunicationList();
+            });
+
+            window.recentCommunicationListRequest = requestPromise;
+            return requestPromise;
+        }
+
+        async function persistRecentCommunicationItem(item, email = window.userEmail) {
+            const serializedItem = serializeRecentCommunicationItem(item, email);
+            if (!serializedItem || !email) {
+                return null;
+            }
+
+            const previousItems = loadRecentCommunications();
+            setRecentCommunicationCache([serializedItem, ...previousItems], email);
+            renderRecentCommunicationList();
+
+            try {
+                const response = await fetch(URL_RECENT_UPSERT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email,
+                        recent: serializedItem
+                    })
+                });
+
+                const payload = await parseJsonResponse(response);
+                if (!response.ok) {
+                    throw new Error(
+                        normalizeRecentCommunicationScalar(payload.message)
+                        || normalizeRecentCommunicationScalar(payload.error)
+                        || 'Không thể lưu recent lên backend.'
+                    );
+                }
+
+                const savedItem = serializeRecentCommunicationItem(
+                    payload.item
+                    || payload.recent
+                    || (payload.data && (payload.data.item || payload.data.recent))
+                    || payload,
+                    email
+                ) || serializedItem;
+
+                if (savedItem) {
+                    const nextItems = loadRecentCommunications().filter((existingItem) => {
+                        return existingItem && existingItem.id !== serializedItem.id;
+                    });
+                    setRecentCommunicationCache([savedItem, ...nextItems], email);
+                    renderRecentCommunicationList();
+                }
+
+                return savedItem || serializedItem;
+            } catch (error) {
+                console.warn('Không thể đồng bộ recent communication lên backend:', error);
+                setRecentCommunicationCache(previousItems, email);
+                renderRecentCommunicationList();
+                return serializedItem;
+            }
+        }
+
+        async function clearRecentCommunications(email = window.userEmail) {
+            setRecentCommunicationCache([]);
+            renderRecentCommunicationList();
+
+            if (!email) {
+                return;
+            }
+
+            try {
+                const response = await fetch(URL_RECENT_CLEAR, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email })
+                });
+
+                const payload = await parseJsonResponse(response);
+                if (!response.ok) {
+                    throw new Error(
+                        normalizeRecentCommunicationScalar(payload.message)
+                        || normalizeRecentCommunicationScalar(payload.error)
+                        || 'Không thể xóa recent trên backend.'
+                    );
+                }
+            } catch (error) {
+                console.warn('Không thể xóa recent communications trên backend:', error);
+            }
+        }
+
+        function updateRecentCommunicationItem(itemId, patch, email = window.userEmail, options = {}) {
+            if (!itemId || !patch || typeof patch !== 'object') {
+                return;
+            }
+
+            const shouldPersist = options.persist !== false;
+            let updatedItem = null;
+
+            const nextItems = loadRecentCommunications().map((item) => {
+                if (item.id !== itemId) {
+                    return item;
+                }
+
+                updatedItem = normalizeRecentCommunicationItem({
+                    ...item,
+                    ...patch,
+                    metadata: {
+                        ...(item.metadata || {}),
+                        ...sanitizeRecentCommunicationMetadata(patch.metadata)
+                    }
+                }, email);
+
+                return updatedItem;
+            }).filter(Boolean);
+
+            if (!updatedItem) {
+                return;
+            }
+
+            setRecentCommunicationCache(nextItems, email);
+            renderRecentCommunicationList();
+            if (shouldPersist) {
+                void persistRecentCommunicationItem(updatedItem, email);
+            }
+        }
+
+        function getRecentCommunicationPanels() {
+            const panels = Array.from(document.querySelectorAll('[data-recent-panel]'));
+            if (panels.length) {
+                return panels;
+            }
+
+            const fallbackPanel = document.getElementById('recentCommunicationPanel');
+            return fallbackPanel ? [fallbackPanel] : [];
+        }
+
+        function getRecentCommunicationLists() {
+            const lists = Array.from(document.querySelectorAll('[data-recent-list]'));
+            if (lists.length) {
+                return lists;
+            }
+
+            const fallbackList = document.getElementById('recentCommunicationList');
+            return fallbackList ? [fallbackList] : [];
+        }
+
+        function setRecentCommunicationPanelVisibility(isVisible) {
+            const panels = getRecentCommunicationPanels();
+            if (!panels.length) {
+                return;
+            }
+
+            panels.forEach((panel) => {
+                panel.hidden = !isVisible;
+            });
+
+            if (isVisible) {
+                renderRecentCommunicationList();
+                void fetchRecentCommunications(window.userEmail, { force: !window.recentCommunicationListHydrated });
+            }
+        }
+
+        function setRecentCommunicationLoadingState(recentId, isLoading) {
+            window.activeRecentCommunicationRestoreId = isLoading ? recentId : null;
+
+            const buttons = document.querySelectorAll('.recent-communication-item');
+            buttons.forEach((button) => {
+                const isCurrentButton = button.dataset.recentId === recentId;
+                button.disabled = Boolean(window.activeRecentCommunicationRestoreId);
+                button.classList.toggle('is-loading', isLoading && isCurrentButton);
+
+                if (isLoading && isCurrentButton) {
+                    button.setAttribute('aria-busy', 'true');
+                } else {
+                    button.removeAttribute('aria-busy');
+                }
+            });
+
+            setRecentNewChatLoadingState(Boolean(window.recentNewChatRequest));
+        }
+
+        function setRecentNewChatLoadingState(isLoading) {
+            const buttons = Array.from(document.querySelectorAll('[data-recent-new-chat-button], #recentNewChatButton'));
+            if (!buttons.length) {
+                return;
+            }
+
+            buttons.forEach((button) => {
+                button.disabled = isLoading || Boolean(window.activeRecentCommunicationRestoreId);
+                button.classList.toggle('is-loading', isLoading);
+                button.setAttribute('aria-busy', isLoading ? 'true' : 'false');
+            });
+        }
+
+        async function requestRecentNewChat() {
+            if (window.recentNewChatRequest) {
+                return window.recentNewChatRequest;
+            }
+
+            const payload = {
+                email: window.userEmail || '',
+                lang: window.currentAppLanguage,
+                activeThreadId: window.userThread_ID || '',
+                activeCreatedAt: window.userCreated_at || '',
+                sessionId: window.activeChatRestoreContext && window.activeChatRestoreContext.sessionId
+                    ? window.activeChatRestoreContext.sessionId
+                    : '',
+                currentIssue: window.activeChatRestoreContext && window.activeChatRestoreContext.currentIssue
+                    ? window.activeChatRestoreContext.currentIssue
+                    : ''
+            };
+
+            const requestPromise = fetch(URL_RECENT_NEW_CHAT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(async (response) => {
+                const responseData = await parseJsonResponse(response);
+                if (!response.ok) {
+                    throw new Error(
+                        normalizeRecentCommunicationScalar(responseData.message)
+                        || normalizeRecentCommunicationScalar(responseData.error)
+                        || 'Không thể tạo cuộc trò chuyện mới.'
+                    );
+                }
+
+                return responseData;
+            }).finally(() => {
+                window.recentNewChatRequest = null;
+            });
+
+            window.recentNewChatRequest = requestPromise;
+            return requestPromise;
+        }
+
+        function renderRecentCommunicationList() {
+            const lists = getRecentCommunicationLists();
+            if (!lists.length) {
+                return;
+            }
+
+            const items = loadRecentCommunications();
+
+            lists.forEach((list) => {
+                list.innerHTML = '';
+
+                if (!items.length) {
+                    const emptyState = document.createElement('div');
+                    emptyState.className = 'recent-communication-empty';
+                    emptyState.textContent = window.recentCommunicationListLoading
+                        ? 'Đang tải recent...'
+                        : 'Chưa có trao đổi gần đây.';
+                    list.appendChild(emptyState);
+                    return;
+                }
+
+                items.forEach((item) => {
+                    const fullText = normalizeRecentCommunicationLabelText(item.text);
+                    if (!fullText) {
+                        return;
+                    }
+
+                    const button = document.createElement('button');
+                    button.type = 'button';
+                    button.className = 'recent-communication-item';
+                    button.dataset.recentId = item.id;
+                    button.textContent = trimRecentCommunicationLabel(fullText);
+                    button.title = fullText;
+
+                    if (window.activeRecentCommunicationRestoreId === item.id) {
+                        button.disabled = true;
+                        button.classList.add('is-loading');
+                        button.setAttribute('aria-busy', 'true');
+                    }
+
+                    button.addEventListener('click', function() {
+                        window.useRecentCommunication(item);
+                    });
+                    list.appendChild(button);
+                });
+
+                if (!list.children.length) {
+                    const emptyState = document.createElement('div');
+                    emptyState.className = 'recent-communication-empty';
+                    emptyState.textContent = 'Chưa có trao đổi gần đây.';
+                    list.appendChild(emptyState);
+                }
+            });
+        }
+
+        function focusChatComposerWithText(text) {
+            const chatContainer = document.getElementById('chat-container');
+            if (!chatContainer) {
+                return false;
+            }
+
+            const composer = chatContainer.querySelector('textarea')
+                || chatContainer.querySelector('input[type="text"]')
+                || chatContainer.querySelector('[contenteditable="true"]');
+
+            if (!composer) {
+                return false;
+            }
+
+            if ('value' in composer) {
+                composer.focus();
+                composer.value = text;
+                composer.dispatchEvent(new Event('input', { bubbles: true }));
+                if (typeof composer.setSelectionRange === 'function') {
+                    composer.setSelectionRange(text.length, text.length);
+                }
+            } else {
+                composer.textContent = text;
+                composer.focus();
+                composer.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+
+            chatContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            return true;
+        }
+
+        function createRecentCommunicationRecord(text, answerText, extraContext = {}, email = window.userEmail) {
+            return normalizeRecentCommunicationItem({
+                id: createRecentCommunicationId(text),
+                text,
+                answerText,
+                currentIssue: pickRecentCommunicationValue(extraContext, ['currentIssue', 'current_issue']),
+                updatedAt: Date.now(),
+                threadId: pickFirstNonEmptyString([
+                    pickRecentCommunicationValue(extraContext, ['threadId', 'Thread_ID', 'threadID']),
+                    window.userThread_ID
+                ]),
+                createdAt: pickFirstNonEmptyString([
+                    pickRecentCommunicationValue(extraContext, ['createdAt', 'Created_at', 'created_at']),
+                    window.userCreated_at
+                ]),
+                sessionId: pickRecentCommunicationValue(extraContext, ['sessionId', 'chatSessionId', 'session_id']),
+                historyKey: pickRecentCommunicationValue(extraContext, ['historyKey', 'historyId', 'history_id', 'restoreKey']),
+                chatSessionKey: pickRecentCommunicationValue(extraContext, ['chatSessionKey', 'chat_session_key']),
+                email,
+                metadata: sanitizeRecentCommunicationMetadata(extraContext.metadata)
+            }, email);
+        }
+
+        function pushRecentCommunication(text, answerText, email = window.userEmail, extraContext = {}) {
+            const recentItem = createRecentCommunicationRecord(text, answerText, extraContext, email);
+            if (!recentItem || !recentItem.answerText) {
+                return;
+            }
+
+            void persistRecentCommunicationItem(recentItem, email);
+        }
+
+        window.toggleRecentCommunications = function(panelId = 'recentCommunicationPanel', toggleId = 'recentCommunicationToggle') {
+            const panel = document.getElementById(panelId);
+            const toggle = document.getElementById(toggleId);
+            if (!panel || !toggle) {
+                return;
+            }
+
+            const isCollapsed = panel.classList.toggle('collapsed');
+            toggle.setAttribute('aria-expanded', String(!isCollapsed));
+        };
+
+        window.startNewChatFromRecent = async function() {
+            if (window.recentNewChatRequest) {
+                return false;
+            }
+
+            setRecentNewChatLoadingState(true);
+
+            try {
+                const responseData = await requestRecentNewChat();
+                window.destroyChatWidget();
+
+                const nextRestoreContext = normalizeStoredChatRestoreContext({
+                    ...(responseData && typeof responseData === 'object' ? responseData : {}),
+                    loadPreviousSession: false
+                });
+
+                window.activeRecentRestorePair = null;
+                window.activeChatRestoreContext = nextRestoreContext;
+                window.userThread_ID = responseData && typeof responseData === 'object'
+                    ? (pickRecentCommunicationValue(responseData, ['threadId', 'Thread_ID', 'threadID', 'thread_id']) || null)
+                    : null;
+                window.userCreated_at = responseData && typeof responseData === 'object'
+                    ? (pickRecentCommunicationValue(responseData, ['createdAt', 'Created_at', 'created_at']) || null)
+                    : null;
+
+                window.persistAuthSession();
+                initChatbot(window.userEmail, window.userThread_ID, window.userCreated_at, {
+                    restoreContext: window.activeChatRestoreContext,
+                    clearStoredSession: true
+                });
+                window.closeMobileSidebar();
+                return true;
+            } catch (error) {
+                console.warn('Không thể khởi tạo cuộc trò chuyện mới từ recent:', error);
+                alert(error && error.message ? error.message : 'Không thể tạo cuộc trò chuyện mới.');
+                return false;
+            } finally {
+                setRecentNewChatLoadingState(false);
+            }
+        };
+
+        function pickRecentRestoreField(sources, keys, fallbackValues = []) {
+            const values = [];
+
+            sources.forEach((source) => {
+                if (!source || typeof source !== 'object' || Array.isArray(source)) {
+                    return;
+                }
+
+                keys.forEach((key) => {
+                    values.push(source[key]);
+                });
+            });
+
+            fallbackValues.forEach((value) => {
+                values.push(value);
+            });
+
+            return pickFirstNonEmptyString(values);
+        }
+
+        function normalizeRecentRestoreResponse(payload, recentItem) {
+            const rootPayload = payload && typeof payload === 'object' && !Array.isArray(payload) ? payload : {};
+            const nestedSources = [
+                rootPayload,
+                rootPayload.data,
+                rootPayload.result,
+                rootPayload.restore,
+                rootPayload.state,
+                rootPayload.chatState
+            ].filter(source => source && typeof source === 'object' && !Array.isArray(source));
+
+            const metadata = {
+                ...sanitizeRecentCommunicationMetadata(recentItem && recentItem.metadata),
+                ...nestedSources.reduce((combinedMetadata, source) => ({
+                    ...combinedMetadata,
+                    ...sanitizeRecentCommunicationMetadata(source.metadata)
+                }), {})
+            };
+
+            const chatSessionKey = pickRecentRestoreField(
+                nestedSources,
+                ['chatSessionKey', 'chat_session_key'],
+                [recentItem && recentItem.chatSessionKey, DEFAULT_CHAT_SESSION_KEY]
+            ) || DEFAULT_CHAT_SESSION_KEY;
+
+            const sessionId = pickRecentRestoreField(
+                nestedSources,
+                ['sessionId', 'chatSessionId', 'session_id'],
+                [recentItem && recentItem.sessionId, metadata[chatSessionKey], metadata.sessionId]
+            );
+
+            if (sessionId && !metadata[chatSessionKey]) {
+                metadata[chatSessionKey] = sessionId;
+            }
+
+            if (sessionId && chatSessionKey !== 'sessionId' && !metadata.sessionId) {
+                metadata.sessionId = sessionId;
+            }
+
+            const historyKey = pickRecentRestoreField(
+                nestedSources,
+                ['historyKey', 'historyId', 'history_id', 'restoreKey'],
+                [recentItem && recentItem.historyKey]
+            );
+
+            if (historyKey && !metadata.historyKey) {
+                metadata.historyKey = historyKey;
+            }
+
+            if (recentItem && recentItem.id && !metadata.recentId) {
+                metadata.recentId = recentItem.id;
+            }
+
+            if (recentItem && recentItem.text && !metadata.recentText) {
+                metadata.recentText = recentItem.text;
+            }
+
+            const currentIssue = pickRecentRestoreField(
+                nestedSources,
+                ['currentIssue', 'current_issue'],
+                [recentItem && recentItem.currentIssue, metadata.current_issue, metadata.currentIssue]
+            );
+
+            if (currentIssue && !metadata.current_issue) {
+                metadata.current_issue = currentIssue;
+            }
+
+            const normalizedResponse = {
+                email: pickRecentRestoreField(nestedSources, ['email', 'userEmail'], [window.userEmail]),
+                threadId: pickRecentRestoreField(
+                    nestedSources,
+                    ['threadId', 'Thread_ID', 'threadID'],
+                    [recentItem && recentItem.threadId, window.userThread_ID]
+                ),
+                createdAt: pickRecentRestoreField(
+                    nestedSources,
+                    ['createdAt', 'Created_at', 'created_at'],
+                    [recentItem && recentItem.createdAt, window.userCreated_at]
+                ),
+                sessionId,
+                currentIssue,
+                historyKey,
+                chatSessionKey,
+                metadata,
+                questionText: pickRecentRestoreField(
+                    nestedSources,
+                    ['questionText', 'userQuestion', 'userText', 'userMessage', 'prompt', 'text'],
+                    [recentItem && recentItem.text]
+                ),
+                answerText: pickRecentRestoreField(
+                    nestedSources,
+                    ['answerText', 'botReply', 'assistantReply', 'assistantMessage', 'output', 'answer', 'responseText'],
+                    [recentItem && recentItem.answerText]
+                ),
+                loadPreviousSession: rootPayload.loadPreviousSession !== false
+            };
+
+            normalizedResponse.canResumeSession = Boolean(
+                normalizedResponse.sessionId
+                || normalizedResponse.threadId
+                || normalizedResponse.createdAt
+            );
+
+            return normalizedResponse;
+        }
+
+        async function parseJsonResponse(response) {
+            const rawText = await response.text();
+            if (!rawText) {
+                return {};
+            }
+
+            try {
+                return JSON.parse(rawText);
+            } catch (error) {
+                return { rawText };
+            }
+        }
+
+        async function requestRecentCommunicationRestore(recentItem) {
+            // Webhook này có thể trả về:
+            // 1) questionText + answerText để frontend render đúng 1 cặp hỏi/đáp đã chọn.
+            // 2) sessionId/threadId/createdAt (+ metadata) để tiếp tục cuộc trò chuyện từ đúng checkpoint đó.
+            const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+            const timeoutId = controller
+                ? window.setTimeout(() => controller.abort(), RECENT_RESTORE_REQUEST_TIMEOUT_MS)
+                : null;
+
+            try {
+                const response = await fetch(URL_RECENT_RESTORE, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: window.userEmail || recentItem.email || '',
+                        lang: window.currentAppLanguage,
+                        activeThreadId: window.userThread_ID || '',
+                        activeCreatedAt: window.userCreated_at || '',
+                        recent: {
+                            id: recentItem.id,
+                            text: recentItem.text,
+                            updatedAt: recentItem.updatedAt,
+                            currentIssue: recentItem.currentIssue,
+                            threadId: recentItem.threadId,
+                            createdAt: recentItem.createdAt,
+                            sessionId: recentItem.sessionId,
+                            historyKey: recentItem.historyKey,
+                            chatSessionKey: recentItem.chatSessionKey,
+                            metadata: recentItem.metadata
+                        }
+                    }),
+                    signal: controller ? controller.signal : undefined
+                });
+
+                const responseData = await parseJsonResponse(response);
+                if (!response.ok) {
+                    throw new Error(
+                        normalizeRecentCommunicationScalar(responseData.message)
+                        || normalizeRecentCommunicationScalar(responseData.error)
+                        || `Không thể khôi phục trao đổi (${response.status}).`
+                    );
+                }
+
+                return normalizeRecentRestoreResponse(responseData, recentItem);
+            } catch (error) {
+                if (error && error.name === 'AbortError') {
+                    throw new Error('Webhook khôi phục recent phản hồi quá chậm. Vui lòng thử lại.');
+                }
+
+                throw error;
+            } finally {
+                if (timeoutId) {
+                    window.clearTimeout(timeoutId);
+                }
+            }
+        }
+
+        function findRecentRestoreMessageHost(chatContainer) {
+            if (!chatContainer) {
+                return null;
+            }
+
+            const existingMessage = chatContainer.querySelector('.chat-message');
+            if (existingMessage && existingMessage.parentElement) {
+                return existingMessage.parentElement;
+            }
+
+            const selectors = [
+                '.chat-messages-list',
+                '[class*="messages-list"]',
+                '[class*="messagesList"]',
+                '[class*="messages"]',
+                '[data-test-id*="messages"]'
+            ];
+
+            for (const selector of selectors) {
+                const candidate = chatContainer.querySelector(selector);
+                if (candidate) {
+                    return candidate;
+                }
+            }
+
+            const composer = chatContainer.querySelector('textarea, input[type="text"], [contenteditable="true"]');
+            if (composer) {
+                const composerShell = composer.closest('form, footer, [class*="footer"], [class*="input"], [class*="composer"]');
+                if (composerShell && composerShell.previousElementSibling) {
+                    return composerShell.previousElementSibling;
+                }
             }
 
             return null;
         }
+
+        function findRecentRestoreBannerAnchor(chatContainer) {
+            if (!chatContainer) {
+                return null;
+            }
+
+            const selectors = [
+                '.chat-header',
+                '[class*="header"]'
+            ];
+
+            for (const selector of selectors) {
+                const candidates = chatContainer.querySelectorAll(selector);
+                for (const candidate of candidates) {
+                    if (candidate && (candidate.querySelector('h1') || candidate.querySelector('[class*="title"]'))) {
+                        return candidate;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        function syncRecentRestoreMessagesPosition(messageHost) {
+            if (!messageHost) {
+                return;
+            }
+
+            const childNodes = Array.from(messageHost.children);
+            const restoreNodes = childNodes.filter((child) => {
+                return child.classList && child.classList.contains('recent-chat-restore-message');
+            });
+
+            if (!restoreNodes.length) {
+                return;
+            }
+
+            const isLiveChatChild = (child) => {
+                if (!child || !child.classList) {
+                    return false;
+                }
+
+                const className = typeof child.className === 'string' ? child.className : '';
+                return child.classList.contains('chat-message') || /typing/i.test(className);
+            };
+
+            const firstDynamicChild = childNodes.find((child) => {
+                return isLiveChatChild(child) && !child.classList.contains('recent-chat-restore-message');
+            });
+
+            if (!firstDynamicChild) {
+                return;
+            }
+
+            const firstRestoreIndex = childNodes.findIndex((child) => {
+                return child.classList && child.classList.contains('recent-chat-restore-message');
+            });
+            const firstDynamicIndex = childNodes.indexOf(firstDynamicChild);
+
+            if (firstRestoreIndex !== -1 && firstRestoreIndex < firstDynamicIndex) {
+                return;
+            }
+
+            restoreNodes.forEach((node) => {
+                messageHost.insertBefore(node, firstDynamicChild);
+            });
+        }
+
+        function observeRecentRestoreMessages(messageHost) {
+            if (!messageHost || typeof MutationObserver === 'undefined') {
+                return;
+            }
+
+            if (window.recentRestoreMessageObserver) {
+                window.recentRestoreMessageObserver.disconnect();
+            }
+
+            const observer = new MutationObserver(() => {
+                syncRecentRestoreMessagesPosition(messageHost);
+            });
+
+            observer.observe(messageHost, { childList: true });
+            window.recentRestoreMessageObserver = observer;
+        }
+
+        function renderRecentRestoreMessagesInChat(questionText, answerText, attempt = 0) {
+            const chatContainer = document.getElementById('chat-container');
+            if (!chatContainer) {
+                return false;
+            }
+
+            const messageHost = findRecentRestoreMessageHost(chatContainer);
+            if (!messageHost) {
+                if (attempt < 20) {
+                    window.setTimeout(() => {
+                        renderRecentRestoreMessagesInChat(questionText, answerText, attempt + 1);
+                    }, 120);
+                }
+                return false;
+            }
+
+            messageHost.querySelectorAll('.recent-chat-restore-message').forEach((node) => node.remove());
+
+            const existingBannerShell = chatContainer.querySelector('.recent-chat-restore-banner-shell');
+            if (existingBannerShell) {
+                existingBannerShell.remove();
+            }
+
+            const bannerShell = document.createElement('div');
+            bannerShell.className = 'recent-chat-restore-banner-shell';
+
+            const banner = document.createElement('div');
+            banner.className = 'recent-chat-restore-banner recent-chat-restore-banner-top';
+            banner.textContent = 'Bạn đang tiếp tục từ checkpoint đã chọn trong recent.';
+            bannerShell.appendChild(banner);
+            const restoreMessages = [
+                { role: 'user', text: questionText },
+                { role: 'bot', text: answerText }
+            ].map((message) => {
+                const normalizedText = normalizeRecentCommunicationText(message.text);
+                if (!normalizedText) {
+                    return null;
+                }
+
+                const messageNode = document.createElement('div');
+                messageNode.className = `chat-message chat-message-from-${message.role === 'user' ? 'user' : 'bot'} recent-chat-restore-message`;
+                messageNode.dataset.recentRestore = 'true';
+
+                const markdownNode = document.createElement('div');
+                markdownNode.className = 'chat-message-markdown recent-chat-restore-markdown';
+                markdownNode.innerHTML = formatRecentCommunicationHtml(normalizedText);
+
+                messageNode.appendChild(markdownNode);
+                return messageNode;
+            }).filter(Boolean);
+
+            const firstDynamicMessage = Array.from(messageHost.children).find((child) => {
+                return !child.classList.contains('recent-chat-restore-message');
+            });
+
+            restoreMessages.forEach((messageNode) => {
+                if (firstDynamicMessage) {
+                    messageHost.insertBefore(messageNode, firstDynamicMessage);
+                } else {
+                    messageHost.appendChild(messageNode);
+                }
+            });
+
+            syncRecentRestoreMessagesPosition(messageHost);
+            observeRecentRestoreMessages(messageHost);
+
+            const bannerAnchor = findRecentRestoreBannerAnchor(chatContainer);
+            if (bannerAnchor && bannerAnchor.parentElement) {
+                bannerAnchor.insertAdjacentElement('afterend', bannerShell);
+            } else {
+                chatContainer.prepend(bannerShell);
+            }
+
+            if (window.recentRestoreBannerDismissTimer) {
+                window.clearTimeout(window.recentRestoreBannerDismissTimer);
+            }
+
+            window.recentRestoreBannerDismissTimer = window.setTimeout(() => {
+                banner.classList.add('is-hiding');
+                window.setTimeout(() => {
+                    if (bannerShell.parentElement) {
+                        bannerShell.remove();
+                    }
+                }, 320);
+            }, 3000);
+
+            if (typeof messageHost.scrollTo === 'function') {
+                messageHost.scrollTo({ top: messageHost.scrollHeight, behavior: 'auto' });
+            } else {
+                messageHost.scrollTop = messageHost.scrollHeight;
+            }
+
+            return true;
+        }
+
+        window.useRecentCommunication = async function(recentItemOrText) {
+            const recentItem = normalizeRecentCommunicationItem(recentItemOrText);
+            if (!recentItem || window.activeRecentCommunicationRestoreId) {
+                return false;
+            }
+
+            setRecentCommunicationLoadingState(recentItem.id, true);
+
+            try {
+                const restoredChat = await requestRecentCommunicationRestore(recentItem);
+                const restoreEmail = restoredChat.email || window.userEmail;
+
+                if (restoreEmail) {
+                    window.userEmail = restoreEmail;
+                    updateDisplayedUserEmail(restoreEmail);
+                }
+
+                if (restoredChat.threadId) {
+                    window.userThread_ID = restoredChat.threadId;
+                }
+
+                if (restoredChat.createdAt) {
+                    window.userCreated_at = restoredChat.createdAt;
+                }
+
+                updateRecentCommunicationItem(recentItem.id, {
+                    threadId: restoredChat.threadId || recentItem.threadId,
+                    createdAt: restoredChat.createdAt || recentItem.createdAt,
+                    sessionId: restoredChat.sessionId || recentItem.sessionId,
+                    currentIssue: restoredChat.currentIssue || recentItem.currentIssue,
+                    historyKey: restoredChat.historyKey || recentItem.historyKey,
+                    chatSessionKey: restoredChat.chatSessionKey || recentItem.chatSessionKey,
+                    answerText: restoredChat.answerText || recentItem.answerText,
+                    metadata: {
+                        ...(recentItem.metadata || {}),
+                        ...(restoredChat.metadata || {})
+                    }
+                }, restoreEmail, { persist: false });
+
+                const restoredQuestionText = restoredChat.questionText || recentItem.text;
+                const restoredAnswerText = restoredChat.answerText || recentItem.answerText;
+
+                if (!restoredChat.canResumeSession) {
+                    throw new Error('Webhook recent restore cần trả về state để tiếp tục cuộc trò chuyện tại đúng thời điểm đã chọn.');
+                }
+
+                if (!restoredQuestionText || !restoredAnswerText) {
+                    throw new Error('Webhook recent restore cần trả về đúng 1 câu hỏi và 1 câu trả lời để render checkpoint đã chọn.');
+                }
+
+                window.activeChatRestoreContext = normalizeStoredChatRestoreContext({
+                    ...restoredChat,
+                    loadPreviousSession: false
+                });
+                window.persistAuthSession();
+                initChatbot(
+                    restoreEmail,
+                    window.userThread_ID || restoredChat.threadId,
+                    window.userCreated_at || restoredChat.createdAt,
+                    {
+                        restoreContext: window.activeChatRestoreContext,
+                        clearStoredSession: true,
+                        recentPair: {
+                            questionText: restoredQuestionText,
+                            answerText: restoredAnswerText
+                        }
+                    }
+                );
+                window.closeMobileSidebar();
+                return true;
+            } catch (error) {
+                console.warn('Không thể khôi phục recent communication:', error);
+                alert(error && error.message ? error.message : 'Không thể khôi phục cuộc trò chuyện này.');
+                return false;
+            } finally {
+                setRecentCommunicationLoadingState(recentItem.id, false);
+            }
+        };
 
         function getMobileExpertFabBounds(fab) {
             const rect = fab.getBoundingClientRect();
@@ -1439,6 +3105,13 @@
 
         installMobileExpertFabDrag();
 
+        window.addEventListener('resize', syncMobileDashboardLayout);
+        window.addEventListener('resize', syncMobileSidebarViewportState);
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', syncMobileDashboardLayout);
+            window.visualViewport.addEventListener('resize', syncMobileSidebarViewportState);
+        }
+
         window.resetMobileExpertFabPosition = function() {
             const fab = document.querySelector('.mobile-expert-fab');
             if (!fab) {
@@ -1470,52 +3143,14 @@
             fab.classList.toggle('hidden', !isVisible);
         };
 
-        window.syncActiveProblemTiles = function(problemStatus = window.userProblem_Status) {
-            const normalizedProblemStatus = normalizeProblemStatus(problemStatus);
-            const activeTopicLabel = PROBLEM_STATUS_TO_TOPIC_LABEL[normalizedProblemStatus];
-            const allTiles = document.querySelectorAll('.option-tile');
-
-            allTiles.forEach((tile) => {
-                const labelElement = tile.querySelector('span');
-                if (!labelElement) return;
-
-                const normalizedLabel = labelElement.textContent.trim().toUpperCase();
-                tile.classList.toggle('active', !!activeTopicLabel && normalizedLabel === activeTopicLabel);
-            });
-        };
-
-        window.activateChatLayout = function(problemStatus = window.userProblem_Status) {
-            const dashboard = document.getElementById('dashboard-container');
-            const optionsWrapper = document.getElementById('options-wrapper');
-            const sidebarTopicWrapper = document.getElementById('sidebarTopicWrapper');
-            const mainHeader = document.getElementById('mainHeader');
-
-            if (dashboard) {
-                dashboard.classList.remove('initial-selection');
-            }
-            if (optionsWrapper) {
-                optionsWrapper.classList.remove('fade-out-anim');
-            }
-            if (sidebarTopicWrapper) {
-                sidebarTopicWrapper.classList.remove('hidden');
-            }
-            if (mainHeader) {
-                mainHeader.classList.add('sidebar-topics-visible');
-            }
-
-            window.syncActiveProblemTiles(problemStatus);
-        };
-
         window.persistAuthSession = function() {
             if (!window.userEmail) return;
             try {
-                const dashboard = document.getElementById('dashboard-container');
                 const sessionData = {
                     email: window.userEmail,
                     threadId: window.userThread_ID || null,
                     createdAt: window.userCreated_at || null,
-                    problemStatus: normalizeProblemStatus(window.userProblem_Status),
-                    isChatLayout: !!dashboard && !dashboard.classList.contains('initial-selection'),
+                    chatRestoreContext: normalizeStoredChatRestoreContext(window.activeChatRestoreContext),
                     updatedAt: Date.now()
                 };
                 sessionStorage.setItem(AUTH_SESSION_KEY, JSON.stringify(sessionData));
@@ -1555,8 +3190,7 @@
                     sessionData.email,
                     sessionData.threadId || null,
                     sessionData.createdAt || null,
-                    sessionData.problemStatus ?? null,
-                    { forceChatLayout: !!sessionData.isChatLayout }
+                    { restoreContext: sessionData.chatRestoreContext || null }
                 );
                 return true;
             } catch (error) {
@@ -1620,6 +3254,92 @@
             return '';
         }
 
+        function getChatResponseText(payload) {
+            if (!payload) {
+                return '';
+            }
+
+            if (typeof payload === 'string') {
+                return normalizeRecentCommunicationText(payload);
+            }
+
+            if (typeof payload !== 'object') {
+                return '';
+            }
+
+            const directCandidates = [
+                payload.answerText,
+                payload.botReply,
+                payload.assistantReply,
+                payload.assistantMessage,
+                payload.output,
+                payload.answer,
+                payload.responseText,
+                payload.reply,
+                payload.text,
+                payload.message,
+                payload.rawText
+            ];
+
+            for (const candidate of directCandidates) {
+                if (typeof candidate === 'string' && candidate.trim()) {
+                    return candidate.trim();
+                }
+            }
+
+            if (Array.isArray(payload.output) && payload.output.length) {
+                return getChatResponseText(payload.output[0]);
+            }
+
+            if (Array.isArray(payload.messages) && payload.messages.length) {
+                return getChatResponseText(payload.messages[payload.messages.length - 1]);
+            }
+
+            if (payload.data && typeof payload.data === 'object') {
+                return getChatResponseText(payload.data);
+            }
+
+            if (payload.result && typeof payload.result === 'object') {
+                return getChatResponseText(payload.result);
+            }
+
+            return '';
+        }
+
+        function getRecentCommunicationContextFromPayload(payload) {
+            if (!payload || typeof payload !== 'object') {
+                return {
+                    threadId: '',
+                    createdAt: '',
+                    sessionId: '',
+                    historyKey: '',
+                    chatSessionKey: '',
+                    metadata: {}
+                };
+            }
+
+            const nestedMetadata = payload.metadata && typeof payload.metadata === 'object'
+                ? payload.metadata
+                : {};
+
+            return {
+                threadId: pickRecentCommunicationValue(payload, ['threadId', 'Thread_ID', 'threadID']),
+                createdAt: pickRecentCommunicationValue(payload, ['createdAt', 'Created_at', 'created_at']),
+                sessionId: pickFirstNonEmptyString([
+                    pickRecentCommunicationValue(payload, ['sessionId', 'chatSessionId', 'session_id']),
+                    nestedMetadata.sessionId
+                ]),
+                currentIssue: pickFirstNonEmptyString([
+                    pickRecentCommunicationValue(payload, ['currentIssue', 'current_issue']),
+                    nestedMetadata.current_issue,
+                    nestedMetadata.currentIssue
+                ]),
+                historyKey: pickRecentCommunicationValue(payload, ['historyKey', 'historyId', 'history_id', 'restoreKey']),
+                chatSessionKey: pickRecentCommunicationValue(payload, ['chatSessionKey', 'chat_session_key']),
+                metadata: sanitizeRecentCommunicationMetadata(nestedMetadata)
+            };
+        }
+
         function isUserChatMessageRequest(payload) {
             const messageText = getChatMessageText(payload);
             if (!messageText) return false;
@@ -1645,34 +3365,10 @@
                 : (resource && resource.method ? String(resource.method).toUpperCase() : 'GET');
 
             if (url && url.includes(URL_CHAT) && method === 'POST') {
-                const normalizedProblemStatus = normalizeProblemStatus(window.userProblem_Status);
                 let parsedChatPayload = parseChatRequestPayload(config && config.body);
+                const isUserMessage = isUserChatMessageRequest(parsedChatPayload);
 
-                if (normalizedProblemStatus) {
-                    const nextConfig = { ...config };
-
-                    if (parsedChatPayload && typeof parsedChatPayload === 'object') {
-                        parsedChatPayload.Problem_Status = normalizedProblemStatus;
-                        nextConfig.body = JSON.stringify(parsedChatPayload);
-                    }
-
-                    try {
-                        const chatUrl = new URL(url);
-                        chatUrl.searchParams.set('Problem_Status', normalizedProblemStatus);
-
-                        if (typeof resource === 'string') {
-                            resource = chatUrl.toString();
-                        } else if (resource instanceof Request) {
-                            resource = new Request(chatUrl.toString(), resource);
-                        }
-                    } catch (error) {
-                        console.warn('Không thể chèn Problem_Status vào query chat URL:', error);
-                    }
-
-                    config = nextConfig;
-                }
-
-                if (window.userEmail && window.userEmail.includes('@a2d-guest.local') && isUserChatMessageRequest(parsedChatPayload)) {
+                if (window.userEmail && window.userEmail.includes('@a2d-guest.local') && isUserMessage) {
                     let currentCount = parseInt(localStorage.getItem('a2d_guest_msg_count') || '0', 10);
                     
                     if (currentCount >= MAX_GUEST_MESSAGES) {
@@ -1684,6 +3380,64 @@
                     
                     localStorage.setItem('a2d_guest_msg_count', currentCount + 1);
                 }
+
+                const response = await originalFetch.call(this, resource, config);
+
+                if (isUserMessage && response && response.ok) {
+                    const requestContext = getRecentCommunicationContextFromPayload(parsedChatPayload);
+                    let responsePayload = null;
+
+                    try {
+                        if (typeof response.clone === 'function') {
+                            responsePayload = await parseJsonResponse(response.clone());
+                        }
+                    } catch (error) {
+                        console.warn('Không thể đọc response chat để đồng bộ recent:', error);
+                    }
+
+                    const responseContext = getRecentCommunicationContextFromPayload(responsePayload);
+                    const answerText = getChatResponseText(responsePayload);
+
+                    pushRecentCommunication(
+                        getChatMessageText(parsedChatPayload),
+                        answerText,
+                        window.userEmail,
+                        {
+                            threadId: pickFirstNonEmptyString([
+                                responseContext.threadId,
+                                requestContext.threadId,
+                                window.userThread_ID
+                            ]),
+                            createdAt: pickFirstNonEmptyString([
+                                responseContext.createdAt,
+                                requestContext.createdAt,
+                                window.userCreated_at
+                            ]),
+                            sessionId: pickFirstNonEmptyString([
+                                responseContext.sessionId,
+                                requestContext.sessionId
+                            ]),
+                            currentIssue: pickFirstNonEmptyString([
+                                responseContext.currentIssue,
+                                requestContext.currentIssue
+                            ]),
+                            historyKey: pickFirstNonEmptyString([
+                                responseContext.historyKey,
+                                requestContext.historyKey
+                            ]),
+                            chatSessionKey: pickFirstNonEmptyString([
+                                responseContext.chatSessionKey,
+                                requestContext.chatSessionKey
+                            ]),
+                            metadata: {
+                                ...(requestContext.metadata || {}),
+                                ...(responseContext.metadata || {})
+                            }
+                        }
+                    );
+                }
+
+                return response;
             }
 
             return originalFetch.call(this, resource, config);
@@ -1702,12 +3456,7 @@
             }
         };
 
-        window.destroyChatWidget = function() {
-            const chatContainer = document.getElementById('chat-container');
-            if (chatContainer) {
-                chatContainer.innerHTML = ''; 
-            }
-
+        function clearEmbeddedChatSessionStorage() {
             const keysToRemove = [];
             for (let i = 0; i < localStorage.length; i++) {
                 const key = localStorage.key(i);
@@ -1715,12 +3464,38 @@
                     keysToRemove.push(key);
                 }
             }
-            keysToRemove.forEach(k => localStorage.removeItem(k));
+
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+        }
+
+        window.destroyChatWidget = function() {
+            const chatContainer = document.getElementById('chat-container');
+            if (chatContainer) {
+                chatContainer.innerHTML = ''; 
+            }
+
+            if (window.recentRestoreBannerDismissTimer) {
+                window.clearTimeout(window.recentRestoreBannerDismissTimer);
+                window.recentRestoreBannerDismissTimer = null;
+            }
+
+            if (window.recentRestoreMessageObserver) {
+                window.recentRestoreMessageObserver.disconnect();
+                window.recentRestoreMessageObserver = null;
+            }
+
+            window.activeChatRestoreContext = null;
+            window.activeRecentCommunicationRestoreId = null;
+            window.activeRecentRestorePair = null;
+            clearEmbeddedChatSessionStorage();
         };
 
         window.handleLogout = function() {
             document.body.classList.remove('dashboard-active');
+            window.closeMobileSidebar();
             window.setMobileExpertFabVisibility(false);
+            setRecentCommunicationPanelVisibility(false);
+            setMobileSidebarAccountVisibility(false);
             window.clearAuthSession();
             window.destroyChatWidget(); 
             location.reload();          
@@ -1734,7 +3509,7 @@
             const isActive = dropdown.classList.toggle('active');
             userSettings.classList.toggle('settings-open', isActive);
         }
-        window.toggleMobileMenu = function() { document.getElementById('headerActions').classList.toggle('show'); }
+        window.toggleMobileMenu = function() { window.toggleMobileSidebar(); }
         document.addEventListener('pointerdown', function(event) {
             const headerActions = document.getElementById('headerActions');
             const mobileMenuButton = event.target.closest('.mobile-menu-btn');
@@ -1760,6 +3535,10 @@
         }, true);
         
         window.openModal = function(id) { 
+            if (window.innerWidth <= 768) {
+                window.closeMobileSidebar();
+            }
+
             document.getElementById(id).classList.add('active'); 
             
             if (id === 'contactModal') {
@@ -1773,116 +3552,6 @@
         }
         
         window.closeModal = function(id) { document.getElementById(id).classList.remove('active'); }
-
-        const OPTION_PROBLEM_STATUS_MAP = {
-            'Thuế': 'US',
-            'Cư trú': 'wojewodzki urzad',
-            'Bảo hiểm': 'ZUS',
-            'Lao động': 'UP'
-        };
-
-        window.syncProblemStatus = function(optionName) {
-            const nextStatus = OPTION_PROBLEM_STATUS_MAP[optionName];
-            const normalizedProblemStatus = normalizeProblemStatus(nextStatus);
-            if (!normalizedProblemStatus) return;
-
-            window.userProblem_Status = normalizedProblemStatus;
-            window.persistAuthSession();
-        }
-
-        window.showProblemStatusToast = function(problemStatus = window.userProblem_Status) {
-            const toast = document.getElementById('problemStatusToast');
-            if (!toast) return;
-
-            const normalizedProblemStatus = normalizeProblemStatus(problemStatus);
-            const nextLabel = PROBLEM_STATUS_TO_NOTICE_LABEL[normalizedProblemStatus] || 'chủ đề bạn vừa chọn';
-            toast.innerHTML = `Đã chuyển sang <strong>${nextLabel}</strong>. Box chat đã được làm mới.`;
-            toast.classList.add('show');
-
-            if (problemStatusToastTimeout) {
-                clearTimeout(problemStatusToastTimeout);
-            }
-
-            problemStatusToastTimeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 2800);
-        };
-
-        window.refreshChatForSelectedProblem = function() {
-            if (!window.userEmail) return;
-
-            window.destroyChatWidget();
-            window.persistAuthSession();
-            initChatbot(window.userEmail, window.userThread_ID, window.userCreated_at, window.userProblem_Status);
-
-            if (window.innerWidth <= 768 && !document.body.classList.contains('fixed-footer-layout')) {
-                const chatContainer = document.getElementById('chat-container');
-                if (chatContainer) {
-                    requestAnimationFrame(() => {
-                        chatContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    });
-                }
-            }
-        };
-
-        // ==========================================
-        // HÀM CLICK CHỌN CHỦ ĐỀ MỚI (CHỨA ANIMATION)
-        // ==========================================
-        window.selectOption = function(element, optionName) {
-            if (element.classList.contains('active')) return; 
-
-            if (element.classList.contains('disabled')) {
-                alert('Tính năng ' + optionName + ' đang được phát triển. Vui lòng quay lại sau!');
-                return;
-            }
-
-            const dashboard = document.getElementById('dashboard-container');
-            const optionsWrapper = document.getElementById('options-wrapper'); 
-
-            // 1. Đồng bộ chủ đề đang chọn ở cả overlay ban đầu lẫn sidebar
-            console.log("Đã chuyển sang mục tư vấn:", optionName);
-            window.syncProblemStatus(optionName);
-            window.syncActiveProblemTiles();
-
-            const sidebarTopicWrapper = document.getElementById('sidebarTopicWrapper');
-            const mainHeader = document.getElementById('mainHeader');
-            if (sidebarTopicWrapper && sidebarTopicWrapper.classList.contains('hidden')) {
-                sidebarTopicWrapper.classList.remove('hidden');
-                if (mainHeader) mainHeader.classList.add('sidebar-topics-visible');
-            }
-
-            const finalizeProblemSelection = function() {
-                const mobileExpertFab = document.querySelector('.mobile-expert-fab');
-                if (mobileExpertFab && mobileExpertFab.classList.contains('hidden')) {
-                    window.setMobileExpertFabVisibility(true, true);
-                }
-                window.refreshChatForSelectedProblem();
-                window.showProblemStatusToast();
-            };
-
-            // 2. KIỂM TRA: Nếu đang ở màn hình chọn ban đầu giữa màn hình
-            if (dashboard.classList.contains('initial-selection')) {
-                
-                // Kích hoạt hiệu ứng Fade-out cho CẢ BỘ nút và dòng tiêu đề
-                optionsWrapper.classList.add('fade-out-anim');
-                
-                // Đợi 0.4 giây (bằng thời gian chạy animation Fade-out ở CSS)
-                setTimeout(() => {
-                    // Xóa class trạng thái ban đầu (Hệ thống sẽ tự hiện Chat và đẩy nút về Sidebar)
-                    dashboard.classList.remove('initial-selection');
-                    optionsWrapper.classList.remove('fade-out-anim');
-                    
-                    // Kích hoạt hiệu ứng Fade-in cho toàn bộ giao diện mới
-                    dashboard.classList.add('fade-in-layout');
-                    window.persistAuthSession();
-                    finalizeProblemSelection();
-                    
-                }, 400); 
-                return;
-            }
-
-            finalizeProblemSelection();
-        }
 
         window.changeAuthMode = function(mode) {
             window.destroyChatWidget();
@@ -1971,6 +3640,8 @@
         }
 
         window.changeAuthMode('login');
+        setMobileSidebarAccountVisibility(false);
+        updateDisplayedUserEmail('Người dùng');
         window.hasRestoredAuthSession = window.restoreAuthSession();
         if (!window.hasRestoredAuthSession) {
             window.checkGuestBlockStatus();
@@ -1991,18 +3662,18 @@
                 if (window.authMode === 'login') {
                     const res = await fetch(URL_LOGIN, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, password}) });
                     const data = await res.json();
-                    if (data.status === 'success') { loginSuccess(email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt, data.Problem_Status || data.problemStatus); } else throw new Error(data.message || "Tài khoản hoặc mật khẩu không đúng.");
+                    if (data.status === 'success') { loginSuccess(email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt); } else throw new Error(data.message || "Tài khoản hoặc mật khẩu không đúng.");
                 } 
                 else if (window.authMode === 'signup') {
                     if (password !== confirmPassword) throw new Error("Mật khẩu không khớp!");
                     const res = await fetch(URL_SIGNUP, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, password}) });
                     const data = await res.json();
-                    if (data.status === 'success') { loginSuccess(email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt, data.Problem_Status || data.problemStatus); } else if (data.status === 'pending_verification') { window.changeAuthMode('verify_signup'); document.getElementById('message').className = "success"; document.getElementById('message').innerText = "Đã gửi mã OTP đăng ký đến email của bạn!"; } else throw new Error(data.message || "Đăng ký thất bại.");
+                    if (data.status === 'success') { loginSuccess(email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt); } else if (data.status === 'pending_verification') { window.changeAuthMode('verify_signup'); document.getElementById('message').className = "success"; document.getElementById('message').innerText = "Đã gửi mã OTP đăng ký đến email của bạn!"; } else throw new Error(data.message || "Đăng ký thất bại.");
                 }
                 else if (window.authMode === 'verify_signup') {
                     const res = await fetch(URL_VERIFY, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, otp}) });
                     const data = await res.json();
-                    if (data.status === 'success') { loginSuccess(email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt, data.Problem_Status || data.problemStatus); } else throw new Error(data.message || "Mã OTP không hợp lệ!");
+                    if (data.status === 'success') { loginSuccess(email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt); } else throw new Error(data.message || "Mã OTP không hợp lệ!");
                 }
                 else if (window.authMode === 'forgot_request') {
                     const res = await fetch(URL_FORGOT_PASSWORD_REQUEST, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email}) });
@@ -2062,13 +3733,16 @@
                 
                 localStorage.setItem('a2d_guest_msg_count', '0'); 
                 
-                loginSuccess(`${guestId}@a2d-guest.local`, null, new Date().toISOString(), null);
+                loginSuccess(`${guestId}@a2d-guest.local`, null, new Date().toISOString());
                 btn.innerHTML = originalText;
                 btn.disabled = false;
             }, 800);
         }
 
         window.onload = function () {
+            syncMobileDashboardLayout();
+            syncMobileSidebarViewportState();
+
             if (window.google && google.accounts && google.accounts.id) {
                 google.accounts.id.initialize({
                     client_id: "305607144766-rsp6v0i6b0n83u989ojpinptq5a9l21c.apps.googleusercontent.com",
@@ -2123,7 +3797,7 @@
                 const data = await res.json();
                 
                 if (data.status === 'success') { 
-                    loginSuccess(data.email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt, data.Problem_Status || data.problemStatus); 
+                    loginSuccess(data.email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt); 
                 } else {
                     throw new Error(data.message || "Xác thực Google thất bại trên hệ thống.");
                 }
@@ -2133,34 +3807,36 @@
             }
         }
 
-        function loginSuccess(email, Thread_ID, Created_at, Problem_Status = null, options = {}) {
+        function loginSuccess(email, Thread_ID, Created_at, options = {}) {
             window.userEmail = email;
             window.userThread_ID = Thread_ID;
             window.userCreated_at = Created_at;
-            window.userProblem_Status = normalizeProblemStatus(Problem_Status);
+            window.activeChatRestoreContext = normalizeStoredChatRestoreContext(options.restoreContext);
             
             if (!email.includes('@a2d-guest.local')) {
                 localStorage.removeItem('a2d_guest_msg_count');
             }
 
             window.clearSessionRestoringState();
+            window.closeMobileSidebar();
             document.body.classList.add('dashboard-active');
             document.getElementById('authCard').classList.add('hidden');
             const dashboardContainer = document.getElementById('dashboard-container');
             dashboardContainer.style.display = 'flex';
             dashboardContainer.style.visibility = 'visible';
             document.getElementById('userSettings').style.display = 'block';
-            document.getElementById('userEmailDisplay').innerText = email;
-            const shouldShowChatLayout = !!options.forceChatLayout || window.userProblem_Status !== null;
-            if (shouldShowChatLayout) {
-                window.activateChatLayout(window.userProblem_Status);
-                window.setMobileExpertFabVisibility(true, true);
-            } else {
-                window.setMobileExpertFabVisibility(false);
-            }
+            updateDisplayedUserEmail(email);
+            setMobileSidebarAccountVisibility(true);
+            setRecentCommunicationPanelVisibility(true);
+            window.setMobileExpertFabVisibility(true, true);
+            syncMobileDashboardLayout();
 
             window.persistAuthSession();
-            initChatbot(email, Thread_ID, Created_at, window.userProblem_Status);
+            initChatbot(email, Thread_ID, Created_at, {
+                restoreContext: window.activeChatRestoreContext,
+                recentPair: window.activeRecentRestorePair
+            });
+            window.requestAnimationFrame(syncMobileDashboardLayout);
         }
 
         window.requestDeleteAccount = async function() {
@@ -2168,6 +3844,7 @@
             try {
                 const res = await fetch(URL_DELETE, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: window.userEmail }) });
                 if(res.ok) { 
+                    await clearRecentCommunications(window.userEmail);
                     window.clearAuthSession();
                     window.destroyChatWidget(); 
                     location.reload(); 
@@ -2175,17 +3852,71 @@
             } catch(e) { alert("Đã xảy ra lỗi."); }
         }
 
-        function initChatbot(email, Thread_ID, Created_at, Problem_Status) {
-            document.getElementById('chat-container').innerHTML = '';
-            const safeThreadID = Thread_ID ? Thread_ID : ""; const safeCreatedAt = Created_at ? Created_at : "";
-            const safeProblemStatus = (Problem_Status !== null && Problem_Status !== undefined) ? Problem_Status : "";
-            let chatUrl = `${URL_CHAT}?userEmail=${encodeURIComponent(email)}&lang=${window.currentAppLanguage}&Thread_ID=${encodeURIComponent(safeThreadID)}&Created_at=${encodeURIComponent(safeCreatedAt)}&Problem_Status=${encodeURIComponent(safeProblemStatus)}`;
+        function initChatbot(email, Thread_ID, Created_at, options = {}) {
+            const chatContainer = document.getElementById('chat-container');
+            if (!chatContainer) {
+                return;
+            }
+
+            if (window.recentRestoreBannerDismissTimer) {
+                window.clearTimeout(window.recentRestoreBannerDismissTimer);
+                window.recentRestoreBannerDismissTimer = null;
+            }
+
+            if (window.recentRestoreMessageObserver) {
+                window.recentRestoreMessageObserver.disconnect();
+                window.recentRestoreMessageObserver = null;
+            }
+
+            const restoreContext = normalizeStoredChatRestoreContext(options.restoreContext || window.activeChatRestoreContext);
+            const recentPair = options.recentPair && typeof options.recentPair === 'object'
+                ? {
+                    questionText: normalizeRecentCommunicationText(options.recentPair.questionText),
+                    answerText: normalizeRecentCommunicationText(options.recentPair.answerText)
+                }
+                : null;
+
+            if (options.clearStoredSession) {
+                clearEmbeddedChatSessionStorage();
+            }
+
+            const shouldRenderRecentPair = Boolean(recentPair && recentPair.questionText && recentPair.answerText);
+            chatContainer.innerHTML = '';
+
+            const safeThreadID = Thread_ID ? Thread_ID : "";
+            const safeCreatedAt = Created_at ? Created_at : "";
+            let chatUrl = `${URL_CHAT}?userEmail=${encodeURIComponent(email)}&lang=${window.currentAppLanguage}&Thread_ID=${encodeURIComponent(safeThreadID)}&Created_at=${encodeURIComponent(safeCreatedAt)}`;
+            const chatSessionKey = restoreContext && restoreContext.chatSessionKey
+                ? restoreContext.chatSessionKey
+                : DEFAULT_CHAT_SESSION_KEY;
+            const chatMetadata = restoreContext
+                ? { ...(restoreContext.metadata || {}) }
+                : {};
+
+            if (restoreContext && restoreContext.sessionId && !chatMetadata[chatSessionKey]) {
+                chatMetadata[chatSessionKey] = restoreContext.sessionId;
+            }
+
+            if (restoreContext && restoreContext.sessionId && chatSessionKey !== 'sessionId' && !chatMetadata.sessionId) {
+                chatMetadata.sessionId = restoreContext.sessionId;
+            }
 
             createChat({
-                webhookUrl: chatUrl, target: '#chat-container', mode: 'fullscreen', showWelcomeScreen: false, initialMessages: [], 
+                webhookUrl: chatUrl,
+                target: '#chat-container',
+                mode: 'fullscreen',
+                showWelcomeScreen: false,
+                initialMessages: [],
+                loadPreviousSession: restoreContext ? restoreContext.loadPreviousSession !== false : true,
+                chatSessionKey,
+                metadata: chatMetadata,
                 style: { width: '100%', height: '100%', position: 'relative' },
                 i18n: { en: { title: 'Kết nối – Chia sẻ – Hỗ trợ Cộng đồng', subtitle: 'Nền tảng chatbot phi lợi nhuận giúp tư vấn thông tin về cư trú, pháp lý và giấy tờ tại Ba Lan, vì sự ổn định và quyền lợi của người Việt.', getStarted: 'Bắt đầu', inputPlaceholder: 'Nhập câu hỏi của bạn...', footer: '', } }
             });
+
+            if (shouldRenderRecentPair) {
+                renderRecentRestoreMessagesInChat(recentPair.questionText, recentPair.answerText);
+            }
         }
     </script>
 </body>
