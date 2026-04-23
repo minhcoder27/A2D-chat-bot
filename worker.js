@@ -90,11 +90,42 @@ export default {
       }
     }
 
+    let requestBody = null;
+    if (request.method !== "GET") {
+      requestBody = await request.text();
+
+      if (pathname.includes("/chat") && requestBody) {
+        try {
+          const jsonBody = JSON.parse(requestBody);
+          if (!jsonBody || typeof jsonBody !== "object" || Array.isArray(jsonBody)) {
+            throw new Error("Unsupported chat body");
+          }
+
+          const queryFields = {};
+
+          url.searchParams.forEach((value, key) => {
+            if (value) queryFields[key] = value;
+          });
+
+          requestBody = JSON.stringify({
+            ...jsonBody,
+            ...queryFields,
+            metadata: {
+              ...(jsonBody.metadata && typeof jsonBody.metadata === "object" ? jsonBody.metadata : {}),
+              ...queryFields
+            }
+          });
+        } catch (error) {
+          // Keep the original body if the chat package ever sends non-JSON payloads.
+        }
+      }
+    }
+
     // Forward request đến n8n
     const n8nResponse = await fetch(targetUrl, {
       method: request.method,
       headers: { "Content-Type": "application/json" },
-      body: (request.method !== "GET") ? await request.text() : null
+      body: requestBody
     });
 
     return new Response(await n8nResponse.text(), {
