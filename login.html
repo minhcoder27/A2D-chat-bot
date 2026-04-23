@@ -400,15 +400,61 @@
         .btn-submit:disabled { background: #94a3b8; cursor: not-allowed; transform: none; box-shadow: none; }
         
         /* SOCIAL AUTH & GUEST BUTTONS */
-        .social-auth-group { margin-top: 20px; text-align: center; }
+        .social-auth-group { margin-top: 22px; text-align: center; min-width: 0; }
         .auth-divider { display: flex; align-items: center; text-align: center; margin: 20px 0; color: #94a3b8; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
         .auth-divider::before, .auth-divider::after { content: ''; flex: 1; border-bottom: 1px solid #e2e8f0; }
         .auth-divider span { padding: 0 15px; }
         
         .btn-social { width: 100%; min-height: 54px; padding: 15px 16px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 12px; font-family: 'Roboto Condensed', sans-serif; text-transform: uppercase; letter-spacing: 0.5px; }
-        .google-button-shell { width: 100%; min-height: 54px; height: 54px; margin-bottom: 12px; border-radius: 8px; overflow: hidden; }
-        .google-button-shell > div,
-        .google-button-shell iframe { width: 100% !important; max-width: 100% !important; min-height: 54px !important; height: 54px !important; border-radius: 8px !important; }
+        .google-button-shell {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            min-height: 40px;
+            height: 40px;
+            margin-bottom: 18px;
+            border: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #ffffff;
+            box-shadow: none;
+            box-sizing: border-box;
+            display: block;
+            position: relative;
+            transition: filter 0.2s ease, transform 0.2s ease;
+        }
+        .google-button-shell::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            box-shadow: inset 0 0 0 1px #dadce0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .google-button-shell:hover {
+            filter: drop-shadow(0 10px 18px rgba(16, 33, 54, 0.1));
+            transform: translateY(-1px);
+        }
+        .google-button-shell > div {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            min-height: 40px !important;
+            height: 40px !important;
+            border-radius: 12px !important;
+            overflow: hidden !important;
+        }
+        .google-button-shell iframe {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            min-height: 40px !important;
+            height: 40px !important;
+            border: 0 !important;
+            border-radius: 12px !important;
+            display: block !important;
+        }
         
         .btn-guest { 
             background: #ffffff !important; 
@@ -416,11 +462,11 @@
             border: 1px solid #dadce0 !important; 
             width: 100% !important;
             max-width: none !important; 
-            min-height: 50px !important;
-            height: 50px !important;     
+            min-height: 52px !important;
+            height: 52px !important;     
             margin: 0 0 12px 0 !important; 
             padding: 0 16px !important; 
-            border-radius: 8px !important; 
+            border-radius: 12px !important; 
             font-weight: 500 !important; 
             font-size: 14px !important;
             line-height: 1.2 !important;
@@ -430,13 +476,13 @@
             gap: 8px !important;
             text-transform: none !important; 
             letter-spacing: 0 !important;
-            box-shadow: none !important;
+            box-shadow: 0 8px 20px rgba(16, 33, 54, 0.04) !important;
         }
         .btn-guest:hover { 
             background: #f8faff !important; 
             border-color: #d2e3fc !important; 
-            transform: none !important; 
-            box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15) !important; 
+            transform: translateY(-1px) !important; 
+            box-shadow: 0 12px 26px rgba(16, 33, 54, 0.1) !important; 
         }
         .btn-guest i { color: #5f6368 !important; font-size: 16px !important; }
 
@@ -1445,6 +1491,11 @@
         window.recentCommunicationListLoading = false;
         window.recentCommunicationListRequest = null;
         window.recentNewChatRequest = null;
+        window.googleButtonRenderedWidth = 0;
+        window.googleButtonResizeObserver = null;
+        window.googleButtonRenderTimer = null;
+        window.googleButtonInitialized = false;
+        window.googleButtonInitTimer = null;
 
         const MAX_GUEST_MESSAGES = 5; 
         const AUTH_SESSION_KEY = 'a2d_auth_session';
@@ -1452,6 +1503,107 @@
         const MAX_RECENT_COMMUNICATIONS = 10;
         const DEFAULT_CHAT_SESSION_KEY = 'sessionId';
         const RECENT_RESTORE_REQUEST_TIMEOUT_MS = 20000;
+
+        function getGoogleButtonTargetWidth() {
+            const container = document.getElementById("googleButtonContainer");
+            const submitButton = document.getElementById("submitBtn");
+            const authForm = document.getElementById("authForm");
+            const widthCandidates = [
+                container && container.getBoundingClientRect().width,
+                submitButton && submitButton.getBoundingClientRect().width,
+                authForm && authForm.getBoundingClientRect().width
+            ];
+
+            const measuredWidth = widthCandidates.find((width) => Number.isFinite(width) && width > 0) || 320;
+            return Math.max(180, Math.floor(measuredWidth));
+        }
+
+        function renderGoogleSignInButton(force = false) {
+            if (!window.google || !google.accounts || !google.accounts.id || !window.googleButtonInitialized) {
+                return;
+            }
+
+            const googleBtnContainer = document.getElementById("googleButtonContainer");
+            if (!googleBtnContainer) {
+                return;
+            }
+
+            const nextWidth = getGoogleButtonTargetWidth();
+            if (!force && Math.abs(nextWidth - window.googleButtonRenderedWidth) < 2 && googleBtnContainer.children.length) {
+                return;
+            }
+
+            window.googleButtonRenderedWidth = nextWidth;
+            googleBtnContainer.innerHTML = '';
+            google.accounts.id.renderButton(
+                googleBtnContainer,
+                {
+                    type: "standard",
+                    theme: "outline",
+                    size: "large",
+                    shape: "rectangular",
+                    width: nextWidth,
+                    text: "signin_with",
+                    logo_alignment: "left"
+                }
+            );
+        }
+
+        function scheduleGoogleButtonRender(force = false) {
+            if (window.googleButtonRenderTimer) {
+                window.clearTimeout(window.googleButtonRenderTimer);
+            }
+
+            window.googleButtonRenderTimer = window.setTimeout(() => {
+                window.googleButtonRenderTimer = null;
+                renderGoogleSignInButton(force);
+            }, 80);
+        }
+
+        function observeGoogleButtonSize() {
+            if (window.googleButtonResizeObserver || typeof ResizeObserver === 'undefined') {
+                return;
+            }
+
+            const authCard = document.getElementById('authCard');
+            const googleBtnContainer = document.getElementById("googleButtonContainer");
+            const target = googleBtnContainer || authCard;
+
+            if (!target) {
+                return;
+            }
+
+            window.googleButtonResizeObserver = new ResizeObserver(() => {
+                scheduleGoogleButtonRender(false);
+            });
+            window.googleButtonResizeObserver.observe(target);
+            if (authCard && authCard !== target) {
+                window.googleButtonResizeObserver.observe(authCard);
+            }
+        }
+
+        function initializeGoogleSignIn(attempt = 0) {
+            if (!window.google || !google.accounts || !google.accounts.id || typeof window.handleGoogleCallback !== 'function') {
+                if (attempt < 30) {
+                    window.googleButtonInitTimer = window.setTimeout(() => {
+                        initializeGoogleSignIn(attempt + 1);
+                    }, 120);
+                }
+                return;
+            }
+
+            if (!window.googleButtonInitialized) {
+                google.accounts.id.initialize({
+                    client_id: "305607144766-rsp6v0i6b0n83u989ojpinptq5a9l21c.apps.googleusercontent.com",
+                    callback: window.handleGoogleCallback,
+                    auto_select: false
+                });
+                window.googleButtonInitialized = true;
+            }
+
+            renderGoogleSignInButton(true);
+            observeGoogleButtonSize();
+        }
 
         function updateDisplayedUserEmail(email) {
             const nextEmail = typeof email === 'string' && email.trim()
@@ -1760,6 +1912,67 @@
             return '';
         }
 
+        function pickNestedAuthValue(source, keys) {
+            if (!source || typeof source !== 'object' || Array.isArray(source)) {
+                return '';
+            }
+
+            const sources = [
+                source,
+                source.data,
+                source.result,
+                source.user,
+                source.account,
+                source.profile,
+                source.metadata
+            ].filter(item => item && typeof item === 'object' && !Array.isArray(item));
+
+            return pickFirstNonEmptyString(
+                sources.flatMap((item) => keys.map((key) => item[key]))
+            );
+        }
+
+        function getAuthInputEmail() {
+            const emailInput = document.getElementById('email');
+            return normalizeRecentCommunicationScalar(emailInput && emailInput.value);
+        }
+
+        function getStoredAuthSessionField(keys) {
+            try {
+                const rawSession = sessionStorage.getItem(AUTH_SESSION_KEY);
+                if (!rawSession) {
+                    return '';
+                }
+
+                const sessionData = JSON.parse(rawSession);
+                return pickRecentCommunicationValue(sessionData, keys);
+            } catch (error) {
+                return '';
+            }
+        }
+
+        function normalizeAuthIdentity(authResponse = {}, fallbackEmail = '') {
+            return {
+                email: pickFirstNonEmptyString([
+                    pickNestedAuthValue(authResponse, ['email', 'userEmail', 'user_email']),
+                    fallbackEmail,
+                    window.userEmail,
+                    getAuthInputEmail(),
+                    getStoredAuthSessionField(['email', 'userEmail', 'user_email'])
+                ]),
+                threadId: pickFirstNonEmptyString([
+                    pickNestedAuthValue(authResponse, ['Thread_ID', 'threadId', 'threadID', 'thread_id', 'thread']),
+                    window.userThread_ID,
+                    getStoredAuthSessionField(['threadId', 'Thread_ID', 'threadID', 'thread_id'])
+                ]),
+                createdAt: pickFirstNonEmptyString([
+                    pickNestedAuthValue(authResponse, ['Created_at', 'createdAt', 'created_at', 'created']),
+                    window.userCreated_at,
+                    getStoredAuthSessionField(['createdAt', 'Created_at', 'created_at'])
+                ])
+            };
+        }
+
         function sanitizeRecentCommunicationMetadata(metadata) {
             if (!metadata || typeof metadata !== 'object' || Array.isArray(metadata)) {
                 return {};
@@ -1864,7 +2077,7 @@
                 metadata[chatSessionKey],
                 metadata.sessionId
             ]);
-            const threadId = pickRecentCommunicationValue(context, ['threadId', 'Thread_ID', 'threadID']);
+            const threadId = pickRecentCommunicationValue(context, ['threadId', 'Thread_ID', 'threadID', 'thread_id']);
             const createdAt = pickRecentCommunicationValue(context, ['createdAt', 'Created_at', 'created_at']);
             const currentIssue = pickFirstNonEmptyString([
                 pickRecentCommunicationValue(context, ['currentIssue', 'current_issue']),
@@ -2351,7 +2564,7 @@
                 currentIssue: pickRecentCommunicationValue(extraContext, ['currentIssue', 'current_issue']),
                 updatedAt: Date.now(),
                 threadId: pickFirstNonEmptyString([
-                    pickRecentCommunicationValue(extraContext, ['threadId', 'Thread_ID', 'threadID']),
+                    pickRecentCommunicationValue(extraContext, ['threadId', 'Thread_ID', 'threadID', 'thread_id']),
                     window.userThread_ID
                 ]),
                 createdAt: pickFirstNonEmptyString([
@@ -2518,7 +2731,7 @@
                 email: pickRecentRestoreField(nestedSources, ['email', 'userEmail'], [window.userEmail]),
                 threadId: pickRecentRestoreField(
                     nestedSources,
-                    ['threadId', 'Thread_ID', 'threadID'],
+                    ['threadId', 'Thread_ID', 'threadID', 'thread_id'],
                     [recentItem && recentItem.threadId, window.userThread_ID]
                 ),
                 createdAt: pickRecentRestoreField(
@@ -3107,9 +3320,15 @@
 
         window.addEventListener('resize', syncMobileDashboardLayout);
         window.addEventListener('resize', syncMobileSidebarViewportState);
+        window.addEventListener('resize', function() {
+            scheduleGoogleButtonRender(false);
+        });
         if (window.visualViewport) {
             window.visualViewport.addEventListener('resize', syncMobileDashboardLayout);
             window.visualViewport.addEventListener('resize', syncMobileSidebarViewportState);
+            window.visualViewport.addEventListener('resize', function() {
+                scheduleGoogleButtonRender(false);
+            });
         }
 
         window.resetMobileExpertFabPosition = function() {
@@ -3323,8 +3542,14 @@
                 : {};
 
             return {
-                threadId: pickRecentCommunicationValue(payload, ['threadId', 'Thread_ID', 'threadID']),
-                createdAt: pickRecentCommunicationValue(payload, ['createdAt', 'Created_at', 'created_at']),
+                threadId: pickFirstNonEmptyString([
+                    pickRecentCommunicationValue(payload, ['threadId', 'Thread_ID', 'threadID', 'thread_id']),
+                    pickRecentCommunicationValue(nestedMetadata, ['threadId', 'Thread_ID', 'threadID', 'thread_id'])
+                ]),
+                createdAt: pickFirstNonEmptyString([
+                    pickRecentCommunicationValue(payload, ['createdAt', 'Created_at', 'created_at']),
+                    pickRecentCommunicationValue(nestedMetadata, ['createdAt', 'Created_at', 'created_at'])
+                ]),
                 sessionId: pickFirstNonEmptyString([
                     pickRecentCommunicationValue(payload, ['sessionId', 'chatSessionId', 'session_id']),
                     nestedMetadata.sessionId
@@ -3590,6 +3815,7 @@
                 labelPassword.innerText = "Mật khẩu"; submitBtn.innerText = "Đăng nhập";
                 switchModeGroup.innerHTML = '<span onclick="changeAuthMode(\'signup\')">Khách hàng mới? <span>Bấm vào đây để đăng ký</span></span>';
                 if(socialAuthGroup) socialAuthGroup.classList.remove('hidden');
+                scheduleGoogleButtonRender(false);
             } 
             else if (mode === 'signup') {
                 formTitle.innerText = "TẠO TÀI KHOẢN";
@@ -3602,6 +3828,7 @@
                 submitBtn.innerText = "Đăng ký ngay";
                 switchModeGroup.innerHTML = '<span onclick="changeAuthMode(\'login\')">Đã có tài khoản? <span>Đăng nhập tại đây</span></span>';
                 if(socialAuthGroup) socialAuthGroup.classList.remove('hidden');
+                scheduleGoogleButtonRender(false);
             }
             else if (mode === 'verify_signup') {
                 formTitle.innerText = "XÁC THỰC EMAIL";
@@ -3662,18 +3889,27 @@
                 if (window.authMode === 'login') {
                     const res = await fetch(URL_LOGIN, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, password}) });
                     const data = await res.json();
-                    if (data.status === 'success') { loginSuccess(email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt); } else throw new Error(data.message || "Tài khoản hoặc mật khẩu không đúng.");
+                    if (data.status === 'success') {
+                        const identity = normalizeAuthIdentity(data, email);
+                        loginSuccess(identity.email, identity.threadId, identity.createdAt);
+                    } else throw new Error(data.message || "Tài khoản hoặc mật khẩu không đúng.");
                 } 
                 else if (window.authMode === 'signup') {
                     if (password !== confirmPassword) throw new Error("Mật khẩu không khớp!");
                     const res = await fetch(URL_SIGNUP, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, password}) });
                     const data = await res.json();
-                    if (data.status === 'success') { loginSuccess(email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt); } else if (data.status === 'pending_verification') { window.changeAuthMode('verify_signup'); document.getElementById('message').className = "success"; document.getElementById('message').innerText = "Đã gửi mã OTP đăng ký đến email của bạn!"; } else throw new Error(data.message || "Đăng ký thất bại.");
+                    if (data.status === 'success') {
+                        const identity = normalizeAuthIdentity(data, email);
+                        loginSuccess(identity.email, identity.threadId, identity.createdAt);
+                    } else if (data.status === 'pending_verification') { window.changeAuthMode('verify_signup'); document.getElementById('message').className = "success"; document.getElementById('message').innerText = "Đã gửi mã OTP đăng ký đến email của bạn!"; } else throw new Error(data.message || "Đăng ký thất bại.");
                 }
                 else if (window.authMode === 'verify_signup') {
                     const res = await fetch(URL_VERIFY, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email, otp}) });
                     const data = await res.json();
-                    if (data.status === 'success') { loginSuccess(email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt); } else throw new Error(data.message || "Mã OTP không hợp lệ!");
+                    if (data.status === 'success') {
+                        const identity = normalizeAuthIdentity(data, email);
+                        loginSuccess(identity.email, identity.threadId, identity.createdAt);
+                    } else throw new Error(data.message || "Mã OTP không hợp lệ!");
                 }
                 else if (window.authMode === 'forgot_request') {
                     const res = await fetch(URL_FORGOT_PASSWORD_REQUEST, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({email}) });
@@ -3743,37 +3979,7 @@
             syncMobileDashboardLayout();
             syncMobileSidebarViewportState();
 
-            if (window.google && google.accounts && google.accounts.id) {
-                google.accounts.id.initialize({
-                    client_id: "305607144766-rsp6v0i6b0n83u989ojpinptq5a9l21c.apps.googleusercontent.com",
-                    callback: handleGoogleCallback,
-                    auto_select: false 
-                });
-
-                const googleBtnContainer = document.getElementById("googleButtonContainer");
-                if (googleBtnContainer) {
-                    const submitButton = document.getElementById("submitBtn");
-                    const googleButtonWidth = Math.max(
-                        240,
-                        Math.round(
-                            (submitButton && submitButton.getBoundingClientRect().width) ||
-                            googleBtnContainer.getBoundingClientRect().width ||
-                            360
-                        )
-                    );
-
-                    google.accounts.id.renderButton(
-                        googleBtnContainer,
-                        { 
-                            theme: "outline", 
-                            size: "large", 
-                            width: googleButtonWidth, 
-                            text: "signin_with", 
-                            logo_alignment: "center"
-                        }
-                    );
-                }
-            }
+            initializeGoogleSignIn();
             
             if (!window.hasRestoredAuthSession) {
                 window.clearSessionRestoringState();
@@ -3797,7 +4003,8 @@
                 const data = await res.json();
                 
                 if (data.status === 'success') { 
-                    loginSuccess(data.email, data.Thread_ID || data.threadId, data.Created_at || data.createdAt); 
+                    const identity = normalizeAuthIdentity(data, data.email);
+                    loginSuccess(identity.email, identity.threadId, identity.createdAt); 
                 } else {
                     throw new Error(data.message || "Xác thực Google thất bại trên hệ thống.");
                 }
@@ -3808,12 +4015,22 @@
         }
 
         function loginSuccess(email, Thread_ID, Created_at, options = {}) {
-            window.userEmail = email;
-            window.userThread_ID = Thread_ID;
-            window.userCreated_at = Created_at;
+            const identity = normalizeAuthIdentity({
+                email,
+                Thread_ID,
+                Created_at
+            }, email);
+
+            if (!identity.email) {
+                throw new Error("Không thể khởi tạo chat vì thiếu email người dùng.");
+            }
+
+            window.userEmail = identity.email;
+            window.userThread_ID = identity.threadId || null;
+            window.userCreated_at = identity.createdAt || null;
             window.activeChatRestoreContext = normalizeStoredChatRestoreContext(options.restoreContext);
             
-            if (!email.includes('@a2d-guest.local')) {
+            if (!identity.email.includes('@a2d-guest.local')) {
                 localStorage.removeItem('a2d_guest_msg_count');
             }
 
@@ -3825,14 +4042,14 @@
             dashboardContainer.style.display = 'flex';
             dashboardContainer.style.visibility = 'visible';
             document.getElementById('userSettings').style.display = 'block';
-            updateDisplayedUserEmail(email);
+            updateDisplayedUserEmail(identity.email);
             setMobileSidebarAccountVisibility(true);
             setRecentCommunicationPanelVisibility(true);
             window.setMobileExpertFabVisibility(true, true);
             syncMobileDashboardLayout();
 
             window.persistAuthSession();
-            initChatbot(email, Thread_ID, Created_at, {
+            initChatbot(identity.email, identity.threadId, identity.createdAt, {
                 restoreContext: window.activeChatRestoreContext,
                 recentPair: window.activeRecentRestorePair
             });
@@ -3883,15 +4100,48 @@
             const shouldRenderRecentPair = Boolean(recentPair && recentPair.questionText && recentPair.answerText);
             chatContainer.innerHTML = '';
 
-            const safeThreadID = Thread_ID ? Thread_ID : "";
-            const safeCreatedAt = Created_at ? Created_at : "";
-            let chatUrl = `${URL_CHAT}?userEmail=${encodeURIComponent(email)}&lang=${window.currentAppLanguage}&Thread_ID=${encodeURIComponent(safeThreadID)}&Created_at=${encodeURIComponent(safeCreatedAt)}`;
+            const identity = normalizeAuthIdentity({
+                email,
+                Thread_ID,
+                Created_at,
+                metadata: restoreContext && restoreContext.metadata
+            }, email);
+
+            if (!identity.email) {
+                throw new Error("Không thể khởi tạo chat vì thiếu email người dùng.");
+            }
+
+            window.userEmail = identity.email;
+            window.userThread_ID = identity.threadId || null;
+            window.userCreated_at = identity.createdAt || null;
+
+            const chatUrlParams = new URLSearchParams({
+                userEmail: identity.email,
+                email: identity.email,
+                lang: window.currentAppLanguage,
+                Thread_ID: identity.threadId || '',
+                threadId: identity.threadId || '',
+                Created_at: identity.createdAt || '',
+                createdAt: identity.createdAt || ''
+            });
+            let chatUrl = `${URL_CHAT}?${chatUrlParams.toString()}`;
             const chatSessionKey = restoreContext && restoreContext.chatSessionKey
                 ? restoreContext.chatSessionKey
                 : DEFAULT_CHAT_SESSION_KEY;
-            const chatMetadata = restoreContext
-                ? { ...(restoreContext.metadata || {}) }
-                : {};
+            const chatMetadata = {
+                ...(restoreContext ? (restoreContext.metadata || {}) : {}),
+                ...sanitizeRecentCommunicationMetadata({
+                    userEmail: identity.email,
+                    email: identity.email,
+                    lang: window.currentAppLanguage,
+                    Thread_ID: identity.threadId,
+                    threadId: identity.threadId,
+                    thread_id: identity.threadId,
+                    Created_at: identity.createdAt,
+                    createdAt: identity.createdAt,
+                    created_at: identity.createdAt
+                })
+            };
 
             if (restoreContext && restoreContext.sessionId && !chatMetadata[chatSessionKey]) {
                 chatMetadata[chatSessionKey] = restoreContext.sessionId;
