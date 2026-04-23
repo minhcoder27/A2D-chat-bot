@@ -1490,6 +1490,7 @@
         window.recentCommunicationListHydrated = false;
         window.recentCommunicationListLoading = false;
         window.recentCommunicationListRequest = null;
+        window.recentCommunicationCacheUserKey = '';
         window.recentNewChatRequest = null;
         window.googleButtonRenderedWidth = 0;
         window.googleButtonResizeObserver = null;
@@ -1954,7 +1955,7 @@
         function normalizeAuthIdentity(authResponse = {}, fallbackEmail = '') {
             return {
                 email: pickFirstNonEmptyString([
-                    pickNestedAuthValue(authResponse, ['email', 'userEmail', 'user_email']),
+                    pickNestedAuthValue(authResponse, ['email', 'userEmail', 'user_email', 'Email', 'mail', 'Mail']),
                     fallbackEmail,
                     window.userEmail,
                     getAuthInputEmail(),
@@ -1970,6 +1971,43 @@
                     window.userCreated_at,
                     getStoredAuthSessionField(['createdAt', 'Created_at', 'created_at'])
                 ])
+            };
+        }
+
+        function decodeJwtPayload(token) {
+            if (typeof token !== 'string' || !token.trim()) {
+                return null;
+            }
+
+            const parts = token.split('.');
+            if (parts.length < 2) {
+                return null;
+            }
+
+            try {
+                const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+                const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), '=');
+                const decoded = atob(padded);
+                const utf8 = decodeURIComponent(Array.from(decoded).map((char) => {
+                    return `%${char.charCodeAt(0).toString(16).padStart(2, '0')}`;
+                }).join(''));
+                return JSON.parse(utf8);
+            } catch (error) {
+                console.warn('Không thể giải mã Google credential trên frontend:', error);
+                return null;
+            }
+        }
+
+        function normalizeGoogleAuthIdentity(authResponse = {}, googleToken = '') {
+            const tokenPayload = decodeJwtPayload(googleToken);
+
+            return {
+                email: pickFirstNonEmptyString([
+                    pickNestedAuthValue(authResponse, ['email', 'userEmail', 'user_email', 'Email', 'mail', 'Mail']),
+                    pickNestedAuthValue(tokenPayload, ['email', 'userEmail', 'user_email', 'Email', 'mail', 'Mail'])
+                ]),
+                threadId: pickNestedAuthValue(authResponse, ['Thread_ID', 'threadId', 'threadID', 'thread_id', 'thread']),
+                createdAt: pickNestedAuthValue(authResponse, ['Created_at', 'createdAt', 'created_at', 'created'])
             };
         }
 
@@ -2155,8 +2193,17 @@
                 .slice(0, MAX_RECENT_COMMUNICATIONS);
         }
 
+        function resetRecentCommunicationState(email = '') {
+            window.recentCommunicationCache = [];
+            window.recentCommunicationListHydrated = false;
+            window.recentCommunicationListLoading = false;
+            window.recentCommunicationListRequest = null;
+            window.recentCommunicationCacheUserKey = getRecentCommunicationUserKey(email);
+        }
+
         function setRecentCommunicationCache(items, email = window.userEmail) {
             window.recentCommunicationCache = mergeRecentCommunicationItems(items, email);
+            window.recentCommunicationCacheUserKey = getRecentCommunicationUserKey(email);
             window.recentCommunicationListHydrated = true;
             return window.recentCommunicationCache;
         }
@@ -2193,11 +2240,17 @@
 
         async function fetchRecentCommunications(email = window.userEmail, options = {}) {
             const { force = false } = options;
+            const requestedUserKey = getRecentCommunicationUserKey(email);
 
             if (!email) {
-                setRecentCommunicationCache([]);
+                resetRecentCommunicationState();
                 renderRecentCommunicationList();
                 return [];
+            }
+
+            if (window.recentCommunicationCacheUserKey && window.recentCommunicationCacheUserKey !== requestedUserKey) {
+                resetRecentCommunicationState(email);
+                renderRecentCommunicationList();
             }
 
             if (window.recentCommunicationListRequest && !force) {
@@ -2230,7 +2283,7 @@
             }).catch((error) => {
                 console.warn('Không thể tải recent communications từ backend:', error);
                 if (!window.recentCommunicationListHydrated) {
-                    setRecentCommunicationCache([]);
+                    resetRecentCommunicationState(email);
                 }
                 return loadRecentCommunications();
             }).finally(() => {
@@ -2298,7 +2351,7 @@
         }
 
         async function clearRecentCommunications(email = window.userEmail) {
-            setRecentCommunicationCache([]);
+            resetRecentCommunicationState(email);
             renderRecentCommunicationList();
 
             if (!email) {
@@ -2392,6 +2445,10 @@
             });
 
             if (isVisible) {
+                const currentUserKey = getRecentCommunicationUserKey(window.userEmail);
+                if (window.recentCommunicationCacheUserKey && window.recentCommunicationCacheUserKey !== currentUserKey) {
+                    resetRecentCommunicationState(window.userEmail);
+                }
                 renderRecentCommunicationList();
                 void fetchRecentCommunications(window.userEmail, { force: !window.recentCommunicationListHydrated });
             }
@@ -3721,6 +3778,7 @@
             window.setMobileExpertFabVisibility(false);
             setRecentCommunicationPanelVisibility(false);
             setMobileSidebarAccountVisibility(false);
+            resetRecentCommunicationState();
             window.clearAuthSession();
             window.destroyChatWidget(); 
             location.reload();          
@@ -4003,8 +4061,14 @@
                 const data = await res.json();
                 
                 if (data.status === 'success') { 
-                    const identity = normalizeAuthIdentity(data, data.email);
-                    loginSuccess(identity.email, identity.threadId, identity.createdAt); 
+                    const identity = normalizeGoogleAuthIdentity(data, googleToken);
+                    if (!identity.email) {
+                        throw new Error("Không lấy được email từ tài khoản Google. Vui lòng kiểm tra response từ n8n.");
+                    }
+
+                    loginSuccess(identity.email, identity.threadId, identity.createdAt, {
+                        strictIdentity: true
+                    }); 
                 } else {
                     throw new Error(data.message || "Xác thực Google thất bại trên hệ thống.");
                 }
@@ -4015,14 +4079,25 @@
         }
 
         function loginSuccess(email, Thread_ID, Created_at, options = {}) {
-            const identity = normalizeAuthIdentity({
-                email,
-                Thread_ID,
-                Created_at
-            }, email);
+            const identity = options && options.strictIdentity
+                ? {
+                    email: normalizeRecentCommunicationScalar(email),
+                    threadId: normalizeRecentCommunicationScalar(Thread_ID),
+                    createdAt: normalizeRecentCommunicationScalar(Created_at)
+                }
+                : normalizeAuthIdentity({
+                    email,
+                    Thread_ID,
+                    Created_at
+                }, email);
 
             if (!identity.email) {
                 throw new Error("Không thể khởi tạo chat vì thiếu email người dùng.");
+            }
+
+            const nextRecentUserKey = getRecentCommunicationUserKey(identity.email);
+            if (window.recentCommunicationCacheUserKey && window.recentCommunicationCacheUserKey !== nextRecentUserKey) {
+                resetRecentCommunicationState(identity.email);
             }
 
             window.userEmail = identity.email;
@@ -4062,6 +4137,8 @@
                 const res = await fetch(URL_DELETE, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: window.userEmail }) });
                 if(res.ok) { 
                     await clearRecentCommunications(window.userEmail);
+                    setRecentCommunicationPanelVisibility(false);
+                    resetRecentCommunicationState();
                     window.clearAuthSession();
                     window.destroyChatWidget(); 
                     location.reload(); 
